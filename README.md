@@ -39,17 +39,17 @@ Web UI refresh for the Canaan Avalon Nano 3, plus a lightweight cgminer API prox
 ## Screenshots
 
 ### Login
-![Login](assets/Login.png)
+![Login](assets/images/Login.png)
 
 ### Overview
-![Overview](assets/Overview.png)
+![Overview](assets/images/Overview.png)
 
 ### Configuration
-![Configuration](assets/Configuration.png)
+![Configuration](assets/images/Configuration.png)
 
 ### Miner Health
-![Miner Health 1](assets/Miner_Health_1.png)
-![Miner Health 2](assets/Miner_Health_2.png)
+![Miner Health 1](assets/images/Miner_Health_1.png)
+![Miner Health 2](assets/images/Miner_Health_2.png)
 
 ---
 
