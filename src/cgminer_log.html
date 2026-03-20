@@ -1,0 +1,4720 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Avalon Device</title>
+    <link rel="icon" href="data:,">
+<style>
+:root {
+  --bg-top: #f9fafc;
+  --bg-mid: #edf0f5;
+  --bg-bottom: #e9edf4;
+  --panel: rgba(255, 255, 255, 0.72);
+  --panel-strong: rgba(255, 255, 255, 0.88);
+  --border-soft: rgba(255, 255, 255, 0.62);
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --accent: #0071e3;
+  --good: #34c759;
+  --bad: #ff3b30;
+  --warn: #ff9f0a;
+  --shadow-soft: 0 18px 42px rgba(15, 23, 42, 0.12);
+  --radius-card: 22px;
+  --radius-pill: 999px;
+  --font-label-small-size: 10px;
+  --font-label-small-line: 1.15;
+  --font-label-small-weight: 600;
+  --font-label-small-track: 0.08em;
+  --font-value-main-size: 16px;
+  --font-value-main-line: 1;
+  --font-value-main-weight: 700;
+  --font-value-main-track: -0.02em;
+  --font-value-small-size: 14px;
+  --font-value-large-size: 18px;
+  --font-unit-size: 11px;
+  --font-unit-weight: 560;
+  --font-unit-track: 0.01em;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text-primary);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(0, 113, 227, 0.16), transparent 34%),
+    radial-gradient(circle at 95% 100%, rgba(52, 199, 89, 0.16), transparent 30%),
+    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 52%, var(--bg-bottom) 100%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 264px 1fr;
+  min-height: 100vh;
+  gap: 18px;
+  padding: 18px;
+}
+
+.sidebar {
+  background: var(--panel);
+  border: 1px solid var(--border-soft);
+  border-radius: 28px;
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px 10px;
+  border-bottom: 1px solid rgba(60, 60, 67, 0.16);
+}
+
+.brand .logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: linear-gradient(180deg, #111111 0%, #3d3d3f 100%);
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  letter-spacing: 0.5px;
+}
+
+.brand .meta {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.brand .meta .title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.brand .meta .subtitle {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+#nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  flex: 1;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.menu li {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-radius: 12px;
+  padding: 7px 10px;
+  color: var(--text-secondary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.menu li i {
+  display: none;
+  width: 0;
+  margin: 0;
+  font-size: 0;
+}
+
+.menu li strong {
+  display: block;
+  width: 100%;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  color: inherit;
+}
+
+.menu li strong.cur {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.menu li:hover {
+  background-color: rgba(0, 113, 227, 0.08);
+  color: var(--text-primary);
+}
+
+.menu .menu-ch {
+  margin-left: 6px;
+  margin-top: 8px;
+  width: calc(100% - 6px);
+  display: none;
+}
+
+.menu .menu-ch li {
+  margin-top: 4px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+#side_nav > li {
+  display: block;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+}
+
+#side_nav > li > i {
+  display: none;
+}
+
+#side_nav > li > strong {
+  display: block;
+  font-size: 1em;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1.2;
+  margin: 7px 10px;
+  cursor: pointer;
+}
+
+#side_nav > li > .menu-ch {
+  margin: 0 0 0 8px;
+  width: calc(100% - 8px);
+  display: none;
+}
+
+#side_nav > li > .menu-ch li {
+  display: block;
+  margin-top: 0;
+  border-radius: 10px;
+  padding: 6px 10px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+#side_nav > li > .menu-ch li + li {
+  margin-top: 2px;
+}
+
+#side_nav > li > .menu-ch li strong {
+  font-size: 0.92em;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1.25;
+}
+
+#side_nav > li > .menu-ch li:hover {
+  background: rgba(0, 113, 227, 0.08);
+}
+
+#side_nav > li > .menu-ch li strong.cur {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.quick-links {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(60, 60, 67, 0.12);
+  display: grid;
+  gap: 8px;
+}
+
+.quick-links a {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 11px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.58);
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+}
+
+.quick-links a:hover {
+  transform: translateX(2px);
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.content {
+  min-width: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 14px;
+  align-content: stretch;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.main-scroll {
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  padding-right: 2px;
+}
+
+.topbar,
+.card {
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-card);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  overflow: hidden;
+  background-clip: padding-box;
+}
+
+.topbar {
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.device-block {
+  min-width: 220px;
+}
+
+.device-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.device-title {
+  font-size: clamp(20px, 2.2vw, 30px);
+  font-weight: 680;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  word-break: break-word;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  font-size: 13px;
+  background: linear-gradient(145deg, #77d886 0%, #34c759 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32);
+}
+
+.status.off {
+  background: linear-gradient(145deg, #a4a4aa 0%, #787880 100%);
+}
+
+.refresh {
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+#loadtime {
+  margin-left: 6px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.logout {
+  border: none;
+  background: rgba(255, 59, 48, 0.12);
+  color: #b42318;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.logout:hover {
+  background: rgba(255, 59, 48, 0.2);
+}
+.card {
+      padding: 16px;
+      min-width: 0;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+    }
+
+    .log-wrap {
+      background: rgba(255, 255, 255, 0.72);
+      border-radius: 14px;
+      border: 1px solid rgba(60, 60, 67, 0.12);
+      padding: 12px;
+      position: relative;
+      --metric-bar-height: 7px;
+      --metric-bar-gap: 8px;
+    }
+
+    .log-summary {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .log-section {
+      border-radius: 12px;
+      border: 1px solid rgba(60, 60, 67, 0.12);
+      background: rgba(255, 255, 255, 0.72);
+      padding: 9px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Allow centered bar tooltips to extend past section edges without clipping. */
+    .log-section.section-status-throughput,
+    .log-section.section-thermals-fan {
+      overflow: visible;
+    }
+
+    .log-section::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 2px;
+      background: rgba(0, 113, 227, 0.22);
+      pointer-events: none;
+    }
+
+    .log-section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(60, 60, 67, 0.08);
+    }
+
+    .log-section-title {
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0;
+      font-weight: 600;
+    }
+
+    .log-section-count {
+      font-size: 10px;
+      color: rgba(110, 110, 115, 0.92);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    .log-section-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(136px, 1fr));
+      gap: 8px;
+    }
+
+    .log-metric {
+      border-radius: 10px;
+      border: 1px solid rgba(60, 60, 67, 0.12);
+      background: #ffffff;
+      padding: 8px 10px;
+      min-height: 60px;
+    }
+
+    .log-metric.size-large {
+      grid-column: span 2;
+      min-height: 72px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.98);
+    }
+
+    .log-metric.size-medium {
+      min-height: 60px;
+    }
+
+    .log-metric.size-small {
+      min-height: 54px;
+      padding: 7px 9px;
+      background: rgba(255, 255, 255, 0.88);
+    }
+
+    .log-metric .k {
+      font-size: var(--font-label-small-size);
+      line-height: var(--font-label-small-line);
+      font-weight: var(--font-label-small-weight);
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: var(--font-label-small-track);
+      margin-bottom: 6px;
+    }
+
+    .log-metric .v {
+      font-size: var(--font-value-main-size);
+      line-height: var(--font-value-main-line);
+      font-weight: var(--font-value-main-weight);
+      letter-spacing: var(--font-value-main-track);
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    .unit-main {
+      font: inherit;
+      color: inherit;
+      letter-spacing: inherit;
+      line-height: inherit;
+    }
+
+    .unit-muted {
+      font-size: var(--font-unit-size);
+      font-weight: var(--font-unit-weight);
+      color: var(--text-secondary);
+      letter-spacing: var(--font-unit-track);
+      line-height: inherit;
+      vertical-align: baseline;
+    }
+
+    .log-metric.size-large .v {
+      font-size: var(--font-value-large-size);
+    }
+
+    .log-metric.size-small .k {
+      font-size: 10px;
+      margin-bottom: 4px;
+    }
+
+    .log-metric.size-small .v {
+      font-size: var(--font-value-small-size);
+      font-weight: var(--font-value-main-weight);
+    }
+
+    .metric-progress-track {
+      position: relative;
+      margin-top: var(--metric-bar-gap);
+      height: var(--metric-bar-height);
+      border-radius: 999px;
+      background: rgba(60, 60, 67, 0.16);
+      overflow: hidden;
+    }
+
+    .metric-progress-fill {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      border-radius: inherit;
+      background: #0071e3;
+      transition: width 0.25s ease;
+    }
+
+    .metric-progress-marker {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: rgba(255, 255, 255, 0.92);
+      transform: translateX(-50%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .metric-progress-marker-labels {
+      position: relative;
+      height: 10px;
+      margin-top: 3px;
+    }
+
+    .metric-progress-marker-label {
+      position: absolute;
+      top: 0;
+      transform: translateX(-50%);
+      font-size: 9px;
+      line-height: 1;
+      color: var(--text-secondary);
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .log-metric.metric-sharerate {
+      min-height: 84px;
+    }
+
+    .log-metric.metric-sharerate.size-large {
+      min-height: 96px;
+    }
+
+    .log-metric.metric-sharerate .metric-rate-legend {
+      margin-top: 7px;
+      gap: 4px;
+    }
+
+    .log-metric.metric-sharerate .metric-rate-item {
+      font-size: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .log-metric.metric-sharerate .metric-rate-item b {
+      font-size: 11px;
+      margin-left: 3px;
+    }
+
+    .metric-rate-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 2px;
+      margin-bottom: 0;
+    }
+
+    .metric-rate-total {
+      font-size: var(--font-value-main-size);
+      line-height: var(--font-value-main-line);
+      font-weight: var(--font-value-main-weight);
+      letter-spacing: var(--font-value-main-track);
+      color: var(--text-primary);
+    }
+
+    .metric-rate-note {
+      font-size: 10px;
+      color: var(--text-secondary);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      line-height: 1.2;
+      margin-left: 8px;
+    }
+
+    .metric-rate-track {
+      position: relative;
+      height: var(--metric-bar-height);
+      margin-top: var(--metric-bar-gap);
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(60, 60, 67, 0.14);
+    }
+
+    .metric-rate-seg {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+    }
+
+    .metric-rate-seg.accepted { background: #34c759; }
+    .metric-rate-seg.rejected { background: #ff453a; }
+    .metric-rate-seg.stale { background: #ff9f0a; }
+
+    .metric-rate-legend {
+      margin-top: 8px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .metric-rate-item {
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      line-height: 1.2;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+    }
+
+    .metric-rate-item b {
+      margin-left: 4px;
+      font-size: 12px;
+      letter-spacing: normal;
+      color: var(--text-primary);
+      font-weight: 650;
+    }
+
+    .metric-rate-item.accepted::before,
+    .metric-rate-item.rejected::before,
+    .metric-rate-item.stale::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      margin-right: 5px;
+      vertical-align: -1px;
+    }
+
+    .metric-rate-item.accepted::before { background: #34c759; }
+    .metric-rate-item.rejected::before { background: #ff453a; }
+    .metric-rate-item.stale::before { background: #ff9f0a; }
+
+    .log-metric.metric-worklevel {
+      min-height: 84px;
+    }
+
+    .log-metric.metric-core-freq {
+      min-height: 132px;
+    }
+
+    .metric-core-freq-wrap {
+      margin-top: 8px;
+    }
+
+    .metric-core-freq-chart {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
+      align-items: end;
+      gap: 8px;
+      height: 74px;
+      padding: 6px 6px 0;
+      border-radius: 8px;
+      background: rgba(60, 60, 67, 0.03);
+      border: 1px solid rgba(60, 60, 67, 0.08);
+    }
+
+    .metric-core-freq-col {
+      position: relative;
+      min-width: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .metric-core-freq-col .info-tooltip,
+    .metric-asic-temps-col .info-tooltip {
+      display: block;
+      top: auto;
+      left: 50%;
+      right: auto;
+      bottom: calc(100% + 8px);
+      min-width: 0;
+      width: max-content;
+      max-width: 180px;
+      padding: 6px 8px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    .metric-core-freq-col:hover .info-tooltip,
+    .metric-core-freq-col:focus-within .info-tooltip,
+    .metric-asic-temps-col:hover .info-tooltip,
+    .metric-asic-temps-col:focus-within .info-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(-2px);
+    }
+
+    .metric-core-freq-bar-wrap {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .metric-core-freq-count {
+      font-size: 10px;
+      line-height: 1;
+      font-weight: 650;
+      letter-spacing: 0;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    .metric-core-freq-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      min-height: 2px;
+      border-radius: 4px 4px 2px 2px;
+      background: linear-gradient(180deg, rgba(10, 132, 255, 0.95), rgba(0, 113, 227, 0.88));
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+    }
+
+    .metric-core-freq-bar.is-empty {
+      background: rgba(142, 142, 147, 0.22);
+    }
+
+    .metric-core-freq-label {
+      position: absolute;
+      left: 50%;
+      bottom: 4px;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 1px;
+      min-width: 0;
+      font-size: 10px;
+      line-height: 1;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      white-space: normal;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .metric-core-freq-label-main {
+      white-space: nowrap;
+    }
+
+    .metric-core-freq-label-unit {
+      font-size: 8px;
+      line-height: 1;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .metric-core-freq-label.is-inside .metric-core-freq-label-main {
+      color: rgba(255, 255, 255, 0.98);
+      text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.34),
+        0 0 1px rgba(0, 0, 0, 0.28);
+    }
+
+    .metric-core-freq-label.is-inside .metric-core-freq-label-unit {
+      color: rgba(255, 255, 255, 0.82);
+      text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.3),
+        0 0 1px rgba(0, 0, 0, 0.24);
+    }
+
+    .metric-core-freq-label.is-below .metric-core-freq-label-main {
+      color: var(--text-secondary);
+    }
+
+    .metric-core-freq-label.is-below .metric-core-freq-label-unit {
+      color: rgba(110, 110, 115, 0.82);
+    }
+
+    .log-metric.metric-asic-temps {
+      position: relative;
+      min-height: 136px;
+    }
+
+    .metric-asic-temps-badge {
+      position: absolute;
+      right: 10px;
+      top: 8px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      font-size: 9px;
+      line-height: 1;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #0a63c9;
+      background: rgba(10, 132, 255, 0.12);
+      border: 1px solid rgba(10, 132, 255, 0.26);
+      pointer-events: none;
+    }
+
+    .log-metric.metric-asic-temps .k {
+      padding-right: 84px;
+    }
+
+    .metric-asic-temps-summary {
+      margin-top: 2px;
+      font-size: 11px;
+      line-height: 1.2;
+      font-weight: 560;
+      color: var(--text-secondary);
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .metric-asic-temps-wrap {
+      margin-top: 8px;
+    }
+
+    .metric-asic-temps-chart {
+      position: relative;
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
+      align-items: end;
+      gap: 4px;
+      height: 74px;
+      padding: 0 2px 2px;
+      border-radius: 8px;
+      background: rgba(60, 60, 67, 0.03);
+      border: 1px solid rgba(60, 60, 67, 0.08);
+      overflow: visible;
+    }
+
+    .metric-asic-temps-target {
+      position: absolute;
+      left: 0;
+      right: 0;
+      border-top: 1px dashed rgba(0, 113, 227, 0.5);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .metric-asic-temps-col {
+      position: relative;
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .metric-asic-temps-bar {
+      width: 100%;
+      min-height: 2px;
+      border-radius: 4px 4px 2px 2px;
+      background: #0a84ff;
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+    }
+
+    .metric-asic-temps-bar.warm {
+      background: #ffd60a;
+    }
+
+    .metric-asic-temps-bar.hot {
+      background: #ff9f0a;
+    }
+
+    .metric-asic-temps-bar.danger {
+      background: #ff453a;
+    }
+
+    .worklevel-badge {
+      margin-top: 8px;
+      border-radius: 10px;
+      border: 1px solid rgba(60, 60, 67, 0.16);
+      background: rgba(60, 60, 67, 0.06);
+      padding: 7px 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .worklevel-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      background: rgba(60, 60, 67, 0.12);
+    }
+
+    .worklevel-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      display: block;
+    }
+
+    .worklevel-text {
+      min-width: 0;
+      line-height: 1.2;
+    }
+
+    .worklevel-text .wl-title {
+      font-size: 11px;
+      font-weight: 650;
+      color: var(--text-primary);
+      letter-spacing: 0.01em;
+    }
+
+    .worklevel-text .wl-sub {
+      margin-top: 2px;
+      font-size: 10px;
+      color: var(--text-secondary);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .worklevel-eco {
+      border-color: rgba(52, 199, 89, 0.28);
+      background: rgba(52, 199, 89, 0.1);
+    }
+
+    .worklevel-eco .worklevel-icon {
+      color: #238a41;
+      background: linear-gradient(180deg, rgba(82, 214, 120, 0.24), rgba(52, 199, 89, 0.14));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    .worklevel-normal {
+      border-color: rgba(10, 132, 255, 0.28);
+      background: rgba(10, 132, 255, 0.1);
+    }
+
+    .worklevel-normal .worklevel-icon {
+      color: #0a63c9;
+      background: rgba(10, 132, 255, 0.2);
+    }
+
+    .worklevel-super {
+      border-color: rgba(255, 69, 58, 0.32);
+      background: rgba(255, 69, 58, 0.12);
+    }
+
+    .worklevel-super .worklevel-icon {
+      color: #b42318;
+      background: linear-gradient(180deg, rgba(255, 120, 102, 0.26), rgba(255, 69, 58, 0.16));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    .log-metric.metric-ring-card {
+      min-height: 132px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .log-metric.metric-ring-card.size-large {
+      min-height: 138px;
+    }
+
+    .section-status-throughput::before { background: rgba(10, 132, 255, 0.32); }
+    .section-power-efficiency::before { background: rgba(94, 92, 230, 0.3); }
+    .section-thermals-fan::before { background: rgba(255, 159, 10, 0.32); }
+    .section-share-quality::before { background: rgba(52, 199, 89, 0.3); }
+    .section-errors-difficulty::before,
+    .section-errors-jobs::before { background: rgba(255, 69, 58, 0.32); }
+    .section-pool-network::before { background: rgba(100, 210, 255, 0.32); }
+    .section-other::before { background: rgba(142, 142, 147, 0.3); }
+
+    .metric-ring-wrap {
+      position: relative;
+      width: 82px;
+      height: 82px;
+      margin: 2px auto 0;
+    }
+
+    .metric-ring-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      transform: rotate(-90deg);
+    }
+
+    .metric-ring-track {
+      stroke: rgba(120, 120, 128, 0.24);
+      stroke-width: 8;
+      fill: none;
+    }
+
+    .metric-ring-fill {
+      stroke: #0071e3;
+      stroke-width: 8;
+      fill: none;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.3s ease;
+    }
+
+    .metric-ring-value {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--font-value-main-size);
+      line-height: var(--font-value-main-line);
+      font-weight: var(--font-value-main-weight);
+      letter-spacing: var(--font-value-main-track);
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    .metric-ring-sub {
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .log-metric.metric-uptime .v {
+      white-space: nowrap;
+      word-break: normal;
+      overflow-wrap: normal;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1;
+    }
+
+    .log-metric.metric-uptime.uptime-lg .v {
+      font-size: 17px;
+    }
+
+    .log-metric.metric-uptime.uptime-md .v {
+      font-size: 16px;
+    }
+
+    .log-metric.metric-uptime.uptime-sm .v {
+      font-size: 15px;
+    }
+
+    .log-metric.metric-uptime.uptime-xs .v {
+      font-size: 14px;
+    }
+
+    .log-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      padding-right: 28px;
+    }
+
+    .log-hint {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 0;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .info-badge {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid rgba(60, 60, 67, 0.2);
+      background: rgba(255, 255, 255, 0.95);
+      color: #6e6e73;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
+      position: relative;
+      user-select: none;
+    }
+
+    .info-badge.is-error {
+      border-color: rgba(255, 59, 48, 0.45);
+      background: rgba(255, 59, 48, 0.08);
+      color: #b42318;
+    }
+
+    .info-badge.is-error .info-tooltip {
+      border-color: rgba(255, 59, 48, 0.28);
+      background: #fff7f7;
+      color: #8f1d1d;
+    }
+
+    .info-tooltip {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      min-width: 180px;
+      max-width: 280px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(60, 60, 67, 0.16);
+      background: #ffffff;
+      color: #1d1d1f;
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 1.35;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .info-badge:hover .info-tooltip,
+    .info-badge:focus .info-tooltip {
+      display: block;
+    }
+
+    .info-badge:focus-visible {
+      outline: 2px solid rgba(0, 122, 255, 0.45);
+      outline-offset: 2px;
+    }
+
+    .info-badge-corner {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 4;
+    }
+
+    .info-badge-corner .info-tooltip {
+      left: auto;
+      right: 0;
+    }
+
+    .quality-title {
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .quality-row {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .quality-row-top {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .quality-row-bottom {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 8px;
+    }
+
+    .quality-chip {
+      border-radius: 12px;
+      border: 1px solid rgba(60, 60, 67, 0.12);
+      background: rgba(255, 255, 255, 0.74);
+      min-height: 56px;
+      padding: 8px 10px;
+      display: block;
+    }
+
+    .quality-chip .qk {
+      display: block;
+      font-size: var(--font-label-small-size);
+      line-height: var(--font-label-small-line);
+      font-weight: var(--font-label-small-weight);
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: var(--font-label-small-track);
+      margin-bottom: 5px;
+    }
+
+    .quality-chip .qv {
+      display: block;
+      font-size: var(--font-value-main-size);
+      line-height: var(--font-value-main-line);
+      font-weight: var(--font-value-main-weight);
+      letter-spacing: var(--font-value-main-track);
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .quality-sub {
+      margin-top: 8px;
+      padding-top: 7px;
+      border-top: 1px solid rgba(60, 60, 67, 0.12);
+    }
+
+    .quality-sub .qk {
+      margin-bottom: 3px;
+    }
+
+    .quality-sub .qv {
+      font-size: var(--font-value-main-size);
+      line-height: var(--font-value-main-line);
+      font-weight: var(--font-value-main-weight);
+      letter-spacing: var(--font-value-main-track);
+    }
+
+    .quality-chip.quality-gauge {
+      min-height: 132px;
+      padding: 8px 10px 6px;
+    }
+
+    .quality-chip.quality-share-rate {
+      min-height: 88px;
+    }
+
+    .quality-chip.quality-share-rate .metric-rate-head {
+      margin-top: 0;
+    }
+
+    .quality-chip.quality-share-rate .metric-rate-total {
+      font-size: var(--font-value-main-size);
+      line-height: var(--font-value-main-line);
+      font-weight: var(--font-value-main-weight);
+      letter-spacing: var(--font-value-main-track);
+    }
+
+    .quality-chip.quality-share-rate .metric-rate-note {
+      font-size: 9px;
+      letter-spacing: 0.05em;
+    }
+
+    .quality-chip.quality-share-rate .metric-rate-legend {
+      margin-top: 7px;
+      gap: 4px;
+    }
+
+    .quality-chip.quality-share-rate .metric-rate-item {
+      font-size: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .quality-chip.quality-share-rate .metric-rate-item b {
+      font-size: 11px;
+      margin-left: 3px;
+    }
+
+    .quality-gauge-wrap {
+      position: relative;
+      width: 100%;
+      height: 86px;
+      margin-top: 2px;
+    }
+
+    .quality-gauge-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .quality-gauge-track {
+      stroke: rgba(120, 120, 128, 0.24);
+      stroke-width: 10;
+      fill: none;
+      stroke-linecap: round;
+    }
+
+    .quality-gauge-fill {
+      stroke-width: 10;
+      fill: none;
+      stroke-linecap: round;
+      transform-origin: center;
+      transition: stroke-dashoffset 0.3s ease;
+    }
+
+    .quality-gauge-value {
+      position: absolute;
+      left: 50%;
+      bottom: 2px;
+      transform: translateX(-50%);
+      text-align: center;
+      font-size: var(--font-value-main-size);
+      line-height: var(--font-value-main-line);
+      font-weight: var(--font-value-main-weight);
+      letter-spacing: var(--font-value-main-track);
+      color: var(--text-primary);
+      white-space: nowrap;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .log-raw {
+      margin-top: 10px;
+      border: 1px solid rgba(60, 60, 67, 0.12);
+      border-radius: 10px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .log-reference {
+      margin-top: 10px;
+      border: 1px solid rgba(60, 60, 67, 0.12);
+      border-radius: 10px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .log-raw summary {
+      cursor: pointer;
+      padding: 8px 10px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      user-select: none;
+      border-bottom: 1px solid rgba(60, 60, 67, 0.08);
+      list-style: none;
+    }
+
+    .log-raw summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .log-reference summary {
+      cursor: pointer;
+      padding: 8px 10px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      user-select: none;
+      border-bottom: 1px solid rgba(60, 60, 67, 0.08);
+      list-style: none;
+    }
+
+    .log-reference summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .log-reference-body {
+      max-height: 280px;
+      overflow: auto;
+      background: #fcfcfd;
+    }
+
+    .log-reference-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      line-height: 1.4;
+      color: #2f3136;
+    }
+
+    .log-reference-table th,
+    .log-reference-table td {
+      text-align: left;
+      padding: 8px 10px;
+      border-bottom: 1px solid rgba(60, 60, 67, 0.08);
+      vertical-align: top;
+    }
+
+    .log-reference-table th {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    .log-reference-table td:first-child {
+      font-family: "SF Mono", "Menlo", "Consolas", monospace;
+      white-space: nowrap;
+      width: 220px;
+    }
+
+    .log-reference-table tr.log-ref-section td {
+      font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      white-space: normal;
+      width: auto;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      background: #f4f6fa;
+      border-top: 1px solid rgba(60, 60, 67, 0.12);
+      border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+      font-weight: 600;
+    }
+
+    #cglog {
+      min-height: 340px;
+      max-height: calc(100vh - 320px);
+      overflow: auto;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(60, 60, 67, 0.12);
+      background: #fafbfc;
+      color: #2f3136;
+      font-size: 13px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: "SF Mono", "Menlo", "Consolas", monospace;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .footer-item {
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.74);
+      padding: 10px;
+      min-height: 66px;
+    }
+
+    .footer-item .label {
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .footer-item .value {
+      font-size: 13px;
+      line-height: 1.35;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 1024px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        min-height: auto;
+      }
+
+      .quick-links {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .layout {
+        padding: 12px;
+        gap: 12px;
+      }
+
+      .quick-links {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        padding: 14px;
+      }
+
+      .top-actions {
+        justify-content: flex-start;
+      }
+
+      #cglog {
+        max-height: calc(100vh - 360px);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .log-metric.size-large {
+        grid-column: span 1;
+      }
+
+      .metric-core-freq-chart {
+        gap: 5px;
+        padding: 6px 4px 0;
+      }
+
+      .metric-core-freq-count {
+        font-size: 9px;
+      }
+
+      .metric-core-freq-label {
+        font-size: 9px;
+        bottom: 3px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">N3</div>
+        <div class="meta">
+          <div class="title">Nano3 Dashboard</div>
+        </div>
+      </div>
+
+      <form name="cgiform" id="nav" method="post" action="">
+        <ul class="menu">
+          <li><i></i><strong pageid="dashboard" onclick="tabChange(this);">Overview</strong></li>
+          <li><i></i><strong pageid="cglog" onclick="tabChange(this);">Miner Health</strong></li>
+          <li><i></i><strong pageid="cgconf" onclick="tabChange(this);">Configuration</strong></li>
+          <li><i></i><strong pageid="network" onclick="tabChange(this);">Network</strong></li>
+        </ul>
+
+        <ul class="menu" id="side_nav">
+          <li>
+            <i></i><strong>System</strong>
+            <ul class="menu-ch" style="display: none;">
+              <li><i></i><strong pageid="admin" onclick="tabChange(this);">Password</strong></li>
+              <li><i></i><strong pageid="upgrade" onclick="tabChange(this);">Upgrade</strong></li>
+              <li><i></i><strong pageid="reboot1" onclick="reboot(this);">Reboot</strong></li>
+              <li><i></i><strong pageid="resetfac1" onclick="resetSet(this);">Factory Reset</strong></li>
+            </ul>
+          </li>
+        </ul>
+
+        <div class="quick-links">
+          <a href="https://shop.canaan.io" target="_blank" rel="noopener noreferrer">Shop</a>
+          <a pageid="systemlog" onclick="tabChange(this);">System log</a>
+          <a href="https://canaan.io/support" target="_blank" rel="noopener noreferrer">Support</a>
+          <a href="https://github.com/Canaan-Creative" target="_blank" rel="noopener noreferrer">Documents</a>
+        </div>
+      </form>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div class="device-block">
+          <div class="device-label">Miner</div>
+          <div class="device-title" id="hwtype">-</div>
+        </div>
+
+        <div class="top-actions">
+          <div class="status" id="sys_status">Online</div>
+          <div class="refresh">Latest refresh <span id="loadtime">-</span></div>
+          <div class="logout" pageid="logout1" onclick="logout(this);">Logout</div>
+        </div>
+      </header>
+
+      <section class="main-scroll">
+        <article class="card">
+          <div class="card-title">Miner Health</div>
+          <div class="log-wrap">
+            <div class="info-badge info-badge-corner" id="log-info" style="display: none;" tabindex="0" role="button" aria-label="Parse info" aria-describedby="log-info-text">
+              i
+              <div class="info-tooltip" id="log-info-text" role="tooltip" aria-live="polite" aria-hidden="true"></div>
+            </div>
+            <div class="log-meta">
+              <div class="log-hint" id="log-hint">Waiting for log data...</div>
+            </div>
+            <div class="quality-title" id="log-quality-title" style="display: none;">Mining Quality</div>
+            <div class="quality-row" id="log-quality" style="display: none;"></div>
+            <div class="log-summary" id="log-summary" style="display: none;"></div>
+            <details class="log-reference" id="log-reference">
+              <summary>Field reference</summary>
+              <div class="log-reference-body">
+                <table class="log-reference-table">
+                  <thead>
+                    <tr>
+                      <th>Field</th>
+                      <th>Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="log-ref-section"><td colspan="2">STATUS block</td></tr>
+                    <tr><td>STATUS.STATUS</td><td>Result class: S (success), I (info), W (warning), E (error), F (fatal).</td></tr>
+                    <tr><td>STATUS.Msg</td><td>Record type, for example Summary or CGMiner stats.</td></tr>
+                    <tr><td>STATUS.Code</td><td>Numeric status code for the response type.</td></tr>
+                    <tr><td>STATUS.When</td><td>Unix timestamp when this status record was produced.</td></tr>
+                    <tr><td>STATUS.Description</td><td>cgminer version/build string.</td></tr>
+
+                    <tr class="log-ref-section"><td colspan="2">SUMMARY block - throughput, shares, and jobs</td></tr>
+                    <tr><td>SUMMARY.Elapsed</td><td>Seconds since miner start.</td></tr>
+                    <tr><td>SUMMARY.MHS av</td><td>Average hashrate in MH/s.</td></tr>
+                    <tr><td>SUMMARY.MHS 5s</td><td>Short-window hashrate in MH/s.</td></tr>
+                    <tr><td>SUMMARY.MHS 1m / 5m / 15m</td><td>Rolling hashrate windows in MH/s.</td></tr>
+                    <tr><td>SUMMARY.Total MH</td><td>Total accumulated work in MH units.</td></tr>
+                    <tr><td>SUMMARY.Accepted</td><td>Total accepted shares.</td></tr>
+                    <tr><td>SUMMARY.Rejected</td><td>Total rejected non-stale shares.</td></tr>
+                    <tr><td>SUMMARY.Stale</td><td>Total stale shares.</td></tr>
+                    <tr><td>SUMMARY.Found Blocks</td><td>Found block counter (often 0 on home units).</td></tr>
+                    <tr><td>SUMMARY.Best Share</td><td>Highest accepted share difficulty.</td></tr>
+                    <tr><td>SUMMARY.Getworks</td><td>Total jobs/work items received.</td></tr>
+                    <tr><td>SUMMARY.Network Blocks</td><td>Network block events seen by the miner.</td></tr>
+                    <tr><td>SUMMARY.Utility</td><td>Submitted shares per minute from cgminer.</td></tr>
+                    <tr><td>SUMMARY.Work Utility</td><td>Received jobs per minute.</td></tr>
+                    <tr><td>SUMMARY.Hardware Errors</td><td>Total hardware/CRC/hash errors.</td></tr>
+                    <tr><td>SUMMARY.Difficulty Accepted</td><td>Total accepted share difficulty.</td></tr>
+                    <tr><td>SUMMARY.Difficulty Rejected</td><td>Total rejected non-stale share difficulty.</td></tr>
+                    <tr><td>SUMMARY.Difficulty Stale</td><td>Total stale share difficulty.</td></tr>
+                    <tr><td>SUMMARY.Device Hardware%</td><td>Device hardware error percentage.</td></tr>
+                    <tr><td>SUMMARY.Device Rejected%</td><td>Device rejected share percentage.</td></tr>
+                    <tr><td>SUMMARY.Pool Rejected%</td><td>Pool rejected share percentage.</td></tr>
+                    <tr><td>SUMMARY.Pool Stale%</td><td>Pool stale share percentage.</td></tr>
+                    <tr><td>SUMMARY.Get Failures</td><td>Failed work fetch attempts.</td></tr>
+                    <tr><td>SUMMARY.Remote Failures</td><td>Remote communication/work failures.</td></tr>
+                    <tr><td>SUMMARY.Local Work</td><td>Local work counter (often 0 on Nano3).</td></tr>
+                    <tr><td>SUMMARY.Discarded</td><td>Discarded work counter (often 0).</td></tr>
+                    <tr><td>SUMMARY.Last getwork</td><td>Original cgminer meaning: Unix time of last job; Nano3 firmware commonly reports 0.</td></tr>
+
+                    <tr class="log-ref-section"><td colspan="2">STATS block - top-level keys</td></tr>
+                    <tr><td>STATS.STATS</td><td>STATS record index (commonly 0).</td></tr>
+                    <tr><td>STATS.ID</td><td>Device identifier (for example AVANANO0).</td></tr>
+                    <tr><td>STATS.Elapsed</td><td>Elapsed seconds in stats context.</td></tr>
+                    <tr><td>STATS.Calls</td><td>Driver/internal call counter (firmware-dependent).</td></tr>
+                    <tr><td>STATS.Wait / Max / Min</td><td>Driver timing/debug values; interpretation is firmware/vendor specific.</td></tr>
+                    <tr><td>STATS.MM Count</td><td>MM record count in STATS payload.</td></tr>
+                    <tr><td>STATS.Nonce Mask</td><td>Active nonce-mask setting reported by firmware.</td></tr>
+                    <tr><td>STATS.MM ID0</td><td>Packed telemetry string; all bracket tokens below are parsed from this value.</td></tr>
+
+                    <tr class="log-ref-section"><td colspan="2">MM ID0 - identity and control</td></tr>
+                    <tr><td>MM ID0: Ver / HVer</td><td>Firmware and hardware version identifiers.</td></tr>
+                    <tr><td>MM ID0: DNA / HDNA</td><td>Device and hashboard identifiers.</td></tr>
+                    <tr><td>MM ID0: Core</td><td>ASIC core family/model identifier.</td></tr>
+                    <tr><td>MM ID0: Led</td><td>LED state/status value.</td></tr>
+                    <tr><td>MM ID0: Freq</td><td>Equivalent frequency telemetry value reported by firmware.</td></tr>
+                    <tr><td>MM ID0: WORKLEVEL</td><td>Work mode value (0 Eco, 1 Normal, 2 Super).</td></tr>
+                    <tr><td>MM ID0: MPO</td><td>Configured power setpoint (W).</td></tr>
+                    <tr><td>MM ID0: ADJ</td><td>Adjustment state value used by firmware tuning logic.</td></tr>
+                    <tr><td>MM ID0: SoftOFF</td><td>Soft-off state marker.</td></tr>
+                    <tr><td>MM ID0: Vo</td><td>Vendor-specific board telemetry value.</td></tr>
+                    <tr><td>MM ID0: TA</td><td>ASIC chip count.</td></tr>
+
+                    <tr class="log-ref-section"><td colspan="2">MM ID0 - network and failover</td></tr>
+                    <tr><td>MM ID0: PING</td><td>Pool/network latency in milliseconds.</td></tr>
+                    <tr><td>MM ID0: NETFAIL[...]</td><td>Disconnect/reconnect timestamp buffer; on Nano3 samples these values behave like Unix epoch timestamps, and 0 means an empty slot.</td></tr>
+                    <tr><td>MM ID0: PFCnt</td><td>Protection/power-fail style counter used by firmware diagnostics.</td></tr>
+                    <tr><td>MM ID0: ECHU / ECMM</td><td>Error counters for control-unit and module communication paths.</td></tr>
+
+                    <tr class="log-ref-section"><td colspan="2">MM ID0 - thermals and fan</td></tr>
+                    <tr><td>MM ID0: Temp / OTemp</td><td>Airflow in and airflow out temperatures (degC).</td></tr>
+                    <tr><td>MM ID0: TAvg / TMax / TarT</td><td>ASIC average, ASIC max, and ASIC target temperatures (degC).</td></tr>
+                    <tr><td>MM ID0: MTavg / MTmax</td><td>Additional ASIC average/max telemetry values.</td></tr>
+                    <tr><td>MM ID0: Fan1 / FanR</td><td>Fan RPM and fan duty percentage.</td></tr>
+                    <tr><td>MM ID0: PVT_T0[...]</td><td>Per-chip temperature telemetry array.</td></tr>
+
+                    <tr class="log-ref-section"><td colspan="2">MM ID0 - hashrate, work, and errors</td></tr>
+                    <tr><td>MM ID0: LW</td><td>Local work counter from the controller/MM to the chips.</td></tr>
+                    <tr><td>MM ID0: GHSspd / GHSmm / GHSavg / MGHS</td><td>Current, reference/mid-window, average, and related hashrate telemetry values in the GH/s family.</td></tr>
+                    <tr><td>MM ID0: WU</td><td>Work utility telemetry value, aligned with work/share rate reporting.</td></tr>
+                    <tr><td>MM ID0: MH / HW / DHW / DH / DHspd</td><td>Hardware error counters and related error-rate telemetry used for error metrics.</td></tr>
+                    <tr><td>MM ID0: MW0[...]</td><td>Per-chip work/nonces distribution array.</td></tr>
+                    <tr><td>MM ID0: CRC</td><td>Communication CRC error counter.</td></tr>
+
+                    <tr class="log-ref-section"><td colspan="2">MM ID0 - power and tuning arrays</td></tr>
+                    <tr><td>MM ID0: PS[...]</td><td>Power/status tuple. In this UI, the last PS value is treated as actual power.</td></tr>
+                    <tr><td>MM ID0: ATA0 / ATA1 / ATA2[...]</td><td>Per-profile tuning tuples; the first values are used as power markers in this UI.</td></tr>
+                    <tr><td>MM ID0: PLL0[...]</td><td>Core-count distribution across the configured frequency buckets.</td></tr>
+                    <tr><td>MM ID0: SF0[...]</td><td>Frequency bucket values in MHz that correspond to the PLL0 distribution.</td></tr>
+                    <tr><td>MM ID0: PVT_V0[...]</td><td>Per-chip voltage telemetry array reported as raw firmware values.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </details>
+            <details class="log-raw" id="log-raw">
+              <summary>Raw log</summary>
+              <div id="cglog"></div>
+            </details>
+          </div>
+        </article>
+      </section>
+
+      <footer class="card">
+        <div class="card-title">Device info</div>
+        <div class="footer-grid">
+          <div class="footer-item">
+            <div class="label">Mac Address</div>
+            <div class="value" id="mac"></div>
+          </div>
+          <div class="footer-item">
+            <div class="label">SSID</div>
+            <div class="value" id="ssid"></div>
+          </div>
+          <div class="footer-item">
+            <div class="label">IP Address</div>
+            <div class="value" id="ipv4"></div>
+          </div>
+          <div class="footer-item">
+            <div class="label">Firmware Version</div>
+            <div class="value" id="version"></div>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    function $(id) {
+      return document.getElementById(id);
+    }
+
+    function $$(id) {
+      return document.getElementsByName(id);
+    }
+
+    function getForm(name) {
+      return document.forms[name] || window[name];
+    }
+
+    var LOG_POLL_MS = 5000;
+    var minerLogRateState = null;
+    var minerInfoPollInFlight = false;
+    var minerInfoPollSeq = 0;
+    var logPollInFlight = false;
+    var logPollSeq = 0;
+
+    function AJAX(url, callback, errorCallback) {
+      var req = AJAX_init();
+      var completed = false;
+      if (req) {
+        req.onreadystatechange = AJAX_processRequest;
+        req.onerror = AJAX_processError;
+        req.ontimeout = AJAX_processTimeout;
+        try {
+          req.timeout = 10000;
+        } catch (e) {
+        }
+      }
+
+      function AJAX_init() {
+        if (window.XMLHttpRequest) {
+          return new XMLHttpRequest();
+        }
+        if (window.ActiveXObject) {
+          return new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        return null;
+      }
+
+      function notifyError(type, status) {
+        if (completed) {
+          return;
+        }
+        completed = true;
+        if (typeof errorCallback === "function") {
+          errorCallback({ type: type, status: status || 0, url: url });
+        }
+      }
+
+      function AJAX_processRequest() {
+        if (!req || req.readyState !== 4 || completed) {
+          return;
+        }
+        if (req.status >= 200 && req.status < 300) {
+          completed = true;
+          if (!callback) {
+            return;
+          }
+          callback(req.responseText);
+          return;
+        }
+        notifyError("http", req.status);
+      }
+
+      function AJAX_processError() {
+        notifyError("network", req ? req.status : 0);
+      }
+
+      function AJAX_processTimeout() {
+        notifyError("timeout", req ? req.status : 0);
+      }
+
+      this.doGet = function () {
+        if (!req) {
+          notifyError("unsupported", 0);
+          return;
+        }
+        req.open("GET", url, true);
+        req.send(null);
+      };
+
+      this.doPost = function (body) {
+        if (!req) {
+          notifyError("unsupported", 0);
+          return;
+        }
+        req.open("POST", url, true);
+        req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        req.setRequestHeader("ISAJAX", "yes");
+        req.send(body);
+      };
+    }
+
+        function ajaxDecodeEntities(text) {
+            var src = String(text || "");
+            if (src.indexOf("&") === -1) {
+                return src;
+            }
+            var el = document.createElement("textarea");
+            el.innerHTML = src;
+            return el.value;
+        }
+
+        function ajaxNormalizeScript(text, replaceBr) {
+            var src = String(text || "");
+            if (replaceBr !== false) {
+                src = src.replace(/<br\s*\/?>/gi, "\n");
+            }
+            return ajaxDecodeEntities(src);
+        }
+
+        function ajaxEscapeJsonStringValue(input) {
+            return String(input).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+        }
+
+        function ajaxNormalizeJsonLike(text) {
+            var normalized = String(text || "");
+            normalized = normalized.replace(/\r/g, "");
+
+            normalized = normalized.replace(/([{,]\s*)'([^'\\]*(?:\\.[^'\\]*)*)'\s*:/g, function (_, prefix, key) {
+                return prefix + '"' + ajaxEscapeJsonStringValue(key) + '":';
+            });
+
+            normalized = normalized.replace(/([{,]\s*)([A-Za-z_$][A-Za-z0-9_$-]*)\s*:/g, function (_, prefix, key) {
+                return prefix + '"' + key + '":';
+            });
+
+            normalized = normalized.replace(/:\s*'([^'\\]*(?:\\.[^'\\]*)*)'(\s*[,}\]])/g, function (_, value, tail) {
+                return ': "' + ajaxEscapeJsonStringValue(value) + '"' + tail;
+            });
+
+            normalized = normalized.replace(/([\[,]\s*)'([^'\\]*(?:\\.[^'\\]*)*)'(\s*[,}\]])/g, function (_, prefix, value, tail) {
+                return prefix + '"' + ajaxEscapeJsonStringValue(value) + '"' + tail;
+            });
+
+            normalized = normalized.replace(/([:\[,]\s*)(None|True|False)(\s*[,}\]])/g, function (_, prefix, literal, tail) {
+                if (literal === "None") {
+                    return prefix + "null" + tail;
+                }
+                if (literal === "True") {
+                    return prefix + "true" + tail;
+                }
+                return prefix + "false" + tail;
+            });
+
+            normalized = normalized.replace(/,\s*([}\]])/g, "$1");
+            return normalized;
+        }
+
+        function ajaxParseJsonLikeValue(text) {
+            var src = String(text || "").trim();
+            if (!src) {
+                return null;
+            }
+            try {
+                return JSON.parse(src);
+            } catch (e) {
+            }
+            try {
+                return JSON.parse(ajaxNormalizeJsonLike(src));
+            } catch (e2) {
+            }
+            return null;
+        }
+
+        function ajaxExtractCallbackArgs(script, callbackName) {
+            var src = String(script || "");
+            var token = String(callbackName || "") + "(";
+            var results = [];
+            var from = 0;
+
+            while (from < src.length) {
+                var start = src.indexOf(token, from);
+                if (start < 0) {
+                    break;
+                }
+                var prev = start > 0 ? src.charAt(start - 1) : "";
+                if (/[A-Za-z0-9_$\.]/.test(prev)) {
+                    from = start + token.length;
+                    continue;
+                }
+
+                var i = start + token.length;
+                var depth = 1;
+                var inString = false;
+                var quote = "";
+                var escaped = false;
+                for (; i < src.length; i++) {
+                    var ch = src.charAt(i);
+                    if (inString) {
+                        if (escaped) {
+                            escaped = false;
+                            continue;
+                        }
+                        if (ch === "\\") {
+                            escaped = true;
+                            continue;
+                        }
+                        if (ch === quote) {
+                            inString = false;
+                        }
+                        continue;
+                    }
+                    if (ch === '"' || ch === "'") {
+                        inString = true;
+                        quote = ch;
+                        continue;
+                    }
+                    if (ch === "(") {
+                        depth++;
+                        continue;
+                    }
+                    if (ch === ")") {
+                        depth--;
+                        if (depth === 0) {
+                            results.push(src.slice(start + token.length, i).trim());
+                            from = i + 1;
+                            break;
+                        }
+                    }
+                }
+
+                if (depth !== 0) {
+                    break;
+                }
+            }
+            return results;
+        }
+
+        function ajaxExtractFirstArg(argListText) {
+            var src = String(argListText || "").trim();
+            if (!src) {
+                return "";
+            }
+            var inString = false;
+            var quote = "";
+            var escaped = false;
+            var braceDepth = 0;
+            var bracketDepth = 0;
+            var parenDepth = 0;
+            for (var i = 0; i < src.length; i++) {
+                var ch = src.charAt(i);
+                if (inString) {
+                    if (escaped) {
+                        escaped = false;
+                        continue;
+                    }
+                    if (ch === "\\") {
+                        escaped = true;
+                        continue;
+                    }
+                    if (ch === quote) {
+                        inString = false;
+                    }
+                    continue;
+                }
+                if (ch === '"' || ch === "'") {
+                    inString = true;
+                    quote = ch;
+                    continue;
+                }
+                if (ch === "{") {
+                    braceDepth++;
+                    continue;
+                }
+                if (ch === "}") {
+                    braceDepth--;
+                    continue;
+                }
+                if (ch === "[") {
+                    bracketDepth++;
+                    continue;
+                }
+                if (ch === "]") {
+                    bracketDepth--;
+                    continue;
+                }
+                if (ch === "(") {
+                    parenDepth++;
+                    continue;
+                }
+                if (ch === ")") {
+                    parenDepth--;
+                    continue;
+                }
+                if (ch === "," && braceDepth === 0 && bracketDepth === 0 && parenDepth === 0) {
+                    return src.slice(0, i).trim();
+                }
+            }
+            return src;
+        }
+
+        function ajaxParseCallbackArg(text) {
+            var src = String(text || "").trim();
+            if (!src) {
+                return undefined;
+            }
+            var parsed = ajaxParseJsonLikeValue(src);
+            if (parsed !== null) {
+                return parsed;
+            }
+            if (/^-?[0-9]+(?:\.[0-9]+)?$/.test(src)) {
+                return Number(src);
+            }
+            if (/^(true|false)$/i.test(src)) {
+                return /^true$/i.test(src);
+            }
+            if (/^(null|none)$/i.test(src)) {
+                return null;
+            }
+            if ((src.charAt(0) === '"' && src.charAt(src.length - 1) === '"') || (src.charAt(0) === "'" && src.charAt(src.length - 1) === "'")) {
+                return src.slice(1, -1).replace(/\\'/g, "'").replace(/\\"/g, '"').replace(/\\\\/g, "\\");
+            }
+            return src;
+        }
+
+        function ajaxRunAllowedCallbacks(script, allowedCallbacks, replaceBr) {
+            var src = ajaxNormalizeScript(script, replaceBr);
+            var result = { invoked: false, errored: false, count: 0, normalized: src };
+            for (var callbackName in allowedCallbacks) {
+                if (!Object.prototype.hasOwnProperty.call(allowedCallbacks, callbackName)) {
+                    continue;
+                }
+                var cb = allowedCallbacks[callbackName];
+                if (typeof cb !== "function") {
+                    continue;
+                }
+                var matches = ajaxExtractCallbackArgs(src, callbackName);
+                for (var i = 0; i < matches.length; i++) {
+                    var firstArg = ajaxExtractFirstArg(matches[i]);
+                    var argValue = ajaxParseCallbackArg(firstArg);
+                    try {
+                        cb(argValue);
+                        result.invoked = true;
+                        result.count++;
+                    } catch (e) {
+                        result.errored = true;
+                    }
+                }
+            }
+            return result;
+        }
+
+    (function setupSystemNav() {
+      var navWrap = document.getElementById("side_nav");
+      if (!navWrap) {
+        return;
+      }
+      var topItems = navWrap.children;
+      for (var i = 0; i < topItems.length; i++) {
+        var rootStrong = topItems[i].getElementsByTagName("strong")[0];
+        if (!rootStrong) {
+          continue;
+        }
+        rootStrong.onclick = function () {
+          if (this.getAttribute("pageid")) {
+            return;
+          }
+          var submenu = this.parentNode.querySelector(".menu-ch");
+          if (!submenu) {
+            return;
+          }
+          submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+        };
+      }
+    })();
+
+    function keepSystemMenuOpenForSystemPages() {
+        var path = (window.location.pathname || "").toLowerCase();
+        var isSystemPage = path.indexOf("admin") !== -1 || path.indexOf("upgrade") !== -1 || path.indexOf("systemlog") !== -1 || path.indexOf("system_log") !== -1;
+        if (!isSystemPage) {
+            return;
+        }
+        var submenu = document.querySelector("#side_nav .menu-ch");
+        if (submenu) {
+            submenu.style.display = "block";
+        }
+    }
+
+    function logout(o) {
+      if (confirm("Are you sure you want to logout?")) {
+        try {
+          if (window.sessionStorage) {
+            sessionStorage.clear();
+          }
+        } catch (e) {}
+        var form = getForm("cgiform");
+        form.action = "logout.cgi";
+        form.submit();
+      }
+      return false;
+    }
+
+    function reboot(o) {
+      if (confirm("Are you sure you want to reboot?")) {
+        var form = getForm("cgiform");
+        form.action = "reboot_btn.cgi";
+        form.submit();
+      }
+      return false;
+    }
+
+    function resetSet(o) {
+      if (confirm("Factory resetting?")) {
+        var form = getForm("cgiform");
+        form.action = "resetfac_btn.cgi";
+        form.submit();
+      }
+      return false;
+    }
+
+    function tabChange(o) {
+      var pageId = o.getAttribute("pageid");
+      if (!pageId) {
+        return false;
+      }
+      var form = getForm("cgiform");
+      form.action = pageId + ".cgi";
+      form.submit();
+      return false;
+    }
+
+    function UpdatePageCallback(req) {
+      var pageId = req.pageId;
+      var emList = document.querySelectorAll("strong[pageid]");
+      for (var index = 0; index < emList.length; index++) {
+        var em = emList[index];
+        if (em.getAttribute("pageid") === pageId) {
+          em.setAttribute("class", "cur");
+          if (em.previousElementSibling) {
+            em.previousElementSibling.setAttribute("class", "iconfont");
+          }
+          var submenu = em.parentNode;
+          while (submenu && submenu !== document && (!submenu.className || submenu.className.indexOf("menu-ch") === -1)) {
+            submenu = submenu.parentNode;
+          }
+          if (submenu) {
+            submenu.style.display = "block";
+          }
+        } else {
+          em.setAttribute("class", "");
+          if (em.previousElementSibling) {
+            em.previousElementSibling.setAttribute("class", "");
+          }
+        }
+      }
+    }
+
+    function formatDateTime(inputTime) {
+      var date = new Date(inputTime);
+      var y = date.getFullYear();
+      var m = date.getMonth() + 1;
+      m = m < 10 ? ("0" + m) : m;
+      var d = date.getDate();
+      d = d < 10 ? ("0" + d) : d;
+      var h = date.getHours();
+      h = h < 10 ? ("0" + h) : h;
+      var minute = date.getMinutes();
+      var second = date.getSeconds();
+      minute = minute < 10 ? ("0" + minute) : minute;
+      second = second < 10 ? ("0" + second) : second;
+      return y + "-" + m + "-" + d + " " + h + ":" + minute + ":" + second;
+    }
+
+    function minerinfoCallback(req) {
+      req.hwtype = req.hwtype !== undefined ? req.hwtype : "";
+      req.mac = req.mac !== undefined ? req.mac : "";
+      req.ssid = req.ssid !== undefined ? req.ssid : "";
+      req.ipv4 = req.ipv4 !== undefined ? req.ipv4 : "";
+      req.version = req.version !== undefined ? req.version : "";
+
+      $("hwtype").textContent = req.hwtype;
+      $("loadtime").textContent = formatDateTime(new Date().getTime());
+
+      if (req.sys_status === "1") {
+        $("sys_status").textContent = "Online";
+        $("sys_status").setAttribute("class", "status on");
+      } else {
+        $("sys_status").textContent = "Idle";
+        $("sys_status").setAttribute("class", "status off");
+      }
+
+      $("mac").textContent = req.mac;
+      $("ssid").textContent = req.ssid;
+      $("ipv4").textContent = req.ipv4;
+      $("version").textContent = req.version;
+    }
+
+    function updateMinerInfo() {
+      if (minerInfoPollInFlight) {
+        return;
+      }
+      minerInfoPollInFlight = true;
+      var seq = ++minerInfoPollSeq;
+      var finalized = false;
+
+      function finalize() {
+        if (finalized) {
+          return;
+        }
+        finalized = true;
+        minerInfoPollInFlight = false;
+        setTimeout(updateMinerInfo, 15000);
+      }
+
+      var oUpdate = new AJAX("get_minerinfo.cgi?num=" + Math.random(), function (t) {
+        if (seq !== minerInfoPollSeq) {
+          finalize();
+          return;
+        }
+        try {
+          ajaxRunAllowedCallbacks(t, {
+            UpdatePageCallback: UpdatePageCallback,
+            minerinfoCallback: minerinfoCallback
+          });
+        } finally {
+          finalize();
+        }
+      }, function () {
+        if (seq !== minerInfoPollSeq) {
+          finalize();
+          return;
+        }
+        try {
+          $("sys_status").textContent = "Offline";
+          $("sys_status").setAttribute("class", "status off");
+        } finally {
+          finalize();
+        }
+      });
+      oUpdate.doGet();
+    }
+
+    function updateLog() {
+      if (logPollInFlight) {
+        return;
+      }
+      logPollInFlight = true;
+      var seq = ++logPollSeq;
+      var finalized = false;
+
+      function finalize() {
+        if (finalized) {
+          return;
+        }
+        finalized = true;
+        logPollInFlight = false;
+        setTimeout(updateLog, LOG_POLL_MS);
+      }
+
+      var oUpdate = new AJAX("updatecglog.cgi?num=" + Math.random(), function (t) {
+        if (seq !== logPollSeq) {
+          finalize();
+          return;
+        }
+        try {
+          var callbackState = runCglogCallbacks(t);
+          if (!callbackState.cglogInvoked || typeof callbackState.payload === "undefined") {
+            setLogInfoBadgeError(callbackState.cglogErrored
+              ? "Log update error: invalid CgLogCallback payload."
+              : "Log update error: missing CgLogCallback payload.");
+            return;
+          }
+          renderLogData(callbackState.payload);
+        } finally {
+          finalize();
+        }
+      }, function (err) {
+        var status = err && err.status ? " (status " + err.status + ")" : "";
+        setLogInfoBadgeError("Log update request failed" + status + ".");
+        finalize();
+      });
+      oUpdate.doGet();
+    }
+
+    function runCglogCallbacks(script) {
+      var cgPayload;
+      ajaxRunAllowedCallbacks(script, {
+        UpdatePageCallback: UpdatePageCallback
+      }, false);
+      var cglogCallbackResult = ajaxRunAllowedCallbacks(script, {
+        CgLogCallback: function (req) {
+          if (req && req.cglog !== undefined) {
+            cgPayload = req.cglog;
+            return;
+          }
+          cgPayload = req;
+        }
+      }, false);
+      return {
+        payload: cgPayload,
+        cglogInvoked: !!(cglogCallbackResult && cglogCallbackResult.invoked),
+        cglogErrored: !!(cglogCallbackResult && cglogCallbackResult.errored)
+      };
+    }
+
+    function setLogInfoBadgeState(info, infoText, opts) {
+      if (!info || !infoText) {
+        return;
+      }
+      var visible = !!(opts && opts.visible);
+      var text = opts && opts.text ? String(opts.text) : "";
+
+      if (!visible || !text) {
+        info.classList.remove("is-error");
+        info.style.display = "none";
+        info.setAttribute("aria-label", "Parse info");
+        info.removeAttribute("title");
+        infoText.textContent = "";
+        infoText.setAttribute("aria-hidden", "true");
+        return;
+      }
+
+      var isError = !!opts.isError;
+      var ariaPrefix = isError ? "Log error: " : "Log info: ";
+      info.classList.toggle("is-error", isError);
+      info.style.display = "inline-flex";
+      info.setAttribute("aria-label", ariaPrefix + text);
+      info.removeAttribute("title");
+      infoText.textContent = text;
+      infoText.setAttribute("aria-hidden", "false");
+    }
+
+    function setLogInfoBadgeError(message) {
+      var info = $("log-info");
+      var infoText = $("log-info-text");
+      setLogInfoBadgeState(info, infoText, {
+        visible: true,
+        isError: true,
+        text: String(message || "Log update error.")
+      });
+    }
+
+    function normalizeCglogText(raw) {
+      var text = ajaxDecodeEntities(raw === undefined || raw === null ? "" : String(raw));
+      text = text.trim();
+      if (!text) {
+        return "";
+      }
+
+      // Some firmware builds wrap cglog in nested quoted strings.
+      for (var i = 0; i < 2; i++) {
+        if (text.length < 2) {
+          break;
+        }
+        var first = text.charAt(0);
+        var last = text.charAt(text.length - 1);
+        if ((first === "'" && last === "'") || (first === '"' && last === '"')) {
+          text = text.slice(1, -1).trim();
+          continue;
+        }
+        break;
+      }
+
+      text = text
+        .replace(/\\u003cbr\\u003e/gi, "<br>")
+        .replace(/\\u003Cbr\\u003E/gi, "<br>")
+        .replace(/\\r\\n/g, "\n")
+        .replace(/\\n/g, "\n")
+        .replace(/\\t/g, "\t")
+        .replace(/\\\\'/g, "'")
+        .replace(/\\\\\"/g, '"');
+
+      return text.trim();
+    }
+
+    function splitTopLevelObjectChunks(text) {
+      var src = String(text || "");
+      var chunks = [];
+      var depth = 0;
+      var start = -1;
+      var inString = false;
+      var quote = "";
+      var escaped = false;
+
+      for (var i = 0; i < src.length; i++) {
+        var ch = src.charAt(i);
+        if (inString) {
+          if (escaped) {
+            escaped = false;
+            continue;
+          }
+          if (ch === "\\") {
+            escaped = true;
+            continue;
+          }
+          if (ch === quote) {
+            inString = false;
+          }
+          continue;
+        }
+
+        if (ch === '"' || ch === "'") {
+          inString = true;
+          quote = ch;
+          continue;
+        }
+
+        if (ch === "{") {
+          if (depth === 0) {
+            start = i;
+          }
+          depth++;
+          continue;
+        }
+
+        if (ch === "}" && depth > 0) {
+          depth--;
+          if (depth === 0 && start >= 0) {
+            var chunk = src.slice(start, i + 1).trim();
+            if (chunk) {
+              chunks.push(chunk);
+            }
+            start = -1;
+          }
+        }
+      }
+
+      return chunks;
+    }
+
+    function splitCglogChunks(text) {
+      var src = String(text || "").trim();
+      if (!src) {
+        return [];
+      }
+
+      var byBr = src.split(/<br\s*\/?>/gi);
+      var chunks = [];
+      for (var i = 0; i < byBr.length; i++) {
+        var chunk = String(byBr[i] || "").trim();
+        if (chunk) {
+          chunks.push(chunk);
+        }
+      }
+      if (chunks.length > 1) {
+        return chunks;
+      }
+
+      var byObject = splitTopLevelObjectChunks(src);
+      if (byObject.length > 1) {
+        return byObject;
+      }
+      if (byObject.length === 1) {
+        // If we could isolate one full object, prefer it over wrapper script text.
+        return [byObject[0]];
+      }
+
+      return [src];
+    }
+
+    function unwrapCglogPayload(raw) {
+      if (raw && typeof raw === "object" && raw.cglog !== undefined) {
+        return normalizeCglogText(raw.cglog);
+      }
+
+      var text = ajaxDecodeEntities(raw === undefined || raw === null ? "" : String(raw));
+      if (!text) {
+        return "";
+      }
+
+      var parsedObject = ajaxParseJsonLikeValue(text);
+      if (parsedObject && typeof parsedObject === "object" && parsedObject.cglog !== undefined) {
+        return normalizeCglogText(parsedObject.cglog);
+      }
+
+      return normalizeCglogText(text);
+    }
+
+    function tryParseJson(text) {
+      try {
+        return { ok: true, value: JSON.parse(text) };
+      } catch (e) {
+        return { ok: false, value: null };
+      }
+    }
+
+    function parseJsonChunk(chunk) {
+      var trimmed = String(chunk || "").trim();
+      if (!trimmed) {
+        return null;
+      }
+
+      var parsed = tryParseJson(trimmed);
+      if (parsed.ok) {
+        return parsed.value;
+      }
+
+      // Fallback path for Nano3-style JSON-like objects and truncated tail closers.
+      var firstChar = trimmed.charAt(0);
+      if (firstChar !== "{" && firstChar !== "[") {
+        return null;
+      }
+
+      var normalized = ajaxNormalizeJsonLike(trimmed);
+      parsed = tryParseJson(normalized);
+      if (parsed.ok) {
+        return parsed.value;
+      }
+
+      var balanced = closeMissingJsonContainers(normalized);
+      if (balanced && balanced !== normalized) {
+        parsed = tryParseJson(balanced);
+        if (parsed.ok) {
+          return parsed.value;
+        }
+      }
+      return null;
+    }
+
+    function closeMissingJsonContainers(text) {
+      var src = String(text || "");
+      if (!src) {
+        return src;
+      }
+
+      var stack = [];
+      var inString = false;
+      var quote = "";
+      var escaped = false;
+
+      for (var i = 0; i < src.length; i++) {
+        var ch = src.charAt(i);
+        if (inString) {
+          if (escaped) {
+            escaped = false;
+            continue;
+          }
+          if (ch === "\\") {
+            escaped = true;
+            continue;
+          }
+          if (ch === quote) {
+            inString = false;
+          }
+          continue;
+        }
+
+        if (ch === '"' || ch === "'") {
+          inString = true;
+          quote = ch;
+          continue;
+        }
+
+        if (ch === "{") {
+          stack.push("}");
+          continue;
+        }
+        if (ch === "[") {
+          stack.push("]");
+          continue;
+        }
+
+        if (ch === "}" || ch === "]") {
+          if (!stack.length) {
+            return src;
+          }
+          var expected = stack.pop();
+          if (ch !== expected) {
+            return src;
+          }
+        }
+      }
+
+      if (!stack.length) {
+        return src;
+      }
+
+      for (var j = stack.length - 1; j >= 0; j--) {
+        src += stack[j];
+      }
+      return src;
+    }
+
+    function buildCglogEnvelope(raw) {
+      if (raw && typeof raw === "object" && raw.cglog === undefined) {
+        try {
+          var objText = JSON.stringify(raw);
+          return {
+            rawText: objText,
+            chunks: [objText],
+            parsedChunks: [raw],
+            parsedCount: 1,
+            allParsed: true,
+            parsedData: raw
+          };
+        } catch (e) {
+        }
+      }
+
+      var rawText = unwrapCglogPayload(raw);
+      var chunks = splitCglogChunks(rawText);
+      var parsedChunks = new Array(chunks.length);
+      var parsedCount = 0;
+      for (var i = 0; i < chunks.length; i++) {
+        var parsedChunk = parseJsonChunk(chunks[i]);
+        parsedChunks[i] = parsedChunk;
+        if (parsedChunk !== null) {
+          parsedCount++;
+        }
+      }
+
+      var allParsed = chunks.length > 0 && parsedCount === chunks.length;
+      var parsedData = null;
+      if (allParsed) {
+        parsedData = parsedChunks.length === 1 ? parsedChunks[0] : parsedChunks;
+      }
+
+      return {
+        rawText: rawText,
+        chunks: chunks,
+        parsedChunks: parsedChunks,
+        parsedCount: parsedCount,
+        allParsed: allParsed,
+        parsedData: parsedData
+      };
+    }
+
+    function extractSection(data, name) {
+      var blocks = Array.isArray(data) ? data : [data];
+      for (var i = 0; i < blocks.length; i++) {
+        var block = blocks[i];
+        if (!block || typeof block !== "object") {
+          continue;
+        }
+        var value = block[name];
+        if (Array.isArray(value) && value.length && typeof value[0] === "object") {
+          return value[0];
+        }
+      }
+      return null;
+    }
+
+    function extractSectionArray(data, name) {
+      var blocks = Array.isArray(data) ? data : [data];
+      for (var i = 0; i < blocks.length; i++) {
+        var block = blocks[i];
+        if (!block || typeof block !== "object") {
+          continue;
+        }
+        if (Array.isArray(block[name]) && block[name].length) {
+          return block[name];
+        }
+      }
+      return [];
+    }
+
+    function parseBracketMetrics(text) {
+      var out = {};
+      var src = String(text || "");
+      var re = /([A-Za-z0-9_%.-]+)\[([^\]]*)\]/g;
+      var match;
+      while ((match = re.exec(src)) !== null) {
+        out[match[1]] = match[2];
+      }
+      return out;
+    }
+
+    function formatElapsed(seconds) {
+      var total = Number(seconds);
+      if (!isFinite(total) || total < 0) {
+        return "";
+      }
+      total = Math.floor(total);
+      var days = Math.floor(total / 86400);
+      var hours = Math.floor((total % 86400) / 3600);
+      var mins = Math.floor((total % 3600) / 60);
+      var secs = total % 60;
+      return days + "d " + hours + "h " + mins + "m " + secs + "s";
+    }
+
+    function formatHashrateFromMhs(value) {
+      var mhs = Number(value);
+      if (!isFinite(mhs)) {
+        return formatMetricValue(value);
+      }
+      var ths = mhs / 1000000;
+      var digits = ths >= 10 ? 2 : 3;
+      return ths.toFixed(digits) + " Th/s";
+    }
+
+    function formatPercent(value, digits) {
+      var n = Number(value);
+      if (!isFinite(n)) {
+        return formatMetricValue(value);
+      }
+      var fixed = n.toFixed(typeof digits === "number" ? digits : 4);
+      return fixed + "%";
+    }
+
+    function formatSignedPercent(value, digits) {
+      var n = Number(value);
+      if (!isFinite(n)) {
+        return formatMetricValue(value);
+      }
+      var fixed = Math.abs(n).toFixed(typeof digits === "number" ? digits : 4);
+      return (n < 0 ? "-" : "") + fixed + "%";
+    }
+
+    function extractKnownMinerData(data) {
+      var status = extractSection(data, "STATUS");
+      var summary = extractSection(data, "SUMMARY");
+      var stats = extractSection(data, "STATS");
+      var pools = extractSectionArray(data, "POOLS");
+      var mmRaw = stats && typeof stats["MM ID0"] === "string" ? stats["MM ID0"] : "";
+      var mm = mmRaw ? parseBracketMetrics(mmRaw) : {};
+      return {
+        status: status,
+        summary: summary,
+        stats: stats,
+        pools: pools,
+        mm: mm
+      };
+    }
+
+    function unescapeQuotedValue(text) {
+      return String(text || "").replace(/\\'/g, "'").replace(/\\"/g, "\"").replace(/\\\\/g, "\\");
+    }
+
+    function collectQuotedScalarMap(raw) {
+      var src = String(raw || "");
+      var out = {};
+      var re = /(["'])([^"'\\]*(?:\\.[^"'\\]*)*)\1\s*:\s*(?:([\"'])((?:\\.|(?!\3)[\s\S])*)\3|(-?[0-9]+(?:\.[0-9]+)?)|(true|false|True|False))/g;
+      var match;
+      while ((match = re.exec(src)) !== null) {
+        var key = unescapeQuotedValue(match[2]);
+        if (!key || Object.prototype.hasOwnProperty.call(out, key)) {
+          continue;
+        }
+        if (match[3]) {
+          out[key] = unescapeQuotedValue(match[4]);
+          continue;
+        }
+        if (match[5] !== undefined) {
+          out[key] = Number(match[5]);
+          continue;
+        }
+        if (match[6] !== undefined) {
+          out[key] = /^true$/i.test(match[6]);
+        }
+      }
+      return out;
+    }
+
+    var KNOWN_MINER_SUMMARY_KEYS = [
+      "Elapsed",
+      "MHS av",
+      "MHS 5s",
+      "MHS 1m",
+      "MHS 5m",
+      "MHS 15m",
+      "Total MH",
+      "Found Blocks",
+      "Accepted",
+      "Rejected",
+      "Stale",
+      "Hardware Errors",
+      "Utility",
+      "Work Utility",
+      "Get Failures",
+      "Getworks",
+      "Remote Failures",
+      "Network Blocks",
+      "Difficulty Accepted",
+      "Difficulty Rejected",
+      "Difficulty Stale",
+      "Device Hardware%",
+      "Best Share",
+      "Last getwork",
+      "Device Rejected%",
+      "Pool Rejected%",
+      "Pool Stale%"
+    ];
+
+    function extractKnownMinerFromText(raw, envelope) {
+      var env = envelope || buildCglogEnvelope(raw);
+      var text = env.rawText || "";
+      if (!text) {
+        return null;
+      }
+
+      var knownParsed = { status: null, summary: null, stats: null, pools: [] };
+      if (env.allParsed && env.parsedData) {
+        knownParsed = extractKnownMinerData(env.parsedData);
+      }
+      var summary = knownParsed.summary ? Object.assign({}, knownParsed.summary) : {};
+      var scalars = collectQuotedScalarMap(text);
+      for (var i = 0; i < KNOWN_MINER_SUMMARY_KEYS.length; i++) {
+        var key = KNOWN_MINER_SUMMARY_KEYS[i];
+        if (summary[key] !== undefined) {
+          continue;
+        }
+        if (typeof scalars[key] === "number" && isFinite(scalars[key])) {
+          summary[key] = scalars[key];
+        }
+      }
+
+      var status = knownParsed.status ? Object.assign({}, knownParsed.status) : {};
+      if (!status.Msg && typeof scalars.Msg === "string" && scalars.Msg) {
+        status.Msg = scalars.Msg;
+      }
+      if (!status.Description && typeof scalars.Description === "string" && scalars.Description) {
+        status.Description = scalars.Description;
+      }
+
+      var stats = knownParsed.stats ? Object.assign({}, knownParsed.stats) : {};
+      if (!stats["MM ID0"] && typeof scalars["MM ID0"] === "string" && scalars["MM ID0"]) {
+        stats["MM ID0"] = scalars["MM ID0"];
+      }
+      if (summary.Elapsed !== undefined) {
+        stats.Elapsed = summary.Elapsed;
+      }
+
+      var pools = Array.isArray(knownParsed.pools) ? knownParsed.pools.slice(0) : [];
+      if (!pools.length) {
+        var poolUrl = typeof scalars.URL === "string" ? scalars.URL : "";
+        var poolActiveRaw = scalars["Stratum Active"];
+        var poolActive = null;
+        if (typeof poolActiveRaw === "boolean") {
+          poolActive = poolActiveRaw;
+        } else if (typeof poolActiveRaw === "number" && isFinite(poolActiveRaw)) {
+          poolActive = poolActiveRaw !== 0;
+        }
+        if (poolUrl) {
+          var pool = { URL: poolUrl };
+          if (poolActive !== null) {
+            pool["Stratum Active"] = poolActive;
+          }
+          pools.push(pool);
+        }
+      }
+
+      if (!Object.keys(summary).length && !Object.keys(status).length && !Object.keys(stats).length && !pools.length) {
+        return null;
+      }
+
+      var data = {};
+      if (Object.keys(status).length) {
+        data.STATUS = [status];
+      }
+      if (Object.keys(summary).length) {
+        data.SUMMARY = [summary];
+      }
+      if (Object.keys(stats).length) {
+        data.STATS = [stats];
+      }
+      if (pools.length) {
+        data.POOLS = pools;
+      }
+
+      return data;
+    }
+
+    function hasValue(value) {
+      return !(value === null || value === undefined || value === "");
+    }
+
+    function formatMetricValue(value) {
+      if (!hasValue(value)) {
+        return "";
+      }
+      if (typeof value === "number") {
+        return value.toLocaleString(undefined, { maximumFractionDigits: 4 });
+      }
+      if (typeof value === "boolean") {
+        return value ? "True" : "False";
+      }
+      var text = String(value);
+      if (text.length > 64) {
+        return text.slice(0, 61) + "...";
+      }
+      return text;
+    }
+
+    function pushMetric(list, label, value) {
+      if (!hasValue(value)) {
+        return;
+      }
+      list.push({ label: label, value: value });
+    }
+
+    function pushProgressMetric(list, label, value, current, max) {
+      if (!hasValue(value)) {
+        return null;
+      }
+      var metric = {
+        label: label,
+        value: value,
+        progressBar: {
+          value: current,
+          max: max
+        }
+      };
+      list.push(metric);
+      return metric;
+    }
+
+    function pushRingMetric(list, label, value, score, subValue, color) {
+      if (!hasValue(value)) {
+        return null;
+      }
+      var metric = {
+        label: label,
+        value: value,
+        ring: {
+          score: score,
+          subValue: subValue,
+          color: color || "#0071e3"
+        }
+      };
+      list.push(metric);
+      return metric;
+    }
+
+    function normalizeShareRate(acceptedPerMin, rejectedPerMin, stalePerMin, warmup) {
+      var a = toNumber(acceptedPerMin);
+      var r = toNumber(rejectedPerMin);
+      var s = toNumber(stalePerMin);
+      if (!isFinite(a)) {
+        a = 0;
+      }
+      if (!isFinite(r)) {
+        r = 0;
+      }
+      if (!isFinite(s)) {
+        s = 0;
+      }
+      a = Math.max(0, a);
+      r = Math.max(0, r);
+      s = Math.max(0, s);
+      return {
+        accepted: a,
+        rejected: r,
+        stale: s,
+        total: a + r + s,
+        warmup: !!warmup
+      };
+    }
+
+    function formatShareRateTotal(normalized, suffix) {
+      if (!normalized || normalized.warmup) {
+        return "Loading...";
+      }
+      var text = formatCount(normalized.total);
+      return suffix ? (text + " " + suffix) : text;
+    }
+
+    function formatPollSeconds(value) {
+      var n = toNumber(value);
+      if (!isFinite(n) || n <= 0) {
+        n = LOG_POLL_MS / 1000;
+      }
+      var d = n >= 10 ? 0 : 1;
+      return formatRate(n, d).replace(/\.0$/, "");
+    }
+
+    function buildShareRateMetric(label, acceptedPerMin, rejectedPerMin, stalePerMin, warmup, suffix, sampleSec) {
+      var normalized = normalizeShareRate(acceptedPerMin, rejectedPerMin, stalePerMin, warmup);
+      return {
+        label: label,
+        value: formatShareRateTotal(normalized, suffix),
+        shareRate: {
+          accepted: normalized.accepted,
+          rejected: normalized.rejected,
+          stale: normalized.stale,
+          warmup: normalized.warmup,
+          sampleSec: sampleSec
+        }
+      };
+    }
+
+    function pushShareRateMetric(list, acceptedPerMin, rejectedPerMin, stalePerMin, warmup, sampleSec) {
+      list.push(buildShareRateMetric("ACC / REJ / STALE", acceptedPerMin, rejectedPerMin, stalePerMin, warmup, "", sampleSec));
+    }
+
+    function parseWorkLevel(value) {
+      var n = toNumber(value);
+      if (!isFinite(n)) {
+        return null;
+      }
+      n = Math.round(n);
+      if (n < 0) {
+        n = 0;
+      }
+      if (n > 2) {
+        n = 2;
+      }
+      return n;
+    }
+
+    function workLevelName(level) {
+      var names = ["Eco", "Normal", "Super"];
+      return names[level] || ("Level " + level);
+    }
+
+    function workLevelMode(level) {
+      if (level === 0) {
+        return "eco";
+      }
+      if (level === 2) {
+        return "super";
+      }
+      return "normal";
+    }
+
+    function pushWorkLevelMetric(list, value) {
+      var level = parseWorkLevel(value);
+      if (level === null) {
+        pushMetric(list, "Work Level", value);
+        return null;
+      }
+      var metric = {
+        label: "Work Level",
+        value: workLevelName(level),
+        workLevel: {
+          level: level,
+          mode: workLevelMode(level),
+          title: workLevelName(level)
+        }
+      };
+      list.push(metric);
+      return metric;
+    }
+
+    function pushAsicTempSpreadMetric(list, values, target) {
+      if (!Array.isArray(values) || !values.length) {
+        return null;
+      }
+      var clean = [];
+      var sum = 0;
+      var min = Infinity;
+      var max = -Infinity;
+      for (var i = 0; i < values.length; i++) {
+        var t = toNumber(values[i]);
+        if (!isFinite(t)) {
+          continue;
+        }
+        t = Math.max(0, Math.min(150, t));
+        clean.push(t);
+        sum += t;
+        if (t < min) {
+          min = t;
+        }
+        if (t > max) {
+          max = t;
+        }
+      }
+      if (!clean.length) {
+        return null;
+      }
+      var avg = sum / clean.length;
+      var targetNum = toNumber(target);
+      var rangeMax = Math.max(max, isFinite(targetNum) ? targetNum : 0, 90);
+      var summary = "Min " + formatRate(min, 0) + " \u00B0C  Avg " + formatRate(avg, 1) + " \u00B0C  Max " + formatRate(max, 0) + " \u00B0C";
+      var metric = {
+        label: "ASIC Temp Spread",
+        value: summary,
+        asicTemps: {
+          values: clean,
+          max: rangeMax,
+          target: isFinite(targetNum) ? targetNum : null
+        }
+      };
+      list.push(metric);
+      return metric;
+    }
+
+    function pushCoreFreqMetric(list, freqs, counts) {
+      if (!Array.isArray(freqs) || !Array.isArray(counts)) {
+        return null;
+      }
+      var size = Math.min(freqs.length, counts.length);
+      if (!size) {
+        return null;
+      }
+      var buckets = [];
+      var total = 0;
+      var maxCount = 0;
+      for (var i = 0; i < size; i++) {
+        var mhz = Math.round(toNumber(freqs[i]));
+        var cores = Math.max(0, Math.round(toNumber(counts[i])));
+        if (!isFinite(mhz) || mhz <= 0) {
+          continue;
+        }
+        buckets.push({ mhz: mhz, cores: isFinite(cores) ? cores : 0 });
+        total += isFinite(cores) ? cores : 0;
+        if (isFinite(cores) && cores > maxCount) {
+          maxCount = cores;
+        }
+      }
+      if (!buckets.length) {
+        return null;
+      }
+      list.push({
+        label: "Core Frequency",
+        value: total.toLocaleString() + " cores",
+        coreFreq: {
+          buckets: buckets,
+          total: total,
+          max: Math.max(maxCount, 1)
+        }
+      });
+      return list[list.length - 1];
+    }
+
+    function formatCount(value) {
+      var n = Number(value);
+      if (!isFinite(n)) {
+        return formatMetricValue(value);
+      }
+      return Math.round(n).toLocaleString();
+    }
+
+    function formatDifficulty(value) {
+      var n = Number(value);
+      if (!isFinite(n)) {
+        return formatMetricValue(value);
+      }
+      return n.toLocaleString(undefined, { maximumFractionDigits: 8 });
+    }
+
+    function formatSecondsShort(value) {
+      var total = Number(value);
+      if (!isFinite(total) || total < 0) {
+        return "";
+      }
+      total = Math.floor(total);
+      var days = Math.floor(total / 86400);
+      var hours = Math.floor((total % 86400) / 3600);
+      var mins = Math.floor((total % 3600) / 60);
+      var secs = total % 60;
+      if (days > 0) {
+        return days + "d " + hours + "h";
+      }
+      if (hours > 0) {
+        return hours + "h " + mins + "m";
+      }
+      if (mins > 0) {
+        return mins + "m " + secs + "s";
+      }
+      return secs + "s";
+    }
+
+    function formatAcceptRate(summary) {
+      var accepted = Number(summary.Accepted);
+      var rejected = Number(summary.Rejected);
+      var stale = Number(summary.Stale);
+      if (!isFinite(accepted) || !isFinite(rejected)) {
+        return "";
+      }
+      stale = isFinite(stale) ? stale : 0;
+      var total = accepted + rejected + stale;
+      if (total <= 0) {
+        return "";
+      }
+      return ((accepted / total) * 100).toFixed(4) + "%";
+    }
+
+    function toNumber(value) {
+      if (typeof value === "number") {
+        return isFinite(value) ? value : NaN;
+      }
+      if (value === null || value === undefined || value === "") {
+        return NaN;
+      }
+      var match = String(value).replace(/,/g, "").match(/-?[0-9]+(?:\.[0-9]+)?/);
+      return match ? Number(match[0]) : NaN;
+    }
+
+    function formatRate(value, digits) {
+      var n = Number(value);
+      if (!isFinite(n)) {
+        return "";
+      }
+      var d = typeof digits === "number" ? digits : 2;
+      return n.toFixed(d);
+    }
+
+    function formatCompactCount(value) {
+      var n = Number(value);
+      if (!isFinite(n)) {
+        return "";
+      }
+      if (Math.abs(n) >= 1000) {
+        return (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(/\.0$/, "") + "k";
+      }
+      return String(Math.round(n));
+    }
+
+    function formatWatts(value) {
+      var n = toNumber(value);
+      if (!isFinite(n)) {
+        return "";
+      }
+      return n.toLocaleString(undefined, { maximumFractionDigits: 1 }) + " W";
+    }
+
+    function formatJPerTH(value) {
+      var n = toNumber(value);
+      if (!isFinite(n)) {
+        return "";
+      }
+      return n.toFixed(2) + " J/Th";
+    }
+
+    function formatDeltaC(value) {
+      var n = toNumber(value);
+      if (!isFinite(n)) {
+        return "";
+      }
+      var sign = n > 0 ? "+" : "";
+      return sign + n.toFixed(1) + " \u00B0C";
+    }
+
+    function parseNumberList(value) {
+      var src = String(value || "");
+      var matches = src.match(/-?[0-9]+(?:\.[0-9]+)?/g);
+      var out = [];
+      if (!matches) {
+        return out;
+      }
+      for (var i = 0; i < matches.length; i++) {
+        var n = Number(matches[i]);
+        if (isFinite(n)) {
+          out.push(n);
+        }
+      }
+      return out;
+    }
+
+    function parseLeadingPositiveNumber(value) {
+      var match = String(value || "").match(/^\s*([0-9]+(?:\.[0-9]+)?)/);
+      return match ? Number(match[1]) : NaN;
+    }
+
+    function analyzeNetfailBuffer(values) {
+      var stats = {
+        latestTs: null,
+        reconnects24h: 0
+      };
+      if (!Array.isArray(values) || !values.length) {
+        return stats;
+      }
+
+      var nowTs = Math.floor(Date.now() / 1000);
+      var latest = 0;
+      for (var i = 0; i < values.length; i++) {
+        var ts = Math.floor(toNumber(values[i]));
+        if (ts > latest) {
+          latest = ts;
+        }
+      }
+
+      for (var j = 1; j < values.length; j += 2) {
+        var reconnectTs = Math.floor(toNumber(values[j]));
+        if (reconnectTs > 0 && nowTs >= reconnectTs && nowTs - reconnectTs <= 86400) {
+          stats.reconnects24h += 1;
+        }
+      }
+
+      stats.latestTs = latest > 0 ? latest : null;
+      return stats;
+    }
+
+    function formatAgeFromTimestamp(ts) {
+      var n = toNumber(ts);
+      if (!isFinite(n) || n <= 0) {
+        return "";
+      }
+      var now = Math.floor(Date.now() / 1000);
+      var diff = now - Math.floor(n);
+      if (diff < 0) {
+        return "";
+      }
+      if (diff === 0) {
+        return "Just now";
+      }
+      return formatSecondsShort(diff) + " ago";
+    }
+
+    function computeShareRateDeltas(summary) {
+      var elapsed = toNumber(summary.Elapsed);
+      var accepted = toNumber(summary.Accepted);
+      var rejected = toNumber(summary.Rejected);
+      var stale = toNumber(summary.Stale);
+      var rates = {
+        acceptedPerMin: NaN,
+        rejectedPerMin: NaN,
+        stalePerMin: NaN,
+        sampleSec: NaN,
+        warmup: !minerLogRateState
+      };
+
+      if (!isFinite(elapsed) || !isFinite(accepted) || !isFinite(rejected) || !isFinite(stale) || elapsed < 0) {
+        return rates;
+      }
+
+      if (minerLogRateState && elapsed < minerLogRateState.elapsed) {
+        minerLogRateState = null;
+      }
+
+      if (minerLogRateState && elapsed > minerLogRateState.elapsed) {
+        var deltaSec = elapsed - minerLogRateState.elapsed;
+        if (deltaSec > 0) {
+          rates.acceptedPerMin = Math.max(0, accepted - minerLogRateState.accepted);
+          rates.rejectedPerMin = Math.max(0, rejected - minerLogRateState.rejected);
+          rates.stalePerMin = Math.max(0, stale - minerLogRateState.stale);
+          rates.sampleSec = deltaSec;
+          rates.warmup = false;
+        }
+      } else if (minerLogRateState && minerLogRateState.rates) {
+        rates.acceptedPerMin = minerLogRateState.rates.acceptedPerMin;
+        rates.rejectedPerMin = minerLogRateState.rates.rejectedPerMin;
+        rates.stalePerMin = minerLogRateState.rates.stalePerMin;
+        rates.sampleSec = minerLogRateState.rates.sampleSec;
+        rates.warmup = false;
+      }
+
+      minerLogRateState = {
+        elapsed: elapsed,
+        accepted: accepted,
+        rejected: rejected,
+        stale: stale,
+        rates: {
+          acceptedPerMin: rates.acceptedPerMin,
+          rejectedPerMin: rates.rejectedPerMin,
+          stalePerMin: rates.stalePerMin,
+          sampleSec: rates.sampleSec,
+          warmup: rates.warmup
+        }
+      };
+
+      return rates;
+    }
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function formatRateWithUnit(value, unit, digits) {
+      var text = formatRate(value, digits);
+      return text ? (text + unit) : "";
+    }
+
+    function formatRatePerMinute(value, digits) {
+      var n = toNumber(value);
+      if (!isFinite(n)) {
+        return formatMetricValue(value);
+      }
+      return n.toFixed(typeof digits === "number" ? digits : 2) + "/min";
+    }
+
+    function formatTempC(value) {
+      return isFinite(value) ? (value + " \u00B0C") : "";
+    }
+
+    function buildDerivedMetrics(known) {
+      var summary = known && known.summary ? known.summary : {};
+      var stats = known && known.stats ? known.stats : {};
+      var mm = known && known.mm ? known.mm : {};
+      var derived = {};
+
+      var elapsed = toNumber(summary.Elapsed);
+      if (!isFinite(elapsed)) {
+        elapsed = toNumber(stats.Elapsed);
+      }
+      var hwErrors = toNumber(summary["Hardware Errors"]);
+      var mhsAvg = toNumber(summary["MHS av"]);
+      var mhs5 = toNumber(summary["MHS 5s"]);
+      var mhs15 = toNumber(summary["MHS 15m"]);
+      var totalMh = toNumber(summary["Total MH"]);
+      if (!isFinite(totalMh) || totalMh <= 0) {
+        if (isFinite(mhsAvg) && isFinite(elapsed) && elapsed > 0) {
+          totalMh = mhsAvg * elapsed;
+        }
+      }
+
+      if (isFinite(hwErrors) && isFinite(elapsed) && elapsed > 0) {
+        derived.hwPerHour = hwErrors / (elapsed / 3600);
+      }
+      if (isFinite(hwErrors) && isFinite(totalMh) && totalMh > 0) {
+        derived.hwPerTH = hwErrors / (totalMh / 1000000);
+      }
+      if (isFinite(mhs5) && isFinite(mhs15) && mhs15 > 0) {
+        var hashDevSigned = (mhs5 - mhs15) / mhs15 * 100;
+        derived.hashDeviationSignedPct = hashDevSigned;
+        derived.hashDeviationPct = Math.abs(hashDevSigned);
+      }
+      var airflowIn = toNumber(mm.Temp);
+      var airflowOut = toNumber(mm.OTemp);
+      var asicAvg = toNumber(mm.TAvg);
+      var asicMax = toNumber(mm.TMax);
+      var tarT = toNumber(mm.TarT);
+      if (isFinite(airflowIn)) {
+        derived.airflowIn = airflowIn;
+      }
+      if (isFinite(airflowOut)) {
+        derived.airflowOut = airflowOut;
+      }
+      if (isFinite(asicAvg)) {
+        derived.asicAvg = asicAvg;
+      }
+      if (isFinite(asicMax)) {
+        derived.asicMax = asicMax;
+      }
+      if (isFinite(tarT)) {
+        derived.asicTarget = tarT;
+      }
+      if (isFinite(tarT) && isFinite(asicAvg)) {
+        derived.asicMarginAvg = tarT - asicAvg;
+      }
+      if (isFinite(tarT) && isFinite(asicMax)) {
+        derived.asicMarginHot = tarT - asicMax;
+      }
+      var pvtT0 = parseNumberList(mm.PVT_T0);
+      if (pvtT0.length) {
+        derived.asicTemps = pvtT0;
+      }
+      var pll0 = parseNumberList(mm.PLL0);
+      var sf0 = parseNumberList(mm.SF0);
+      if (pll0.length && sf0.length) {
+        derived.coreFreq = {
+          counts: pll0,
+          freqs: sf0
+        };
+      }
+
+      var netfails = parseNumberList(mm.NETFAIL);
+      if (netfails.length) {
+        var netfailStats = analyzeNetfailBuffer(netfails);
+        derived.lastNetfailTs = netfailStats.latestTs;
+        derived.netfail24h = netfailStats.reconnects24h;
+      }
+
+      var powerSetW = toNumber(mm.MPO);
+      if (isFinite(powerSetW)) {
+        derived.powerSetW = powerSetW;
+      }
+      var psValues = parseNumberList(mm.PS);
+      if (psValues.length >= 6 && isFinite(psValues[5])) {
+        derived.powerActualW = psValues[5];
+      }
+
+      var ataKeys = [];
+      for (var mmKey in mm) {
+        if (!Object.prototype.hasOwnProperty.call(mm, mmKey)) {
+          continue;
+        }
+        if (/^ATA[0-9]+$/.test(mmKey)) {
+          ataKeys.push(mmKey);
+        }
+      }
+      if (ataKeys.length) {
+        ataKeys.sort(function (a, b) {
+          return Number(a.slice(3)) - Number(b.slice(3));
+        });
+        var powerMarkers = [];
+        for (var k = 0; k < ataKeys.length; k++) {
+          var markerValue = parseLeadingPositiveNumber(mm[ataKeys[k]]);
+          if (isFinite(markerValue) && markerValue > 0) {
+            powerMarkers.push(markerValue);
+          }
+        }
+        if (powerMarkers.length) {
+          derived.powerAtaMarkers = powerMarkers;
+        }
+      }
+
+      var powerForEfficiency = isFinite(derived.powerActualW) ? derived.powerActualW : powerSetW;
+      var thsAvg = isFinite(mhsAvg) ? (mhsAvg / 1000000) : NaN;
+      if (isFinite(powerForEfficiency) && isFinite(thsAvg) && thsAvg > 0) {
+        derived.jPerTH = powerForEfficiency / thsAvg;
+      }
+
+      var shareRates = computeShareRateDeltas(summary);
+      derived.acceptedPerMin = shareRates.acceptedPerMin;
+      derived.rejectedPerMin = shareRates.rejectedPerMin;
+      derived.stalePerMin = shareRates.stalePerMin;
+      derived.shareRateSampleSec = shareRates.sampleSec;
+      derived.shareRateWarmup = shareRates.warmup;
+
+      return derived;
+    }
+
+    function findActivePool(pools) {
+      if (!Array.isArray(pools) || !pools.length) {
+        return null;
+      }
+      for (var i = 0; i < pools.length; i++) {
+        var p = pools[i];
+        var activeFlag = p ? p["Stratum Active"] : null;
+        if (activeFlag === true || activeFlag === 1 || activeFlag === "1" || activeFlag === "true") {
+          return p;
+        }
+        var status = p ? (p.Status || p["Stratum Status"] || p["Last Share Time"] || "") : "";
+        if (typeof status === "string" && /alive|active|up/i.test(status)) {
+          return p;
+        }
+      }
+      return pools[0];
+    }
+
+    function activePoolLabel(pools) {
+      var active = findActivePool(pools);
+      if (!active) {
+        return "";
+      }
+      return active.URL || active.Stratum || active["Pool URL"] || (active.POOL !== undefined ? ("Pool " + active.POOL) : "Pool");
+    }
+
+    function renderKnownMinerOverview(data) {
+      var known = extractKnownMinerData(data);
+      var summary = known.summary || {};
+      var status = known.status || {};
+      var mm = known.mm || {};
+      var derived = buildDerivedMetrics(known);
+      var metrics = [];
+
+      // Status and throughput
+      pushMetric(metrics, "Version", status.Description);
+      pushMetric(metrics, "Uptime", formatElapsed(summary.Elapsed || (known.stats && known.stats.Elapsed)));
+      if (derived.coreFreq) {
+        pushCoreFreqMetric(metrics, derived.coreFreq.freqs, derived.coreFreq.counts);
+      }
+      pushMetric(metrics, "Hashrate 5s", formatHashrateFromMhs(summary["MHS 5s"]));
+      pushMetric(metrics, "Hashrate 1m", formatHashrateFromMhs(summary["MHS 1m"]));
+      pushMetric(metrics, "Hashrate 5m", formatHashrateFromMhs(summary["MHS 5m"]));
+      pushMetric(metrics, "Hashrate 15m", formatHashrateFromMhs(summary["MHS 15m"]));
+      pushMetric(metrics, "Hashrate Avg", formatHashrateFromMhs(summary["MHS av"]));
+      pushMetric(metrics, "Hash Stability (5s/15m)", formatPercent(derived.hashDeviationPct, 2));
+
+      // Share quality
+      pushMetric(metrics, "Accept Rate", formatAcceptRate(summary));
+      pushMetric(metrics, "Accepted", formatCount(summary.Accepted));
+      pushMetric(metrics, "Rejected", formatCount(summary.Rejected));
+      pushMetric(metrics, "Stale", formatCount(summary.Stale));
+      pushShareRateMetric(metrics, derived.acceptedPerMin, derived.rejectedPerMin, derived.stalePerMin, derived.shareRateWarmup, derived.shareRateSampleSec);
+      pushMetric(metrics, "Found Blocks", formatCount(summary["Found Blocks"]));
+      pushMetric(metrics, "Best Share", formatCount(summary["Best Share"]));
+      pushMetric(metrics, "Device Rejected", formatPercent(summary["Device Rejected%"], 4));
+      pushMetric(metrics, "Pool Rejected", formatPercent(summary["Pool Rejected%"], 4));
+      pushMetric(metrics, "Pool Stale", formatPercent(summary["Pool Stale%"], 4));
+
+      // Errors and jobs
+      pushMetric(metrics, "HW Errors", formatCount(summary["Hardware Errors"]));
+      pushMetric(metrics, "Hardware CRC", formatCount(mm.CRC));
+      pushMetric(metrics, "HW Rate / Hour", formatRateWithUnit(derived.hwPerHour, "/h"));
+      pushMetric(metrics, "HW Rate / Th", formatRateWithUnit(derived.hwPerTH, "/Th", 4));
+      pushMetric(metrics, "Device Hardware", formatPercent(summary["Device Hardware%"], 4));
+      pushMetric(metrics, "Jobs Accepted", formatDifficulty(summary["Difficulty Accepted"]));
+      pushMetric(metrics, "Jobs Rejected", formatDifficulty(summary["Difficulty Rejected"]));
+      pushMetric(metrics, "Jobs Stale", formatDifficulty(summary["Difficulty Stale"]));
+      pushMetric(metrics, "Work Utility", formatRatePerMinute(summary["Work Utility"], 2));
+      pushMetric(metrics, "Utility", formatRatePerMinute(summary.Utility, 2));
+
+      // Pool and network
+      pushMetric(metrics, "Active Pool", activePoolLabel(known.pools));
+      pushMetric(metrics, "Get Failures", formatCount(summary["Get Failures"]));
+      pushMetric(metrics, "Remote Failures", formatCount(summary["Remote Failures"]));
+      pushMetric(metrics, "Last NETFAIL", formatAgeFromTimestamp(derived.lastNetfailTs));
+      pushMetric(metrics, "Reconnects 24h", formatCount(derived.netfail24h));
+      pushMetric(metrics, "Getworks", formatCount(summary.Getworks));
+      pushMetric(metrics, "Network Blocks", formatCount(summary["Network Blocks"]));
+      pushMetric(metrics, "Ping", mm.PING ? (mm.PING + " ms") : "");
+
+      // Thermals and fan control
+      pushAsicTempSpreadMetric(metrics, derived.asicTemps, derived.asicTarget);
+      pushProgressMetric(metrics, "Airflow In Temp", formatTempC(derived.airflowIn), derived.airflowIn, derived.asicTarget);
+      pushProgressMetric(metrics, "Airflow Out Temp", formatTempC(derived.airflowOut), derived.airflowOut, derived.asicTarget);
+      pushProgressMetric(metrics, "ASIC Temp Avg", formatTempC(derived.asicAvg), derived.asicAvg, derived.asicTarget);
+      pushProgressMetric(metrics, "ASIC Temp Max", formatTempC(derived.asicMax), derived.asicMax, derived.asicTarget);
+      pushMetric(metrics, "ASIC Target Temp", formatTempC(derived.asicTarget));
+      pushMetric(metrics, "Thermal Margin (Target-Avg)", formatDeltaC(derived.asicMarginAvg));
+      pushMetric(metrics, "Thermal Margin (Target-Max)", formatDeltaC(derived.asicMarginHot));
+      var fanDuty = toNumber(mm.FanR);
+      var fanDutyText = isFinite(fanDuty) ? (Math.round(fanDuty) + "%") : "";
+      var fanRpmText = mm.Fan1 ? (mm.Fan1 + " RPM") : "";
+      if (fanDutyText) {
+        pushRingMetric(metrics, "Fan Duty", fanDutyText, fanDuty, fanRpmText, "#0071e3");
+      } else {
+        pushMetric(metrics, "Fan", fanRpmText);
+      }
+      pushWorkLevelMetric(metrics, mm.WORKLEVEL);
+
+      // Power and efficiency
+      var powerBarMaxW = 140;
+      var powerActualMetric = pushProgressMetric(metrics, "Power Actual", formatWatts(derived.powerActualW), derived.powerActualW, powerBarMaxW);
+      if (powerActualMetric && powerActualMetric.progressBar && Array.isArray(derived.powerAtaMarkers) && derived.powerAtaMarkers.length) {
+        var ataMarkers = derived.powerAtaMarkers;
+        var markerDefs = [];
+        for (var pm = 0; pm < ataMarkers.length; pm++) {
+          markerDefs.push({ value: ataMarkers[pm], label: formatRate(ataMarkers[pm], 0) + "W" });
+        }
+        powerActualMetric.progressBar.markers = markerDefs;
+      }
+      pushMetric(metrics, "Power Set", formatWatts(derived.powerSetW));
+      pushMetric(metrics, "Efficiency", formatJPerTH(derived.jPerTH));
+
+      return { known: known, derived: derived, metrics: metrics };
+    }
+
+    function buildMiningQualityMetrics(known, derived) {
+      var summary = known && known.summary ? known.summary : {};
+      var mm = known && known.mm ? known.mm : {};
+      var calc = derived || {};
+      var chips = [];
+      var acceptRate = formatAcceptRate(summary);
+      var acceptRateNum = toNumber(acceptRate);
+      var acceptScore = isFinite(acceptRateNum) ? clamp(acceptRateNum, 0, 100) : 0;
+      var acceptColor = acceptRateNum >= 99.5 ? "#34c759" : (acceptRateNum >= 98.5 ? "#ff9f0a" : "#ff3b30");
+
+      var hashDevSignedNum = toNumber(calc.hashDeviationSignedPct);
+      var hashDevMagnitude = isFinite(hashDevSignedNum) ? Math.abs(hashDevSignedNum) : toNumber(calc.hashDeviationPct);
+      var hashDevDisplay = isFinite(hashDevSignedNum) ? formatSignedPercent(hashDevSignedNum, 2) : formatPercent(calc.hashDeviationPct, 2);
+      var hashScore = isFinite(hashDevMagnitude) ? clamp(hashDevMagnitude, 0, 100) : 0;
+      var hashColor = hashDevMagnitude <= 20 ? "#34c759" : (hashDevMagnitude <= 50 ? "#ff9f0a" : "#ff3b30");
+
+      var mhs5m = toNumber(summary["MHS 5m"]);
+      var mhsAvg = toNumber(summary["MHS av"]);
+      var hash5mDisplay = formatHashrateFromMhs(summary["MHS 5m"]);
+      var hash5mRatio = (isFinite(mhs5m) && isFinite(mhsAvg) && mhsAvg > 0) ? (mhs5m / mhsAvg * 100) : NaN;
+      var hash5mScore = isFinite(hash5mRatio) ? clamp(hash5mRatio, 0, 100) : 0;
+      var hash5mColor = hash5mRatio >= 95 ? "#34c759" : (hash5mRatio >= 85 ? "#ff9f0a" : "#ff3b30");
+
+      var effNum = toNumber(calc.jPerTH);
+      var effDisplay = formatJPerTH(calc.jPerTH);
+      var effScore = 0;
+      if (isFinite(effNum)) {
+        effScore = effNum <= 30 ? 100 : clamp(100 - ((effNum - 30) / 30) * 100, 0, 100);
+      }
+      var effColor = effNum <= 30 ? "#34c759" : (effNum <= 40 ? "#ff9f0a" : "#ff3b30");
+      var utilityRate = formatRatePerMinute(summary.Utility, 2);
+      var normalizedShareRate = normalizeShareRate(calc.acceptedPerMin, calc.rejectedPerMin, calc.stalePerMin, calc.shareRateWarmup);
+      var fallbackShareRate = formatShareRateTotal(normalizedShareRate, "");
+
+      chips.push({
+        label: "Found Blocks",
+        value: formatCount(summary["Found Blocks"]),
+        subLabel: "Best Share",
+        subValue: formatCount(summary["Best Share"]),
+        pinTop: true
+      });
+      chips.push({ label: "Hashrate 5m", value: hash5mDisplay, pinTop: true, gauge: { score: hash5mScore, color: hash5mColor } });
+      chips.push({
+        label: "Share Rate / Min",
+        value: hasValue(utilityRate) ? utilityRate : fallbackShareRate,
+        subLabel: "HW Errors",
+        subValue: formatCount(summary["Hardware Errors"])
+      });
+      chips.push({
+        label: "Get Fail",
+        value: formatCount(summary["Get Failures"]),
+        subLabel: "Remote Fail",
+        subValue: formatCount(summary["Remote Failures"])
+      });
+      chips.push({
+        label: "Reconnect 24h",
+        value: formatCount(calc.netfail24h),
+        subLabel: "Ping",
+        subValue: mm.PING ? (mm.PING + " ms") : ""
+      });
+      chips.push(buildShareRateMetric("ACC / REJ / STALE", calc.acceptedPerMin, calc.rejectedPerMin, calc.stalePerMin, calc.shareRateWarmup, "", calc.shareRateSampleSec));
+      chips.push({ label: "Hash Dev", value: hashDevDisplay, pinTop: true, gauge: { score: hashScore, color: hashColor } });
+      chips.push({ label: "Eff", value: effDisplay, pinTop: true, gauge: { score: effScore, color: effColor } });
+      chips.push({ label: "Accept Rate", value: acceptRate, pinTop: true, gauge: { score: acceptScore, color: acceptColor } });
+      return chips;
+    }
+
+    function setUnitStyledText(node, value) {
+      if (!node) {
+        return;
+      }
+      var text = value === null || value === undefined ? "" : String(value);
+      node.textContent = "";
+      if (!text) {
+        return;
+      }
+      function appendMain(chunk) {
+        if (!chunk) {
+          return;
+        }
+        var main = document.createElement("span");
+        main.className = "unit-main";
+        main.textContent = chunk;
+        node.appendChild(main);
+      }
+      var re = /\/(?:th|min|h)\b/ig;
+      var last = 0;
+      var match;
+      while ((match = re.exec(text)) !== null) {
+        appendMain(text.slice(last, match.index));
+        var unit = document.createElement("span");
+        unit.className = "unit-muted";
+        unit.textContent = match[0];
+        node.appendChild(unit);
+        last = match.index + match[0].length;
+      }
+      appendMain(text.slice(last));
+    }
+
+    function createMetricRing(metric) {
+      var RADIUS = 24;
+      var CIRC = 2 * Math.PI * RADIUS;
+      var score = clamp(toNumber(metric.ring.score), 0, 100);
+      if (!isFinite(score)) {
+        score = 0;
+      }
+
+      var wrap = document.createElement("div");
+      wrap.className = "metric-ring-wrap";
+
+      var svgNS = "http://www.w3.org/2000/svg";
+      var svg = document.createElementNS(svgNS, "svg");
+      svg.setAttribute("class", "metric-ring-svg");
+      svg.setAttribute("viewBox", "0 0 64 64");
+
+      var track = document.createElementNS(svgNS, "circle");
+      track.setAttribute("class", "metric-ring-track");
+      track.setAttribute("cx", "32");
+      track.setAttribute("cy", "32");
+      track.setAttribute("r", String(RADIUS));
+
+      var fill = document.createElementNS(svgNS, "circle");
+      fill.setAttribute("class", "metric-ring-fill");
+      fill.setAttribute("cx", "32");
+      fill.setAttribute("cy", "32");
+      fill.setAttribute("r", String(RADIUS));
+      fill.style.stroke = metric.ring.color || "#0071e3";
+      fill.style.strokeDasharray = String(CIRC);
+      fill.style.strokeDashoffset = String(CIRC * (1 - (score / 100)));
+
+      var value = document.createElement("div");
+      value.className = "metric-ring-value";
+      setUnitStyledText(value, metric.value);
+
+      svg.appendChild(track);
+      svg.appendChild(fill);
+      wrap.appendChild(svg);
+      wrap.appendChild(value);
+      return wrap;
+    }
+
+    function createWorkLevelIcon(mode) {
+      var svgNS = "http://www.w3.org/2000/svg";
+      var svg = document.createElementNS(svgNS, "svg");
+      svg.setAttribute("viewBox", "0 0 24 24");
+      var path = document.createElementNS(svgNS, "path");
+
+      if (mode === "eco") {
+        path.setAttribute("d", "M12 2.25c.49 2.46 2.12 4.57 4.21 5.86A5.995 5.995 0 0 1 18 12.75C18 16.2 15.31 19 12 19s-6-2.8-6-6.25c0-1.88.8-3.6 2.09-4.76A8.47 8.47 0 0 0 12 2.25Z");
+        path.setAttribute("fill", "#34c759");
+        var core = document.createElementNS(svgNS, "path");
+        core.setAttribute("d", "M12 8.5c1.4 1.5 2.2 2.8 2.2 4.1 0 1.3-.97 2.4-2.2 2.4s-2.2-1.1-2.2-2.4c0-1.3.8-2.6 2.2-4.1z");
+        core.setAttribute("fill", "#b7f5c8");
+        var stem = document.createElementNS(svgNS, "path");
+        stem.setAttribute("d", "M12 18.7v1.6");
+        stem.setAttribute("fill", "none");
+        stem.setAttribute("stroke", "#238a41");
+        stem.setAttribute("stroke-width", "1.7");
+        stem.setAttribute("stroke-linecap", "round");
+        svg.appendChild(path);
+        svg.appendChild(core);
+        svg.appendChild(stem);
+        return svg;
+      } else if (mode === "super") {
+        path.setAttribute("d", "M12 2.25c.49 2.46 2.12 4.57 4.21 5.86A5.995 5.995 0 0 1 18 12.75C18 16.2 15.31 19 12 19s-6-2.8-6-6.25c0-1.88.8-3.6 2.09-4.76A8.47 8.47 0 0 0 12 2.25Z");
+        path.setAttribute("fill", "#ff7f50");
+        var core = document.createElementNS(svgNS, "path");
+        core.setAttribute("d", "M12 8.5c1.4 1.5 2.2 2.8 2.2 4.1 0 1.3-.97 2.4-2.2 2.4s-2.2-1.1-2.2-2.4c0-1.3.8-2.6 2.2-4.1z");
+        core.setAttribute("fill", "#ffd166");
+        svg.appendChild(path);
+        svg.appendChild(core);
+        return svg;
+      } else {
+        path.setAttribute("d", "M5.5 12.5l4 4 9-9");
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke", "currentColor");
+        path.setAttribute("stroke-width", "2.4");
+        path.setAttribute("stroke-linecap", "round");
+        path.setAttribute("stroke-linejoin", "round");
+      }
+
+      svg.appendChild(path);
+      return svg;
+    }
+
+    function createWorkLevelBadge(metric) {
+      var level = metric && metric.workLevel ? parseWorkLevel(metric.workLevel.level) : null;
+      var mode = metric && metric.workLevel && metric.workLevel.mode ? metric.workLevel.mode : "normal";
+      var title = metric && metric.workLevel && metric.workLevel.title ? metric.workLevel.title : metric.value;
+
+      var wrap = document.createElement("div");
+      wrap.className = "worklevel-badge worklevel-" + mode;
+
+      var icon = document.createElement("div");
+      icon.className = "worklevel-icon";
+      icon.appendChild(createWorkLevelIcon(mode));
+
+      var text = document.createElement("div");
+      text.className = "worklevel-text";
+
+      var head = document.createElement("div");
+      head.className = "wl-title";
+      head.textContent = title || "Normal";
+
+      var sub = document.createElement("div");
+      sub.className = "wl-sub";
+      sub.textContent = level === null ? "Active Profile" : ("Level " + level);
+
+      text.appendChild(head);
+      text.appendChild(sub);
+      wrap.appendChild(icon);
+      wrap.appendChild(text);
+      return wrap;
+    }
+
+    function createShareRateBar(metric) {
+      var wrap = document.createElement("div");
+      var sr = metric && metric.shareRate ? metric.shareRate : {};
+      var normalized = normalizeShareRate(sr.accepted, sr.rejected, sr.stale, sr.warmup);
+      var warmup = normalized.warmup;
+      var total = normalized.total;
+      var aPct = total > 0 ? (normalized.accepted / total) * 100 : 0;
+      var rPct = total > 0 ? (normalized.rejected / total) * 100 : 0;
+      var sPct = total > 0 ? (normalized.stale / total) * 100 : 0;
+
+      var head = document.createElement("div");
+      head.className = "metric-rate-head";
+      var totalEl = document.createElement("div");
+      totalEl.className = "metric-rate-total";
+      setUnitStyledText(totalEl, hasValue(metric && metric.value) ? metric.value : formatShareRateTotal(normalized, ""));
+      head.appendChild(totalEl);
+      var sampleEl = document.createElement("div");
+      sampleEl.className = "metric-rate-note";
+      sampleEl.textContent = "Per poll (" + formatPollSeconds(sr.sampleSec) + "s)";
+      head.appendChild(sampleEl);
+
+      var track = document.createElement("div");
+      track.className = "metric-rate-track";
+
+      var segA = document.createElement("div");
+      segA.className = "metric-rate-seg accepted";
+      segA.style.left = "0%";
+      segA.style.width = aPct.toFixed(2) + "%";
+
+      var segR = document.createElement("div");
+      segR.className = "metric-rate-seg rejected";
+      segR.style.left = aPct.toFixed(2) + "%";
+      segR.style.width = rPct.toFixed(2) + "%";
+
+      var segS = document.createElement("div");
+      segS.className = "metric-rate-seg stale";
+      segS.style.left = (aPct + rPct).toFixed(2) + "%";
+      segS.style.width = sPct.toFixed(2) + "%";
+
+      track.appendChild(segA);
+      track.appendChild(segR);
+      track.appendChild(segS);
+
+      var legend = document.createElement("div");
+      legend.className = "metric-rate-legend";
+
+      function addLegend(cls, label, value) {
+        var item = document.createElement("div");
+        item.className = "metric-rate-item " + cls;
+        item.textContent = label;
+        var b = document.createElement("b");
+        b.textContent = warmup ? "..." : formatCount(value || 0);
+        item.appendChild(b);
+        legend.appendChild(item);
+      }
+
+      addLegend("accepted", "Acc", normalized.accepted);
+      addLegend("rejected", "Rej", normalized.rejected);
+      addLegend("stale", "Stale", normalized.stale);
+
+      wrap.appendChild(head);
+      wrap.appendChild(track);
+      wrap.appendChild(legend);
+      return wrap;
+    }
+
+    function createMetricCardBase(metric) {
+      var card = document.createElement("div");
+      var metricSize = metric && metric.size ? metric.size : "medium";
+      card.className = "log-metric size-" + metricSize;
+      if (metric.label === "Uptime") {
+        card.className += " metric-uptime " + getUptimeSizeClass(metric.value);
+      }
+
+      var k = document.createElement("div");
+      k.className = "k";
+      k.textContent = metric.label;
+
+      var v = document.createElement("div");
+      v.className = "v";
+      setUnitStyledText(v, metric.value);
+
+      card.appendChild(k);
+      return { card: card, valueNode: v };
+    }
+
+    function appendProgressBar(card, metric) {
+      if (!metric || !metric.progressBar) {
+        return;
+      }
+      var currentValue = toNumber(metric.progressBar.value);
+      var maxValue = toNumber(metric.progressBar.max);
+      if (isFinite(currentValue) && isFinite(maxValue) && maxValue > 0) {
+        var ratioPct = clamp((currentValue / maxValue) * 100, 0, 100);
+        var track = document.createElement("div");
+        track.className = "metric-progress-track";
+
+        var fill = document.createElement("div");
+        fill.className = "metric-progress-fill";
+        fill.style.width = ratioPct.toFixed(2) + "%";
+
+        track.appendChild(fill);
+        var labels = null;
+        if (Array.isArray(metric.progressBar.markers)) {
+          for (var i = 0; i < metric.progressBar.markers.length; i++) {
+            var markerDef = metric.progressBar.markers[i];
+            var markerValue = toNumber(markerDef && typeof markerDef === "object" ? markerDef.value : markerDef);
+            if (!isFinite(markerValue) || markerValue <= 0 || markerValue >= maxValue) {
+              continue;
+            }
+            var markerLabel = markerDef && typeof markerDef === "object" ? String(markerDef.label || "") : "";
+            var markerLeft = clamp((markerValue / maxValue) * 100, 0, 100).toFixed(2) + "%";
+
+            var marker = document.createElement("div");
+            marker.className = "metric-progress-marker";
+            marker.style.left = markerLeft;
+            track.appendChild(marker);
+
+            if (markerLabel) {
+              if (!labels) {
+                labels = document.createElement("div");
+                labels.className = "metric-progress-marker-labels";
+              }
+              var label = document.createElement("div");
+              label.className = "metric-progress-marker-label";
+              label.style.left = markerLeft;
+              label.textContent = markerLabel;
+              labels.appendChild(label);
+            }
+          }
+        }
+        card.appendChild(track);
+        if (labels) {
+          card.appendChild(labels);
+        }
+      }
+    }
+
+    function renderRingMetricCard(base, metric) {
+      base.card.className += " metric-ring-card";
+      base.card.appendChild(createMetricRing(metric));
+      if (hasValue(metric.ring.subValue)) {
+        var sub = document.createElement("div");
+        sub.className = "metric-ring-sub";
+        sub.textContent = metric.ring.subValue;
+        base.card.appendChild(sub);
+      }
+      return base.card;
+    }
+
+    function renderWorkLevelMetricCard(base, metric) {
+      base.card.className += " metric-worklevel";
+      base.card.appendChild(createWorkLevelBadge(metric));
+      return base.card;
+    }
+
+    function createCoreFreqChart(metric) {
+      var box = document.createElement("div");
+      box.className = "metric-core-freq-wrap";
+      var data = metric && metric.coreFreq ? metric.coreFreq : {};
+      var buckets = Array.isArray(data.buckets) ? data.buckets : [];
+      var maxCount = Math.max(1, Math.round(toNumber(data.max)));
+
+      var chart = document.createElement("div");
+      chart.className = "metric-core-freq-chart";
+
+      for (var i = 0; i < buckets.length; i++) {
+        var bucket = buckets[i] || {};
+        var mhz = Math.round(toNumber(bucket.mhz));
+        var cores = Math.max(0, Math.round(toNumber(bucket.cores)));
+
+        var col = document.createElement("div");
+        col.className = "metric-core-freq-col";
+
+        var count = document.createElement("div");
+        count.className = "metric-core-freq-count";
+        count.textContent = formatCompactCount(cores);
+
+        var barWrap = document.createElement("div");
+        barWrap.className = "metric-core-freq-bar-wrap";
+
+        var bar = document.createElement("div");
+        bar.className = "metric-core-freq-bar";
+        if (!cores) {
+          bar.className += " is-empty";
+        }
+        var barPct = clamp((cores / maxCount) * 100, 0, 100);
+        bar.style.height = barPct.toFixed(2) + "%";
+
+        var label = document.createElement("div");
+        label.className = "metric-core-freq-label";
+        label.className += barPct >= 32 ? " is-inside" : " is-below";
+        var labelMain = document.createElement("span");
+        labelMain.className = "metric-core-freq-label-main";
+        labelMain.textContent = String(mhz);
+        var labelUnit = document.createElement("span");
+        labelUnit.className = "metric-core-freq-label-unit";
+        labelUnit.textContent = "MHz";
+        label.appendChild(labelMain);
+        label.appendChild(labelUnit);
+
+        var tip = document.createElement("div");
+        tip.className = "info-tooltip";
+        tip.textContent = mhz + " MHz: " + cores.toLocaleString() + " cores";
+
+        barWrap.appendChild(bar);
+        barWrap.appendChild(label);
+        col.appendChild(count);
+        col.appendChild(barWrap);
+        col.appendChild(tip);
+        chart.appendChild(col);
+      }
+
+      box.appendChild(chart);
+      return box;
+    }
+
+    function collectValidAsicTemps(values) {
+      var entries = [];
+      for (var i = 0; i < values.length; i++) {
+        var temp = toNumber(values[i]);
+        if (isFinite(temp)) {
+          entries.push({ temp: temp, index: i });
+        }
+      }
+      return entries;
+    }
+
+    function getAsicTempBandClass(temp) {
+      if (temp >= 80) {
+        return " danger";
+      }
+      if (temp >= 70) {
+        return " hot";
+      }
+      if (temp >= 60) {
+        return " warm";
+      }
+      return "";
+    }
+
+    function createAsicTempSpreadChart(metric) {
+      var box = document.createElement("div");
+      box.className = "metric-asic-temps-wrap";
+      var asic = metric && metric.asicTemps ? metric.asicTemps : {};
+      var values = Array.isArray(asic.values) ? asic.values : [];
+      var maxValue = toNumber(asic.max);
+      if (!isFinite(maxValue) || maxValue <= 0) {
+        maxValue = 90;
+      }
+
+      var chart = document.createElement("div");
+      chart.className = "metric-asic-temps-chart";
+
+      var target = toNumber(asic.target);
+      if (isFinite(target) && target > 0) {
+        var targetPct = clamp(((target - 10) / maxValue) * 100, 0, 100);
+        var targetLine = document.createElement("div");
+        targetLine.className = "metric-asic-temps-target";
+        targetLine.style.bottom = targetPct.toFixed(2) + "%";
+        chart.appendChild(targetLine);
+      }
+
+      var validTemps = collectValidAsicTemps(values);
+
+      for (var j = 0; j < validTemps.length; j++) {
+        var entry = validTemps[j];
+        var temp = entry.temp;
+        var col = document.createElement("div");
+        col.className = "metric-asic-temps-col";
+
+        var bar = document.createElement("div");
+        bar.className = "metric-asic-temps-bar" + getAsicTempBandClass(temp);
+        bar.style.height = clamp((temp / maxValue) * 100, 0, 100).toFixed(2) + "%";
+
+        var tip = document.createElement("div");
+        tip.className = "info-tooltip";
+        tip.textContent = "ASIC " + (entry.index + 1) + ": " + formatRate(temp, 1) + " \u00B0C";
+
+        col.appendChild(bar);
+        col.appendChild(tip);
+        chart.appendChild(col);
+      }
+
+      box.appendChild(chart);
+      return box;
+    }
+
+    function renderAsicTempSpreadMetricCard(base, metric) {
+      base.card.className += " metric-asic-temps";
+      var target = metric && metric.asicTemps ? toNumber(metric.asicTemps.target) : NaN;
+      if (isFinite(target) && target > 0) {
+        var badge = document.createElement("div");
+        badge.className = "metric-asic-temps-badge";
+        badge.textContent = "Target " + formatRate(target, 0) + "\u00B0C";
+        base.card.appendChild(badge);
+      }
+      var summary = document.createElement("div");
+      summary.className = "metric-asic-temps-summary";
+      summary.textContent = metric.value || "";
+      base.card.appendChild(summary);
+      base.card.appendChild(createAsicTempSpreadChart(metric));
+      return base.card;
+    }
+
+    function renderCoreFreqMetricCard(base, metric) {
+      base.card.className += " metric-core-freq";
+      base.card.appendChild(base.valueNode);
+      base.card.appendChild(createCoreFreqChart(metric));
+      return base.card;
+    }
+
+    function renderShareRateMetricCard(base, metric) {
+      base.card.className += " metric-sharerate";
+      base.card.appendChild(createShareRateBar(metric));
+      return base.card;
+    }
+
+    function renderDefaultMetricCard(base, metric) {
+      base.card.appendChild(base.valueNode);
+      appendProgressBar(base.card, metric);
+      return base.card;
+    }
+
+    function createMetricCard(metric) {
+      var base = createMetricCardBase(metric);
+      if (metric && metric.ring) {
+        return renderRingMetricCard(base, metric);
+      }
+
+      if (metric && metric.workLevel) {
+        return renderWorkLevelMetricCard(base, metric);
+      }
+
+      if (metric && metric.asicTemps) {
+        return renderAsicTempSpreadMetricCard(base, metric);
+      }
+
+      if (metric && metric.coreFreq) {
+        return renderCoreFreqMetricCard(base, metric);
+      }
+
+      if (metric && metric.shareRate) {
+        return renderShareRateMetricCard(base, metric);
+      }
+
+      return renderDefaultMetricCard(base, metric);
+    }
+
+    function getUptimeSizeClass(value) {
+      var len = String(value || "").length;
+      if (len > 18) {
+        return "uptime-xs";
+      }
+      if (len > 16) {
+        return "uptime-sm";
+      }
+      if (len > 14) {
+        return "uptime-md";
+      }
+      return "uptime-lg";
+    }
+
+    function renderMetricSections(container, sections) {
+      container.innerHTML = "";
+      for (var i = 0; i < sections.length; i++) {
+        if (!sections[i].metrics || !sections[i].metrics.length) {
+          continue;
+        }
+        var section = document.createElement("div");
+        section.className = "log-section section-" + getSectionKey(sections[i].title);
+
+        var head = document.createElement("div");
+        head.className = "log-section-head";
+        var title = document.createElement("div");
+        title.className = "log-section-title";
+        title.textContent = sections[i].title;
+        var count = document.createElement("div");
+        count.className = "log-section-count";
+        count.textContent = sections[i].metrics.length + " metrics";
+        head.appendChild(title);
+        head.appendChild(count);
+
+        var grid = document.createElement("div");
+        grid.className = "log-section-grid";
+        for (var j = 0; j < sections[i].metrics.length; j++) {
+          grid.appendChild(createMetricCard(sections[i].metrics[j]));
+        }
+
+        section.appendChild(head);
+        section.appendChild(grid);
+        container.appendChild(section);
+      }
+    }
+
+    function totalSectionMetrics(sections) {
+      var total = 0;
+      for (var i = 0; i < sections.length; i++) {
+        total += (sections[i].metrics && sections[i].metrics.length) ? sections[i].metrics.length : 0;
+      }
+      return total;
+    }
+
+    var METRIC_CATEGORY_ORDER = [
+      "Status & Throughput",
+      "Power & Efficiency",
+      "Thermals & Fan",
+      "Share Quality",
+      "Errors & Jobs",
+      "Pool & Network",
+      "Other"
+    ];
+
+    var METRIC_SECTION_LABELS = {
+      "Status & Throughput": ["Uptime", "Core Frequency", "Hashrate 5s", "Hashrate 1m", "Hashrate 5m", "Hashrate 15m", "Hashrate Avg", "Hash Stability (5s/15m)", "Version"],
+      "Power & Efficiency": ["Power Actual", "Efficiency", "Power Set"],
+      "Thermals & Fan": ["ASIC Temp Spread", "Fan Duty", "ASIC Temp Avg", "ASIC Temp Max", "Airflow In Temp", "Airflow Out Temp", "ASIC Target Temp", "Thermal Margin (Target-Avg)", "Thermal Margin (Target-Max)", "Work Level", "Fan"],
+      "Share Quality": ["Accept Rate", "ACC / REJ / STALE", "Accepted", "Rejected", "Stale", "Found Blocks", "Best Share", "Network Blocks", "Pool Rejected", "Pool Stale", "Device Rejected", "Accepted / Min", "Rejected / Min", "Stale / Min"],
+      "Errors & Jobs": ["HW Errors", "HW Rate / Hour", "HW Rate / Th", "Jobs Accepted", "Jobs Rejected", "Jobs Stale", "Work Utility", "Utility", "Hardware CRC", "Device Hardware"],
+      "Pool & Network": ["Ping", "Active Pool", "Reconnects 24h", "Getworks", "Get Failures", "Remote Failures", "Last NETFAIL"]
+    };
+
+    var METRIC_SIZE_OVERRIDE = {
+      "Uptime": "large",
+      "Core Frequency": "large",
+      "ASIC Temp Spread": "large",
+      "Accept Rate": "large",
+      "Share Rate / Min": "large",
+      "ACC / REJ / STALE": "large",
+      "Power Actual": "large",
+      "Efficiency": "large",
+      "HW Errors": "large",
+      "Ping": "large",
+      "Version": "small",
+      "Pool Rejected": "small",
+      "Pool Stale": "small",
+      "Device Rejected": "small",
+      "Hardware CRC": "small",
+      "Device Hardware": "small"
+    };
+
+    function buildMetricSchema() {
+      var schema = {};
+      for (var i = 0; i < METRIC_CATEGORY_ORDER.length; i++) {
+        var category = METRIC_CATEGORY_ORDER[i];
+        if (category === "Other") {
+          continue;
+        }
+        var labels = METRIC_SECTION_LABELS[category] || [];
+        for (var j = 0; j < labels.length; j++) {
+          var label = labels[j];
+          schema[label] = {
+            category: category,
+            priority: j
+          };
+        }
+      }
+      for (var sizeLabel in METRIC_SIZE_OVERRIDE) {
+        if (!Object.prototype.hasOwnProperty.call(METRIC_SIZE_OVERRIDE, sizeLabel)) {
+          continue;
+        }
+        if (!schema[sizeLabel]) {
+          schema[sizeLabel] = { category: "Other", priority: 500 };
+        }
+        schema[sizeLabel].size = METRIC_SIZE_OVERRIDE[sizeLabel];
+      }
+      return schema;
+    }
+
+    var METRIC_SCHEMA = buildMetricSchema();
+
+    function categorizeMetrics(metrics) {
+      var buckets = {};
+      for (var i = 0; i < METRIC_CATEGORY_ORDER.length; i++) {
+        buckets[METRIC_CATEGORY_ORDER[i]] = [];
+      }
+
+      for (var j = 0; j < metrics.length; j++) {
+        var metric = metrics[j];
+        var schemaEntry = METRIC_SCHEMA[metric.label];
+        var category = schemaEntry ? schemaEntry.category : "Other";
+        var viewMetric = Object.assign({}, metric, {
+          size: getMetricSize(metric, category, schemaEntry),
+          _priority: getMetricPriority(metric, category, schemaEntry)
+        });
+        buckets[category].push(viewMetric);
+      }
+
+      var sections = [];
+      for (var k = 0; k < METRIC_CATEGORY_ORDER.length; k++) {
+        var title = METRIC_CATEGORY_ORDER[k];
+        if (buckets[title].length) {
+          buckets[title].sort(function (a, b) {
+            var pa = typeof a._priority === "number" ? a._priority : 999;
+            var pb = typeof b._priority === "number" ? b._priority : 999;
+            if (pa !== pb) {
+              return pa - pb;
+            }
+            return String(a.label || "").localeCompare(String(b.label || ""));
+          });
+          sections.push({ title: title, metrics: buckets[title] });
+        }
+      }
+      return sections;
+    }
+
+    function getSectionKey(title) {
+      return String(title || "")
+        .toLowerCase()
+        .replace(/&/g, " ")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+    }
+
+    function getMetricSize(metric, category, schemaEntry) {
+      if (schemaEntry && schemaEntry.size) {
+        return schemaEntry.size;
+      }
+      if (metric && metric.ring) {
+        return "medium";
+      }
+      if (category === "Other") {
+        return "small";
+      }
+      return "medium";
+    }
+
+    function getMetricPriority(metric, category, schemaEntry) {
+      var label = metric && metric.label ? metric.label : "";
+      if (schemaEntry && typeof schemaEntry.priority === "number") {
+        return schemaEntry.priority;
+      }
+      if (!METRIC_SECTION_LABELS[category]) {
+        return 500;
+      }
+      return 200 + String(label).length;
+    }
+
+    function renderQualityChips(titleEl, container, metrics) {
+      var ARC_LEN = Math.PI * 50;
+
+      function createQualityGauge(metric) {
+        var chip = document.createElement("div");
+        chip.className = "quality-chip quality-gauge";
+
+        var k = document.createElement("span");
+        k.className = "qk";
+        k.textContent = metric.label;
+
+        var wrap = document.createElement("div");
+        wrap.className = "quality-gauge-wrap";
+
+        var svgNS = "http://www.w3.org/2000/svg";
+        var svg = document.createElementNS(svgNS, "svg");
+        svg.setAttribute("class", "quality-gauge-svg");
+        svg.setAttribute("viewBox", "0 0 120 72");
+
+        var track = document.createElementNS(svgNS, "path");
+        track.setAttribute("class", "quality-gauge-track");
+        track.setAttribute("d", "M 10 62 A 50 50 0 0 1 110 62");
+
+        var fill = document.createElementNS(svgNS, "path");
+        fill.setAttribute("class", "quality-gauge-fill");
+        fill.setAttribute("d", "M 10 62 A 50 50 0 0 1 110 62");
+        fill.style.stroke = metric.gauge.color;
+
+        var score = clamp(toNumber(metric.gauge.score), 0, 100);
+        if (!isFinite(score)) {
+          score = 0;
+        }
+        fill.style.strokeDasharray = String(ARC_LEN);
+        fill.style.strokeDashoffset = String(ARC_LEN * (1 - score / 100));
+
+        svg.appendChild(track);
+        svg.appendChild(fill);
+
+        var value = document.createElement("div");
+        value.className = "quality-gauge-value";
+        setUnitStyledText(value, metric.value);
+
+        wrap.appendChild(svg);
+        wrap.appendChild(value);
+        chip.appendChild(k);
+        chip.appendChild(wrap);
+        return chip;
+      }
+
+      function createQualityCard(metric) {
+        var chip = document.createElement("div");
+        chip.className = "quality-chip";
+
+        var k = document.createElement("span");
+        k.className = "qk";
+        k.textContent = metric.label;
+
+        var v = document.createElement("span");
+        v.className = "qv";
+        setUnitStyledText(v, metric.value);
+
+        chip.appendChild(k);
+        chip.appendChild(v);
+
+        if (metric.subLabel && hasValue(metric.subValue)) {
+          var sub = document.createElement("div");
+          sub.className = "quality-sub";
+
+          var sk = document.createElement("span");
+          sk.className = "qk";
+          sk.textContent = metric.subLabel;
+
+          var sv = document.createElement("span");
+          sv.className = "qv";
+          setUnitStyledText(sv, metric.subValue);
+
+          sub.appendChild(sk);
+          sub.appendChild(sv);
+          chip.appendChild(sub);
+        }
+
+        return chip;
+      }
+
+      function createQualityShareRateCard(metric) {
+        var chip = document.createElement("div");
+        chip.className = "quality-chip quality-share-rate";
+
+        var k = document.createElement("span");
+        k.className = "qk";
+        k.textContent = metric.label;
+        chip.appendChild(k);
+        chip.appendChild(createShareRateBar(metric));
+        return chip;
+      }
+
+      function createQualityNode(metric) {
+        if (metric.gauge) {
+          return createQualityGauge(metric);
+        }
+        if (metric.shareRate) {
+          return createQualityShareRateCard(metric);
+        }
+        return createQualityCard(metric);
+      }
+
+      container.innerHTML = "";
+      if (!metrics.length) {
+        container.style.display = "none";
+        titleEl.style.display = "none";
+        return;
+      }
+
+      var topRow = document.createElement("div");
+      topRow.className = "quality-row-top";
+
+      var bottomRow = document.createElement("div");
+      bottomRow.className = "quality-row-bottom";
+
+      for (var i = 0; i < metrics.length; i++) {
+        var chip = createQualityNode(metrics[i]);
+        if (metrics[i].pinTop) {
+          topRow.appendChild(chip);
+        } else {
+          bottomRow.appendChild(chip);
+        }
+      }
+
+      if (topRow.children.length) {
+        container.appendChild(topRow);
+      }
+      if (bottomRow.children.length) {
+        container.appendChild(bottomRow);
+      }
+
+      titleEl.style.display = "block";
+      container.style.display = "block";
+    }
+
+    function buildOverviewBundle(data) {
+      var overview = renderKnownMinerOverview(data);
+      var metrics = overview.metrics || [];
+      var qualityMetrics = buildMiningQualityMetrics(overview.known, overview.derived);
+      var sections = metrics.length ? categorizeMetrics(metrics) : [];
+      if (!sections.length) {
+        qualityMetrics = [];
+      }
+      return {
+        sections: sections,
+        qualityMetrics: qualityMetrics,
+        hasMetrics: totalSectionMetrics(sections) > 0
+      };
+    }
+
+    function applyLogRenderState(opts) {
+      renderQualityChips(opts.qualityTitle, opts.quality, opts.qualityMetrics || []);
+
+      if (opts.infoBubbleText) {
+        opts.hint.style.display = "none";
+        opts.hint.textContent = "";
+        setLogInfoBadgeState(opts.info, opts.infoText, {
+          visible: true,
+          isError: !!opts.infoIsError,
+          text: opts.infoBubbleText
+        });
+      } else {
+        opts.hint.style.display = "block";
+        opts.hint.textContent = opts.hintText || "";
+        setLogInfoBadgeState(opts.info, opts.infoText, {
+          visible: false
+        });
+      }
+
+      if (opts.sections && totalSectionMetrics(opts.sections) > 0) {
+        renderMetricSections(opts.summary, opts.sections);
+        opts.summary.style.display = "grid";
+      } else {
+        opts.summary.style.display = "none";
+        opts.summary.innerHTML = "";
+      }
+
+    }
+
+    function formatRawLogForDisplay(envelope) {
+      if (envelope && envelope.allParsed && envelope.parsedData !== null) {
+        try {
+          if (Array.isArray(envelope.parsedData)) {
+            var prettyParts = [];
+            for (var i = 0; i < envelope.parsedData.length; i++) {
+              prettyParts.push(JSON.stringify(envelope.parsedData[i], null, 2));
+            }
+            return prettyParts.join("\n\n");
+          }
+          return JSON.stringify(envelope.parsedData, null, 2);
+        } catch (e) {
+        }
+      }
+
+      var rawText = envelope && envelope.rawText ? envelope.rawText : "";
+      return rawText;
+    }
+
+    function renderLogData(raw) {
+      var envelope = buildCglogEnvelope(raw);
+      var rawText = envelope.rawText;
+      var displayText = formatRawLogForDisplay(envelope);
+      $("cglog").textContent = displayText;
+      var hint = $("log-hint");
+      var info = $("log-info");
+      var infoText = $("log-info-text");
+      var qualityTitle = $("log-quality-title");
+      var quality = $("log-quality");
+      var summary = $("log-summary");
+      var emptyBundle = { sections: [], qualityMetrics: [], hasMetrics: false };
+
+      if (!envelope.allParsed) {
+        var extractedData = extractKnownMinerFromText(rawText, envelope);
+        var extractedBundle = extractedData ? buildOverviewBundle(extractedData) : emptyBundle;
+        if (extractedBundle.hasMetrics) {
+          applyLogRenderState({
+            hint: hint,
+            hintText: "",
+            info: info,
+            infoText: infoText,
+            infoBubbleText: "Parsed cgminer text response.",
+            qualityTitle: qualityTitle,
+            quality: quality,
+            qualityMetrics: extractedBundle.qualityMetrics,
+            summary: summary,
+            sections: extractedBundle.sections
+          });
+          return;
+        }
+
+        applyLogRenderState({
+          hint: hint,
+          hintText: "No JSON detected. Showing raw log stream.",
+          info: info,
+          infoText: infoText,
+          qualityTitle: qualityTitle,
+          quality: quality,
+          qualityMetrics: [],
+          summary: summary,
+          sections: []
+        });
+        return;
+      }
+
+      var parsedBundle = buildOverviewBundle(envelope.parsedData);
+      applyLogRenderState({
+        hint: hint,
+        hintText: parsedBundle.hasMetrics ? "" : "JSON detected. No simple summary metrics found.",
+        info: info,
+        infoText: infoText,
+        infoBubbleText: parsedBundle.hasMetrics ? "Parsed JSON-like cgminer response." : "",
+        qualityTitle: qualityTitle,
+        quality: quality,
+        qualityMetrics: parsedBundle.qualityMetrics,
+        summary: summary,
+        sections: parsedBundle.sections
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      keepSystemMenuOpenForSystemPages();
+      $("loadtime").textContent = formatDateTime(new Date().getTime());
+      updateMinerInfo();
+      updateLog();
+    });
+  </script>
+</body>
+
+</html>

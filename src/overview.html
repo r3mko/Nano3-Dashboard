@@ -1,0 +1,2035 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Avalon Device</title>
+    <link rel="icon" href="data:,">
+<style>
+:root {
+  --bg-top: #f9fafc;
+  --bg-mid: #edf0f5;
+  --bg-bottom: #e9edf4;
+  --panel: rgba(255, 255, 255, 0.72);
+  --panel-strong: rgba(255, 255, 255, 0.88);
+  --border-soft: rgba(255, 255, 255, 0.62);
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --accent: #0071e3;
+  --good: #34c759;
+  --bad: #ff3b30;
+  --warn: #ff9f0a;
+  --shadow-soft: 0 18px 42px rgba(15, 23, 42, 0.12);
+  --radius-card: 22px;
+  --radius-pill: 999px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text-primary);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(0, 113, 227, 0.16), transparent 34%),
+    radial-gradient(circle at 95% 100%, rgba(52, 199, 89, 0.16), transparent 30%),
+    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 52%, var(--bg-bottom) 100%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 264px 1fr;
+  min-height: 100vh;
+  gap: 18px;
+  padding: 18px;
+}
+
+.sidebar {
+  background: var(--panel);
+  border: 1px solid var(--border-soft);
+  border-radius: 28px;
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px 10px;
+  border-bottom: 1px solid rgba(60, 60, 67, 0.16);
+}
+
+.brand .logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: linear-gradient(180deg, #111111 0%, #3d3d3f 100%);
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  letter-spacing: 0.5px;
+}
+
+.brand .meta {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.brand .meta .title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.brand .meta .subtitle {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+#nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  flex: 1;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.menu li {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-radius: 12px;
+  padding: 7px 10px;
+  color: var(--text-secondary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.menu li i {
+  display: none;
+  width: 0;
+  margin: 0;
+  font-size: 0;
+}
+
+.menu li strong {
+  display: block;
+  width: 100%;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  color: inherit;
+}
+
+.menu li strong.cur {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.menu li:hover {
+  background-color: rgba(0, 113, 227, 0.08);
+  color: var(--text-primary);
+}
+
+.menu .menu-ch {
+  margin-left: 6px;
+  margin-top: 8px;
+  width: calc(100% - 6px);
+  display: none;
+}
+
+.menu .menu-ch li {
+  margin-top: 4px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+#side_nav > li {
+  display: block;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+}
+
+#side_nav > li > i {
+  display: none;
+}
+
+#side_nav > li > strong {
+  display: block;
+  font-size: 1em;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1.2;
+  margin: 7px 10px;
+  cursor: pointer;
+}
+
+#side_nav > li > .menu-ch {
+  margin: 0 0 0 8px;
+  width: calc(100% - 8px);
+  display: none;
+}
+
+#side_nav > li > .menu-ch li {
+  display: block;
+  margin-top: 0;
+  border-radius: 10px;
+  padding: 6px 10px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+#side_nav > li > .menu-ch li + li {
+  margin-top: 2px;
+}
+
+#side_nav > li > .menu-ch li strong {
+  font-size: 0.92em;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1.25;
+}
+
+#side_nav > li > .menu-ch li:hover {
+  background: rgba(0, 113, 227, 0.08);
+}
+
+#side_nav > li > .menu-ch li strong.cur {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.quick-links {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(60, 60, 67, 0.12);
+  display: grid;
+  gap: 8px;
+}
+
+.quick-links a {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 11px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.58);
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+}
+
+.quick-links a:hover {
+  transform: translateX(2px);
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.content {
+  min-width: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 14px;
+  align-content: stretch;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.main-scroll {
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  padding-right: 2px;
+}
+
+.topbar,
+.card {
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-card);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  overflow: hidden;
+  background-clip: padding-box;
+}
+
+.topbar {
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.device-block {
+  min-width: 220px;
+}
+
+.device-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.device-title {
+  font-size: clamp(20px, 2.2vw, 30px);
+  font-weight: 680;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  word-break: break-word;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  font-size: 13px;
+  background: linear-gradient(145deg, #77d886 0%, #34c759 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32);
+}
+
+.status.off {
+  background: linear-gradient(145deg, #a4a4aa 0%, #787880 100%);
+}
+
+.refresh {
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+#loadtime {
+  margin-left: 6px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.logout {
+  border: none;
+  background: rgba(255, 59, 48, 0.12);
+  color: #b42318;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.logout:hover {
+  background: rgba(255, 59, 48, 0.2);
+}
+.status-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .card {
+            padding: 14px;
+            min-width: 0;
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .card-sub {
+            margin-top: 10px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            user-select: none;
+        }
+
+        .card-sub span {
+            cursor: pointer;
+        }
+
+        .val {
+            border-radius: 18px;
+            min-height: 122px;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            padding: 12px;
+            color: #ffffff;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .green-round {
+            background: linear-gradient(140deg, #4ad569 0%, #0ca843 100%);
+        }
+
+        .red-round {
+            background: linear-gradient(140deg, #ff6f66 0%, #d70015 100%);
+        }
+
+        .status-metric {
+            font-size: 34px;
+            line-height: 1;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+        }
+
+        .status-unit {
+            font-size: 13px;
+            opacity: 0.88;
+        }
+
+        .fan-stack,
+        .temp-stack {
+            display: grid;
+            gap: 8px;
+        }
+
+        .fan-ring-panel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 122px;
+        }
+
+        .fan-ring {
+            --fan-pct: 0;
+            width: 106px;
+            height: 106px;
+            border-radius: 50%;
+            background: conic-gradient(var(--ring-color, #34c759) calc(var(--fan-pct) * 1%), rgba(120, 120, 128, 0.2) 0);
+            position: relative;
+            margin: 2px auto;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24);
+        }
+
+        .fan-ring::after {
+            content: "";
+            position: absolute;
+            inset: 11px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(60, 60, 67, 0.12);
+        }
+
+        .fan-ring.is-ok {
+            --ring-color: #34c759;
+        }
+
+        .fan-ring.is-bad {
+            --ring-color: #ff3b30;
+        }
+
+        .fan-ring-value {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            display: grid;
+            place-items: center;
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        .fan-ring-tooltip {
+            display: none;
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 8px);
+            transform: translateX(-50%);
+            min-width: 74px;
+            padding: 6px 8px;
+            border-radius: 10px;
+            border: 1px solid rgba(60, 60, 67, 0.16);
+            background: rgba(255, 255, 255, 0.96);
+            color: var(--text-primary);
+            font-size: 11px;
+            line-height: 1;
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .fan-ring:hover .fan-ring-tooltip,
+        .fan-ring:focus .fan-ring-tooltip {
+            display: block;
+        }
+
+        .fan,
+        .temp {
+            border-radius: 12px;
+            padding: 8px 10px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .fan {
+            color: #ffffff;
+        }
+
+        .temp {
+            --temp-pct: 0%;
+            --temp-fill-start: #56d971;
+            --temp-fill-end: #25ae54;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            border: 1px solid rgba(60, 60, 67, 0.12);
+            background:
+                linear-gradient(90deg,
+                    var(--temp-fill-start) 0%,
+                    var(--temp-fill-end) var(--temp-pct),
+                    rgba(60, 60, 67, 0.08) var(--temp-pct),
+                    rgba(60, 60, 67, 0.08) 100%);
+            transition: background 0.25s ease;
+        }
+
+        .temp.temp-warn {
+            --temp-fill-start: #ff7f75;
+            --temp-fill-end: #dc1f2f;
+            color: #ffffff;
+        }
+
+        .temp.temp-warn .temp-tag {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        .temp-tag {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 4px;
+            padding: 1px 6px;
+            border-radius: 999px;
+            background: rgba(60, 60, 67, 0.14);
+            color: var(--text-secondary);
+            font-size: 10px;
+            line-height: 1.2;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .green-bg {
+            background: linear-gradient(140deg, #56d971 0%, #25ae54 100%);
+        }
+
+        .red-bg {
+            background: linear-gradient(140deg, #ff7f75 0%, #dc1f2f 100%);
+        }
+
+        .placeholder {
+            display: none;
+            min-height: 170px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.08));
+            border-style: dashed;
+        }
+
+        .hash-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .stat-large {
+            font-size: clamp(27px, 2.6vw, 38px);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1;
+            margin-top: 5px;
+            word-break: break-word;
+        }
+
+        .stat-unit {
+            margin-top: 7px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .uptime-grid {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .uptime-grid .item {
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 8px;
+            text-align: center;
+        }
+
+        .uptime-grid .num {
+            font-size: 23px;
+            font-weight: 680;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
+        .uptime-grid .lbl {
+            margin-top: 3px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+        }
+
+        .pool-section {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 12px;
+        }
+
+        .pool-table {
+            margin-top: 10px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .pool-row {
+            display: grid;
+            grid-template-columns: 92px 1fr;
+            gap: 8px;
+            align-items: center;
+            padding: 8px 10px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.74);
+            min-height: 40px;
+        }
+
+        .pool-label {
+            color: var(--text-secondary);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .pool-value {
+            font-size: 13px;
+            font-weight: 550;
+            line-height: 1.3;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .chart-wrap {
+            min-height: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        #piechart {
+            width: 100%;
+            min-height: 254px;
+        }
+
+        .line-card {
+            padding-bottom: 8px;
+        }
+
+        .line-card .card-title {
+            margin-bottom: 4px;
+        }
+
+        #linechart {
+            width: 100%;
+            min-height: 320px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .footer-item {
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.74);
+            padding: 10px;
+            min-height: 66px;
+        }
+
+        .footer-item .label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 6px;
+        }
+
+        .footer-item .value {
+            font-size: 13px;
+            line-height: 1.35;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+        }
+
+        @media (max-width: 1240px) {
+            .status-grid,
+            .hash-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .pool-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                min-height: auto;
+            }
+
+            .quick-links {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 760px) {
+            .layout {
+                padding: 12px;
+                gap: 12px;
+            }
+
+            .status-grid,
+            .hash-grid,
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-links {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                padding: 14px;
+            }
+
+            .top-actions {
+                justify-content: flex-start;
+            }
+
+            .uptime-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .pool-row {
+                grid-template-columns: 76px 1fr;
+            }
+
+            .fan-ring-panel { min-height: 114px; }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/5.3.5/apexcharts.min.js" integrity="sha512-dC9VWzoPczd9ppMRE/FJohD2fB7ByZ0VVLVCMlOrM2LHqoFFuVGcWch1riUcwKJuhWx8OhPjhJsAHrp4CP4gtw==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+</head>
+
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo">N3</div>
+                <div class="meta">
+                    <div class="title">Nano3 Dashboard</div>
+                </div>
+            </div>
+
+            <form name="cgiform" id="nav" method="post" action="">
+                <ul class="menu">
+                    <li><i></i><strong pageid="dashboard" onclick="tabChange(this);">Overview</strong></li>
+                    <li><i></i><strong pageid="cglog" onclick="tabChange(this);">Miner Health</strong></li>
+                    <li><i></i><strong pageid="cgconf" onclick="tabChange(this);">Configuration</strong></li>
+                    <li><i></i><strong pageid="network" onclick="tabChange(this);">Network</strong></li>
+                </ul>
+
+                <ul class="menu" id="side_nav">
+                    <li>
+                        <i></i><strong>System</strong>
+                        <ul class="menu-ch" style="display: none;">
+                            <li><i></i><strong pageid="admin" onclick="tabChange(this);">Password</strong></li>
+                            <li><i></i><strong pageid="upgrade" onclick="tabChange(this);">Upgrade</strong></li>
+                            <li><i></i><strong pageid="reboot1" onclick="reboot(this);">Reboot</strong></li>
+                            <li><i></i><strong pageid="resetfac1" onclick="resetSet(this);">Factory Reset</strong></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <div class="quick-links">
+                    <a href="https://shop.canaan.io" target="_blank" rel="noopener noreferrer">Shop</a>
+                    <a pageid="systemlog" onclick="tabChange(this);" style="cursor: pointer;">System log</a>
+                    <a href="https://canaan.io/support" target="_blank" rel="noopener noreferrer">Support</a>
+                    <a href="https://github.com/Canaan-Creative" target="_blank" rel="noopener noreferrer">Documents</a>
+                </div>
+            </form>
+        </aside>
+
+        <main class="content">
+            <header class="topbar">
+                <div class="device-block">
+                    <div class="device-label">Miner</div>
+                    <div class="device-title" id="hwtype">-</div>
+                </div>
+
+                <div class="top-actions">
+                    <div class="status" id="sys_status">Online</div>
+                    <div class="refresh">Latest refresh <span id="loadtime">-</span></div>
+                    <div class="logout" pageid="logout1" onclick="logout(this);">Logout</div>
+                </div>
+            </header>
+
+            <div class="main-scroll">
+            <section class="status-grid">
+                <article class="card">
+                    <div class="card-title">Mining status</div>
+                    <div class="val green-round" id="minerstatus_out">
+                        <div>
+                            <div class="status-metric" id="minerstatus">Healthy</div>
+                            <div class="status-unit">state</div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card-title">Network status</div>
+                    <div class="val green-round" id="networkstatus_out">
+                        <div>
+                            <div class="status-metric" id="networkstatus">0</div>
+                            <div class="status-unit">ms</div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card" id="miner_fan">
+                    <div class="card-title">Fan status</div>
+                    <div class="fan-ring-panel">
+                        <div id="fan_ring" class="fan-ring is-ok" tabindex="0" aria-label="Fan duty">
+                            <div id="fanr" class="fan-ring-value">0%</div>
+                            <div id="fan_rpm_tip" class="fan-ring-tooltip">-</div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card-title">Miner temperature</div>
+                    <div id="temp_show" class="temp-stack">
+                        <div id="temp" class="temp">-</div>
+                        <div id="temp1" class="temp">-</div>
+                    </div>
+                    <div id="tempf_show" class="temp-stack" style="display: none;">
+                        <div id="tempf" class="temp">-</div>
+                        <div id="temp1f" class="temp">-</div>
+                    </div>
+                    <div class="card-sub">
+                        <span switchid="tempc" onclick="tempSwitch(this);">&deg;C</span>
+                        <span>/</span>
+                        <span switchid="tempf" onclick="tempSwitch(this);">&deg;F</span>
+                    </div>
+                </article>
+
+                <article class="card placeholder" id="empty_box"></article>
+            </section>
+
+            <section class="hash-grid">
+                <article class="card">
+                    <div class="card-title">Real-time hashrate</div>
+                    <div class="stat-large" id="realtime">0</div>
+                    <div class="stat-unit">Th/s</div>
+                </article>
+
+                <article class="card">
+                    <div class="card-title">Average hashrate</div>
+                    <div class="stat-large" id="av">0</div>
+                    <div class="stat-unit">Th/s</div>
+                </article>
+
+                <article class="card">
+                    <div class="card-title">Rejected percentage</div>
+                    <div class="stat-large" id="rejectedp">0</div>
+                    <div class="stat-unit">%</div>
+                </article>
+
+                <article class="card">
+                    <div class="card-title">Uptime</div>
+                    <div class="uptime-grid">
+                        <div class="item">
+                            <div class="num" id="day">0</div>
+                            <div class="lbl">days</div>
+                        </div>
+                        <div class="item">
+                            <div class="num" id="hour">0</div>
+                            <div class="lbl">hours</div>
+                        </div>
+                        <div class="item">
+                            <div class="num" id="minute">0</div>
+                            <div class="lbl">mins</div>
+                        </div>
+                        <div class="item">
+                            <div class="num" id="second">0</div>
+                            <div class="lbl">secs</div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <section class="pool-section">
+                <article class="card">
+                    <div class="card-title">Current pool</div>
+                    <div class="pool-table">
+                        <div class="pool-row">
+                            <div class="pool-label">Address</div>
+                            <div class="pool-value" id="url"></div>
+                        </div>
+                        <div class="pool-row">
+                            <div class="pool-label">Worker</div>
+                            <div class="pool-value" id="worker"></div>
+                        </div>
+                        <div class="pool-row">
+                            <div class="pool-label">Accepted</div>
+                            <div class="pool-value" id="accepted"></div>
+                        </div>
+                        <div class="pool-row">
+                            <div class="pool-label">Rejected</div>
+                            <div class="pool-value" id="rejected"></div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card-title">Share quality</div>
+                    <div id="piechart" class="chart-wrap">loading chart...</div>
+                </article>
+            </section>
+
+            <section class="card line-card">
+                <div class="card-title">Hashrate Trends</div>
+                <div id="linechart" class="chart-wrap">loading chart...</div>
+            </section>
+            </div>
+
+            <footer class="card">
+                <div class="card-title">Device info</div>
+                <div class="footer-grid">
+                    <div class="footer-item">
+                        <div class="label">Mac Address</div>
+                        <div class="value" id="mac"></div>
+                    </div>
+                    <div class="footer-item">
+                        <div class="label">SSID</div>
+                        <div class="value" id="ssid"></div>
+                    </div>
+                    <div class="footer-item">
+                        <div class="label">IP Address</div>
+                        <div class="value" id="ipv4"></div>
+                    </div>
+                    <div class="footer-item">
+                        <div class="label">Firmware Version</div>
+                        <div class="value" id="version"></div>
+                    </div>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        function $(id) {
+            return document.getElementById(id);
+        }
+
+        function $$(name) {
+            return document.getElementsByName(name);
+        }
+
+        function addClass(id, cls) {
+            var elem = document.getElementById(id);
+            if (elem) {
+                elem.classList.add(cls);
+            }
+        }
+
+        function removeClass(id, cls) {
+            var elem = document.getElementById(id);
+            if (elem) {
+                elem.classList.remove(cls);
+            }
+        }
+
+        function getForm() {
+            return document.forms.cgiform || window.cgiform;
+        }
+
+        function definedOr(value, fallback) {
+            return value !== undefined ? value : fallback;
+        }
+
+        function AJAX(url, callback, errorCallback) {
+            var req = AJAX_init();
+            var completed = false;
+            if (req) {
+                req.onreadystatechange = AJAX_processRequest;
+                req.onerror = AJAX_processError;
+                req.ontimeout = AJAX_processTimeout;
+                try {
+                    req.timeout = 10000;
+                } catch (e) {
+                }
+            }
+
+            function AJAX_init() {
+                if (window.XMLHttpRequest) {
+                    return new XMLHttpRequest();
+                }
+                if (window.ActiveXObject) {
+                    return new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                return null;
+            }
+
+            function notifyError(type, status) {
+                if (completed) {
+                    return;
+                }
+                completed = true;
+                if (typeof errorCallback === "function") {
+                    errorCallback({ type: type, status: status || 0, url: url });
+                }
+            }
+
+            function AJAX_processRequest() {
+                if (!req || req.readyState !== 4 || completed) {
+                    return;
+                }
+                if (req.status >= 200 && req.status < 300) {
+                    completed = true;
+                    if (!callback) {
+                        return;
+                    }
+                    callback(req.responseText);
+                    return;
+                }
+                notifyError("http", req.status);
+            }
+
+            function AJAX_processError() {
+                notifyError("network", req ? req.status : 0);
+            }
+
+            function AJAX_processTimeout() {
+                notifyError("timeout", req ? req.status : 0);
+            }
+
+            this.doGet = function () {
+                if (!req) {
+                    notifyError("unsupported", 0);
+                    return;
+                }
+                req.open("GET", url, true);
+                req.send(null);
+            };
+
+            this.doPost = function (body) {
+                if (!req) {
+                    notifyError("unsupported", 0);
+                    return;
+                }
+                req.open("POST", url, true);
+                req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                req.setRequestHeader("ISAJAX", "yes");
+                req.send(body);
+            };
+        }
+
+        function ajaxDecodeEntities(text) {
+            var src = String(text || "");
+            if (src.indexOf("&") === -1) {
+                return src;
+            }
+            var el = document.createElement("textarea");
+            el.innerHTML = src;
+            return el.value;
+        }
+
+        function ajaxNormalizeScript(text, replaceBr) {
+            var src = String(text || "");
+            if (replaceBr !== false) {
+                src = src.replace(/<br\s*\/?>/gi, "\n");
+            }
+            return ajaxDecodeEntities(src);
+        }
+
+        function ajaxEscapeJsonStringValue(input) {
+            return String(input).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+        }
+
+        function ajaxNormalizeJsonLike(text) {
+            var normalized = String(text || "");
+            normalized = normalized.replace(/\r/g, "");
+
+            normalized = normalized.replace(/([{,]\s*)'([^'\\]*(?:\\.[^'\\]*)*)'\s*:/g, function (_, prefix, key) {
+                return prefix + '"' + ajaxEscapeJsonStringValue(key) + '":';
+            });
+
+            normalized = normalized.replace(/([{,]\s*)([A-Za-z_$][A-Za-z0-9_$-]*)\s*:/g, function (_, prefix, key) {
+                return prefix + '"' + key + '":';
+            });
+
+            normalized = normalized.replace(/:\s*'([^'\\]*(?:\\.[^'\\]*)*)'(\s*[,}\]])/g, function (_, value, tail) {
+                return ': "' + ajaxEscapeJsonStringValue(value) + '"' + tail;
+            });
+
+            normalized = normalized.replace(/([\[,]\s*)'([^'\\]*(?:\\.[^'\\]*)*)'(\s*[,}\]])/g, function (_, prefix, value, tail) {
+                return prefix + '"' + ajaxEscapeJsonStringValue(value) + '"' + tail;
+            });
+
+            normalized = normalized.replace(/([:\[,]\s*)(None|True|False)(\s*[,}\]])/g, function (_, prefix, literal, tail) {
+                if (literal === "None") {
+                    return prefix + "null" + tail;
+                }
+                if (literal === "True") {
+                    return prefix + "true" + tail;
+                }
+                return prefix + "false" + tail;
+            });
+
+            normalized = normalized.replace(/,\s*([}\]])/g, "$1");
+            return normalized;
+        }
+
+        function ajaxParseJsonLikeValue(text) {
+            var src = String(text || "").trim();
+            if (!src) {
+                return null;
+            }
+            try {
+                return JSON.parse(src);
+            } catch (e) {
+            }
+            try {
+                return JSON.parse(ajaxNormalizeJsonLike(src));
+            } catch (e2) {
+            }
+            return null;
+        }
+
+        function ajaxExtractCallbackArgs(script, callbackName) {
+            var src = String(script || "");
+            var token = String(callbackName || "") + "(";
+            var results = [];
+            var from = 0;
+
+            while (from < src.length) {
+                var start = src.indexOf(token, from);
+                if (start < 0) {
+                    break;
+                }
+                var prev = start > 0 ? src.charAt(start - 1) : "";
+                if (/[A-Za-z0-9_$\.]/.test(prev)) {
+                    from = start + token.length;
+                    continue;
+                }
+
+                var i = start + token.length;
+                var depth = 1;
+                var inString = false;
+                var quote = "";
+                var escaped = false;
+                for (; i < src.length; i++) {
+                    var ch = src.charAt(i);
+                    if (inString) {
+                        if (escaped) {
+                            escaped = false;
+                            continue;
+                        }
+                        if (ch === "\\") {
+                            escaped = true;
+                            continue;
+                        }
+                        if (ch === quote) {
+                            inString = false;
+                        }
+                        continue;
+                    }
+                    if (ch === '"' || ch === "'") {
+                        inString = true;
+                        quote = ch;
+                        continue;
+                    }
+                    if (ch === "(") {
+                        depth++;
+                        continue;
+                    }
+                    if (ch === ")") {
+                        depth--;
+                        if (depth === 0) {
+                            results.push(src.slice(start + token.length, i).trim());
+                            from = i + 1;
+                            break;
+                        }
+                    }
+                }
+
+                if (depth !== 0) {
+                    break;
+                }
+            }
+            return results;
+        }
+
+        function ajaxExtractFirstArg(argListText) {
+            var src = String(argListText || "").trim();
+            if (!src) {
+                return "";
+            }
+            var inString = false;
+            var quote = "";
+            var escaped = false;
+            var braceDepth = 0;
+            var bracketDepth = 0;
+            var parenDepth = 0;
+            for (var i = 0; i < src.length; i++) {
+                var ch = src.charAt(i);
+                if (inString) {
+                    if (escaped) {
+                        escaped = false;
+                        continue;
+                    }
+                    if (ch === "\\") {
+                        escaped = true;
+                        continue;
+                    }
+                    if (ch === quote) {
+                        inString = false;
+                    }
+                    continue;
+                }
+                if (ch === '"' || ch === "'") {
+                    inString = true;
+                    quote = ch;
+                    continue;
+                }
+                if (ch === "{") {
+                    braceDepth++;
+                    continue;
+                }
+                if (ch === "}") {
+                    braceDepth--;
+                    continue;
+                }
+                if (ch === "[") {
+                    bracketDepth++;
+                    continue;
+                }
+                if (ch === "]") {
+                    bracketDepth--;
+                    continue;
+                }
+                if (ch === "(") {
+                    parenDepth++;
+                    continue;
+                }
+                if (ch === ")") {
+                    parenDepth--;
+                    continue;
+                }
+                if (ch === "," && braceDepth === 0 && bracketDepth === 0 && parenDepth === 0) {
+                    return src.slice(0, i).trim();
+                }
+            }
+            return src;
+        }
+
+        function ajaxParseCallbackArg(text) {
+            var src = String(text || "").trim();
+            if (!src) {
+                return undefined;
+            }
+            var parsed = ajaxParseJsonLikeValue(src);
+            if (parsed !== null) {
+                return parsed;
+            }
+            if (/^-?[0-9]+(?:\.[0-9]+)?$/.test(src)) {
+                return Number(src);
+            }
+            if (/^(true|false)$/i.test(src)) {
+                return /^true$/i.test(src);
+            }
+            if (/^(null|none)$/i.test(src)) {
+                return null;
+            }
+            if ((src.charAt(0) === '"' && src.charAt(src.length - 1) === '"') || (src.charAt(0) === "'" && src.charAt(src.length - 1) === "'")) {
+                return src.slice(1, -1).replace(/\\'/g, "'").replace(/\\"/g, '"').replace(/\\\\/g, "\\");
+            }
+            return src;
+        }
+
+        function ajaxRunAllowedCallbacks(script, allowedCallbacks, replaceBr) {
+            var src = ajaxNormalizeScript(script, replaceBr);
+            var result = { invoked: false, errored: false, count: 0, normalized: src };
+            for (var callbackName in allowedCallbacks) {
+                if (!Object.prototype.hasOwnProperty.call(allowedCallbacks, callbackName)) {
+                    continue;
+                }
+                var cb = allowedCallbacks[callbackName];
+                if (typeof cb !== "function") {
+                    continue;
+                }
+                var matches = ajaxExtractCallbackArgs(src, callbackName);
+                for (var i = 0; i < matches.length; i++) {
+                    var firstArg = ajaxExtractFirstArg(matches[i]);
+                    var argValue = ajaxParseCallbackArg(firstArg);
+                    try {
+                        cb(argValue);
+                        result.invoked = true;
+                        result.count++;
+                    } catch (e) {
+                        result.errored = true;
+                    }
+                }
+            }
+            return result;
+        }
+
+        (function setupSystemNav() {
+            var navWrap = document.getElementById("side_nav");
+            if (!navWrap) {
+                return;
+            }
+            var topItems = navWrap.children;
+            for (var i = 0; i < topItems.length; i++) {
+                var rootStrong = topItems[i].getElementsByTagName("strong")[0];
+                if (!rootStrong) {
+                    continue;
+                }
+                rootStrong.onclick = function () {
+                    if (this.getAttribute("pageid")) {
+                        return;
+                    }
+                    var submenu = this.parentNode.querySelector(".menu-ch");
+                    if (!submenu) {
+                        return;
+                    }
+                    submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+                };
+            }
+        })();
+
+        function keepSystemMenuOpenForSystemPages() {
+            var path = (window.location.pathname || "").toLowerCase();
+            var isSystemPage = path.indexOf("admin") !== -1 || path.indexOf("upgrade") !== -1 || path.indexOf("systemlog") !== -1 || path.indexOf("system_log") !== -1;
+            if (!isSystemPage) {
+                return;
+            }
+            var submenu = document.querySelector("#side_nav .menu-ch");
+            if (submenu) {
+                submenu.style.display = "block";
+            }
+        }
+
+        function logout(o) {
+            var win = confirm("Are you sure you want to logout?");
+            if (win === true) {
+                try {
+                    if (window.sessionStorage) {
+                        sessionStorage.clear();
+                    }
+                } catch (e) {}
+                var form = getForm();
+                form.action = "logout.cgi";
+                form.submit();
+            }
+            return false;
+        }
+
+        function reboot(o) {
+            var win = confirm("Are you sure you want to reboot?");
+            if (win === true) {
+                var form = getForm();
+                form.action = "reboot_btn.cgi";
+                form.submit();
+            }
+            return false;
+        }
+
+        function resetSet(o) {
+            var win = confirm("Factory resetting?");
+            if (win === true) {
+                var form = getForm();
+                form.action = "resetfac_btn.cgi";
+                form.submit();
+            }
+            return false;
+        }
+
+        function tabChange(o) {
+            var pageId = o.getAttribute("pageid");
+            if (!pageId) {
+                return false;
+            }
+            var url = pageId + ".cgi";
+            var form = getForm();
+            form.action = url;
+            form.submit();
+            return false;
+        }
+
+        function UpdatePageCallback(req) {
+            if (!req || typeof req !== "object") {
+                return;
+            }
+            var pageId = req.pageId;
+            if (!pageId) {
+                return;
+            }
+            var emList = document.querySelectorAll("strong[pageid]");
+            for (var i = 0; i < emList.length; i++) {
+                var item = emList[i];
+                if (item.getAttribute("pageid") === pageId) {
+                    item.setAttribute("class", "cur");
+                    if (item.previousElementSibling) {
+                        item.previousElementSibling.setAttribute("class", "iconfont");
+                    }
+                    var submenu = item.parentNode;
+                    while (submenu && submenu !== document && (!submenu.className || submenu.className.indexOf("menu-ch") === -1)) {
+                        submenu = submenu.parentNode;
+                    }
+                    if (submenu) {
+                        submenu.style.display = "block";
+                    }
+                } else {
+                    item.setAttribute("class", "");
+                    if (item.previousElementSibling) {
+                        item.previousElementSibling.setAttribute("class", "");
+                    }
+                }
+            }
+        }
+
+        function formatDateTime(inputTime) {
+            var date = new Date(inputTime);
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            m = m < 10 ? ("0" + m) : m;
+            var d = date.getDate();
+            d = d < 10 ? ("0" + d) : d;
+            var h = date.getHours();
+            h = h < 10 ? ("0" + h) : h;
+            var minute = date.getMinutes();
+            minute = minute < 10 ? ("0" + minute) : minute;
+            var second = date.getSeconds();
+            second = second < 10 ? ("0" + second) : second;
+            return y + "-" + m + "-" + d + " " + h + ":" + minute + ":" + second;
+        }
+
+        function minerinfoCallback(req) {
+            req.hwtype = definedOr(req.hwtype, "");
+            req.mac = definedOr(req.mac, "");
+            req.ssid = definedOr(req.ssid, "");
+            req.ipv4 = definedOr(req.ipv4, "");
+            req.version = definedOr(req.version, "");
+
+            $("hwtype").textContent = req.hwtype;
+            $("loadtime").textContent = formatDateTime(new Date().getTime());
+
+            if (req.sys_status === "1") {
+                $("sys_status").textContent = "Online";
+                $("sys_status").setAttribute("class", "status on");
+            } else {
+                $("sys_status").textContent = "Idle";
+                $("sys_status").setAttribute("class", "status off");
+            }
+
+            $("mac").textContent = req.mac;
+            $("ssid").textContent = req.ssid;
+            $("ipv4").textContent = req.ipv4;
+            $("version").textContent = req.version;
+        }
+
+        function updateMinerInfo(isTimeout) {
+            var oUpdate = new AJAX("get_minerinfo.cgi?num=" + Math.random(), function (t) {
+                ajaxRunAllowedCallbacks(t, {
+                    UpdatePageCallback: UpdatePageCallback,
+                    minerinfoCallback: minerinfoCallback
+                });
+            }, function () {
+                $("sys_status").textContent = "Offline";
+                $("sys_status").setAttribute("class", "status off");
+            });
+            oUpdate.doGet();
+            if (isTimeout) {
+                setTimeout(function () {
+                    updateMinerInfo(true);
+                }, 15000);
+            }
+        }
+
+        function parsePercentValue(value) {
+            if (value === undefined || value === null || value === "") {
+                return NaN;
+            }
+            var n = parseFloat(String(value).replace(",", "."));
+            return isNaN(n) ? NaN : n;
+        }
+
+        function updateFanDutyRing(value) {
+            var ring = $("fan_ring");
+            var label = $("fanr");
+            if (!ring || !label) {
+                return;
+            }
+            var n = parsePercentValue(value);
+            if (isNaN(n)) {
+                label.textContent = "-";
+                ring.style.setProperty("--fan-pct", "0");
+                ring.setAttribute("class", "fan-ring is-bad");
+                return;
+            }
+            var pct = Math.max(0, Math.min(100, n));
+            label.textContent = Math.round(pct) + "%";
+            ring.style.setProperty("--fan-pct", pct.toFixed(2));
+            ring.setAttribute("class", pct === 0 ? "fan-ring is-bad" : "fan-ring is-ok");
+        }
+
+        function updateFanRpmTip(value) {
+            var tip = $("fan_rpm_tip");
+            if (!tip) {
+                return;
+            }
+            if (value === undefined || value === null || value === "") {
+                tip.textContent = "RPM: -";
+                return;
+            }
+            tip.textContent = "RPM: " + String(value);
+        }
+
+        function parseTempC(value) {
+            if (value === undefined || value === null || value === "") {
+                return NaN;
+            }
+            var n = parseFloat(String(value).replace(",", "."));
+            return isNaN(n) ? NaN : n;
+        }
+
+        function setTempBar(id, celsiusValue) {
+            var el = $(id);
+            if (!el) {
+                return;
+            }
+            var t = parseTempC(celsiusValue);
+            if (isNaN(t)) {
+                el.style.setProperty("--temp-pct", "0%");
+                el.setAttribute("class", "temp temp-warn");
+                return;
+            }
+            var pct = Math.max(0, Math.min(100, (t / 90) * 100));
+            el.style.setProperty("--temp-pct", pct.toFixed(2) + "%");
+            el.setAttribute("class", t >= 80 ? "temp temp-warn" : "temp");
+        }
+
+        function renderTempLabel(value, unit, tag) {
+            if (value === undefined || value === null || value === "") {
+                return "-";
+            }
+            return String(value) + "\u00B0" + unit + " <span class=\"temp-tag\">" + tag + "</span>";
+        }
+
+        function tempSwitch(o) {
+            var tmp = o.getAttribute("switchid");
+            if (tmp === "tempc") {
+                $("temp_show").style.display = "grid";
+                $("tempf_show").style.display = "none";
+            } else {
+                $("temp_show").style.display = "none";
+                $("tempf_show").style.display = "grid";
+            }
+        }
+
+        function secondsFormat(s) {
+            var day = Math.floor(s / (24 * 3600));
+            var hour = Math.floor((s - day * 24 * 3600) / 3600);
+            var minute = Math.floor((s - day * 24 * 3600 - hour * 3600) / 60);
+            var second = s - day * 24 * 3600 - hour * 3600 - minute * 60;
+            return {
+                day: day,
+                hour: hour,
+                minute: minute,
+                second: second
+            };
+        }
+
+        var arr = ["hash", "fan"];
+        var err = [];
+        var timmer;
+        var index = 0;
+        var _hash_5m = 0;
+        var _av = 0;
+
+        function minerstatusShow() {
+            if (!err.length) {
+                return;
+            }
+            if (index === err.length) {
+                index = 0;
+            }
+            $("minerstatus").textContent = err[index];
+            index++;
+        }
+
+        function homeCallback(req) {
+            if (!req || typeof req !== "object") {
+                return;
+            }
+            _hash_5m = definedOr(req.hash_5m, 0);
+            _av = definedOr(req.av, 0);
+
+            clearInterval(timmer);
+            index = 0;
+            err = [];
+
+            var count = 0;
+            var minerstatus = req.minerstatus || "";
+            for (var i = 0; i < minerstatus.length; i++) {
+                if (minerstatus.charAt(i) === "1") {
+                    err.push(arr[i]);
+                    count++;
+                }
+            }
+
+            if (count > 0) {
+                $("minerstatus_out").setAttribute("class", "val red-round");
+                minerstatusShow();
+                timmer = setInterval(minerstatusShow, 500);
+            } else {
+                $("minerstatus_out").setAttribute("class", "val green-round");
+                $("minerstatus").textContent = "Healthy";
+            }
+
+            var networkstatus = req.ping;
+            if (networkstatus === "0") {
+                $("networkstatus_out").setAttribute("class", "val red-round");
+            } else {
+                $("networkstatus_out").setAttribute("class", "val green-round");
+            }
+            $("networkstatus").textContent = networkstatus;
+
+            if (req.fan1 === undefined && req.fanr === undefined) {
+                $("miner_fan").style.display = "none";
+                $("empty_box").style.display = "block";
+            } else {
+                $("miner_fan").style.display = "block";
+                $("empty_box").style.display = "none";
+            }
+
+            updateFanDutyRing(definedOr(req.fanr, 0));
+            updateFanRpmTip(req.fan1);
+
+            var temp = req.temperature;
+            var temp1 = req.MTavg1;
+            var tempf = req.temperaturef;
+            var temp1f = req.MTavg1f;
+
+            $("temp").innerHTML = renderTempLabel(temp, "C", "Board");
+            $("temp1").innerHTML = renderTempLabel(temp1, "C", "ASIC");
+            $("tempf").innerHTML = renderTempLabel(tempf, "F", "Board");
+            $("temp1f").innerHTML = renderTempLabel(temp1f, "F", "ASIC");
+            $("temp1").style.display = "block";
+            $("temp1f").style.display = "block";
+
+            setTempBar("temp", temp);
+            setTempBar("tempf", temp);
+            setTempBar("temp1", temp1);
+            setTempBar("temp1f", temp1);
+
+            var realtimeValue = parseFloat(req.hash_5m);
+            var averageValue = parseFloat(req.av);
+            $("realtime").textContent = isNaN(realtimeValue) ? req.hash_5m : realtimeValue.toFixed(2);
+            $("av").textContent = isNaN(averageValue) ? req.av : averageValue.toFixed(2);
+            $("rejectedp").textContent = req.rejected_percentage;
+
+            var s = parseInt(req.elapsed, 10);
+            if (isNaN(s) || s < 0) {
+                s = 0;
+            }
+            var time = secondsFormat(s);
+            $("day").textContent = time.day;
+            $("hour").textContent = time.hour;
+            $("minute").textContent = time.minute;
+            $("second").textContent = time.second;
+
+            $("url").textContent = req.url;
+            $("worker").textContent = req.worker;
+            $("accepted").textContent = req.accepted;
+            $("rejected").textContent = req.reject;
+
+            if (window.ApexCharts) {
+                var a = parseInt(req.accepted, 10);
+                var r = parseInt(req.reject, 10);
+                if (isNaN(a) || a < 0) {
+                    a = 0;
+                }
+                if (isNaN(r) || r < 0) {
+                    r = 0;
+                }
+                loadPieData(a, r);
+
+                var x = new Date().getTime();
+                var y = parseFloat(_hash_5m);
+                var y1 = parseFloat(_av);
+                loadLineData(x, isNaN(y) ? 0 : y, isNaN(y1) ? 0 : y1);
+            }
+        }
+
+        function updateHome(isTimeout) {
+            var oUpdate = new AJAX("get_home.cgi?num=" + Math.random(), function (t) {
+                ajaxRunAllowedCallbacks(t, {
+                    UpdatePageCallback: UpdatePageCallback,
+                    homeCallback: homeCallback
+                });
+            });
+            oUpdate.doGet();
+            if (isTimeout) {
+                setTimeout(function () {
+                    updateHome(true);
+                }, 15000);
+            }
+        }
+
+        var pieChatObj;
+        function ensurePieChart() {
+            if (pieChatObj || !window.ApexCharts) {
+                return;
+            }
+            pieChatObj = new ApexCharts(document.querySelector("#piechart"), {
+                chart: {
+                    type: "donut",
+                    height: 260,
+                    animations: {
+                        speed: 250
+                    },
+                    toolbar: {
+                        show: false
+                    }
+                },
+                labels: ["Accepted", "Rejected"],
+                series: [100, 0],
+                colors: ["#34c759", "#ff3b30"],
+                dataLabels: {
+                    enabled: true,
+                    formatter: function (val) {
+                        return val.toFixed(2) + "%";
+                    }
+                },
+                legend: {
+                    position: "bottom",
+                    fontSize: "12px"
+                },
+                stroke: {
+                    width: 0
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return val.toFixed(2) + "%";
+                        }
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            size: "72%"
+                        }
+                    }
+                }
+            });
+            pieChatObj.render();
+        }
+
+        function loadPieData(accepted, rejected) {
+            ensurePieChart();
+            if (!pieChatObj) {
+                return;
+            }
+            var total = accepted + rejected;
+            var acceptedPercent = total > 0 ? (accepted * 100 / total) : 100;
+            var rejectedPercent = total > 0 ? (rejected * 100 / total) : 0;
+            pieChatObj.updateSeries([acceptedPercent, rejectedPercent]);
+        }
+
+        var lineChatObj;
+        var lineSeries = {
+            realtime: [],
+            average: []
+        };
+        var maxPoints = 120;
+
+        function formatHashrateLabel(value) {
+            return value.toFixed(2) + " Th/s";
+        }
+
+        function buildYAxisConfig(min, max) {
+            return [
+                {
+                    min: min,
+                    max: max,
+                    tickAmount: 6,
+                    labels: {
+                        formatter: function (value) {
+                            return formatHashrateLabel(value);
+                        }
+                    }
+                },
+                {
+                    opposite: true,
+                    min: min,
+                    max: max,
+                    tickAmount: 6,
+                    labels: {
+                        formatter: function (value) {
+                            return formatHashrateLabel(value);
+                        }
+                    }
+                }
+            ];
+        }
+
+        function getHashrateBounds() {
+            var min = Infinity;
+            var max = -Infinity;
+            var i;
+
+            for (i = 0; i < lineSeries.realtime.length; i++) {
+                var rt = lineSeries.realtime[i][1];
+                var av = lineSeries.average[i][1];
+                if (rt < min) {
+                    min = rt;
+                }
+                if (rt > max) {
+                    max = rt;
+                }
+                if (av < min) {
+                    min = av;
+                }
+                if (av > max) {
+                    max = av;
+                }
+            }
+
+            if (min === Infinity || max === -Infinity) {
+                return { min: 0, max: 1 };
+            }
+
+            if (min === max) {
+                var delta = min === 0 ? 1 : Math.abs(min) * 0.08;
+                return { min: Math.max(0, min - delta), max: max + delta };
+            }
+
+            var pad = (max - min) * 0.08;
+            return { min: Math.max(0, min - pad), max: max + pad };
+        }
+
+        function ensureLineChart() {
+            if (lineChatObj || !window.ApexCharts) {
+                return;
+            }
+            lineChatObj = new ApexCharts(document.querySelector("#linechart"), {
+                chart: {
+                    type: "area",
+                    height: 340,
+                    toolbar: {
+                        show: false
+                    },
+                    zoom: {
+                        enabled: false
+                    },
+                    animations: {
+                        enabled: false
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                series: [
+                    {
+                        name: "Real-time",
+                        data: []
+                    },
+                    {
+                        name: "Average",
+                        data: []
+                    }
+                ],
+                colors: ["#0071e3", "#ff9f0a"],
+                stroke: {
+                    curve: "smooth",
+                    width: [3, 3]
+                },
+                markers: {
+                    size: 0,
+                    hover: {
+                        sizeOffset: 4
+                    }
+                },
+                fill: {
+                    type: "gradient",
+                    gradient: {
+                        shadeIntensity: 1,
+                        opacityFrom: 0.24,
+                        opacityTo: 0.02,
+                        stops: [0, 92, 100]
+                    }
+                },
+                xaxis: {
+                    type: "datetime",
+                    labels: {
+                        datetimeUTC: false,
+                        format: "HH:mm:ss"
+                    }
+                },
+                yaxis: buildYAxisConfig(0, 1),
+                grid: {
+                    borderColor: "rgba(60, 60, 67, 0.12)",
+                    strokeDashArray: 3,
+                    padding: {
+                        left: 8,
+                        right: 6
+                    }
+                },
+                legend: {
+                    position: "top",
+                    horizontalAlign: "left"
+                },
+                tooltip: {
+                    x: {
+                        format: "yyyy-MM-dd HH:mm:ss"
+                    },
+                    y: {
+                        formatter: function (value) {
+                            return formatHashrateLabel(value);
+                        }
+                    }
+                },
+                noData: {
+                    text: "Waiting for miner data"
+                }
+            });
+            lineChatObj.render();
+        }
+
+        function loadLineData(x, y1, y2) {
+            ensureLineChart();
+            if (!lineChatObj) {
+                return;
+            }
+
+            lineSeries.realtime.push([x, y1]);
+            lineSeries.average.push([x, y2]);
+
+            if (lineSeries.realtime.length > maxPoints) {
+                lineSeries.realtime.shift();
+                lineSeries.average.shift();
+            }
+
+            var bounds = getHashrateBounds();
+            lineChatObj.updateOptions({
+                yaxis: buildYAxisConfig(bounds.min, bounds.max)
+            }, false, false);
+
+            lineChatObj.updateSeries([
+                {
+                    name: "Real-time",
+                    data: lineSeries.realtime
+                },
+                {
+                    name: "Average",
+                    data: lineSeries.average
+                }
+            ], false);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+      keepSystemMenuOpenForSystemPages();
+            $("loadtime").textContent = formatDateTime(new Date().getTime());
+            ensurePieChart();
+            ensureLineChart();
+            updateMinerInfo(true);
+            updateHome(true);
+        });
+    </script>
+</body>
+
+</html>

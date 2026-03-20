@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Avalon Device</title>
+    <link rel="icon" href="data:,">
+<style>
+:root {
+  --bg-top: #f9fafc;
+  --bg-mid: #edf0f5;
+  --bg-bottom: #e9edf4;
+  --panel: rgba(255, 255, 255, 0.72);
+  --panel-strong: rgba(255, 255, 255, 0.88);
+  --border-soft: rgba(255, 255, 255, 0.62);
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --accent: #0071e3;
+  --good: #34c759;
+  --bad: #ff3b30;
+  --warn: #ff9f0a;
+  --shadow-soft: 0 18px 42px rgba(15, 23, 42, 0.12);
+  --radius-card: 22px;
+  --radius-pill: 999px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text-primary);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(0, 113, 227, 0.16), transparent 34%),
+    radial-gradient(circle at 95% 100%, rgba(52, 199, 89, 0.16), transparent 30%),
+    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 52%, var(--bg-bottom) 100%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 264px 1fr;
+  min-height: 100vh;
+  gap: 18px;
+  padding: 18px;
+}
+
+.sidebar {
+  background: var(--panel);
+  border: 1px solid var(--border-soft);
+  border-radius: 28px;
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px 10px;
+  border-bottom: 1px solid rgba(60, 60, 67, 0.16);
+}
+
+.brand .logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: linear-gradient(180deg, #111111 0%, #3d3d3f 100%);
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  letter-spacing: 0.5px;
+}
+
+.brand .meta {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.brand .meta .title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.brand .meta .subtitle {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+#nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  flex: 1;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.menu li {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-radius: 12px;
+  padding: 7px 10px;
+  color: var(--text-secondary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.menu li i {
+  display: none;
+  width: 0;
+  margin: 0;
+  font-size: 0;
+}
+
+.menu li strong {
+  display: block;
+  width: 100%;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  color: inherit;
+}
+
+.menu li strong.cur {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.menu li:hover {
+  background-color: rgba(0, 113, 227, 0.08);
+  color: var(--text-primary);
+}
+
+.menu .menu-ch {
+  margin-left: 6px;
+  margin-top: 8px;
+  width: calc(100% - 6px);
+  display: none;
+}
+
+.menu .menu-ch li {
+  margin-top: 4px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+#side_nav > li {
+  display: block;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+}
+
+#side_nav > li > i {
+  display: none;
+}
+
+#side_nav > li > strong {
+  display: block;
+  font-size: 1em;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1.2;
+  margin: 7px 10px;
+  cursor: pointer;
+}
+
+#side_nav > li > .menu-ch {
+  margin: 0 0 0 8px;
+  width: calc(100% - 8px);
+  display: none;
+}
+
+#side_nav > li > .menu-ch li {
+  display: block;
+  margin-top: 0;
+  border-radius: 10px;
+  padding: 6px 10px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+#side_nav > li > .menu-ch li + li {
+  margin-top: 2px;
+}
+
+#side_nav > li > .menu-ch li strong {
+  font-size: 0.92em;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1.25;
+}
+
+#side_nav > li > .menu-ch li:hover {
+  background: rgba(0, 113, 227, 0.08);
+}
+
+#side_nav > li > .menu-ch li strong.cur {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.quick-links {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(60, 60, 67, 0.12);
+  display: grid;
+  gap: 8px;
+}
+
+.quick-links a {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 11px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.58);
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+}
+
+.quick-links a:hover {
+  transform: translateX(2px);
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.content {
+  min-width: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 14px;
+  align-content: stretch;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.main-scroll {
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  padding-right: 2px;
+}
+
+.topbar,
+.card {
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-card);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  overflow: hidden;
+  background-clip: padding-box;
+}
+
+.topbar {
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.device-block {
+  min-width: 220px;
+}
+
+.device-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.device-title {
+  font-size: clamp(20px, 2.2vw, 30px);
+  font-weight: 680;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  word-break: break-word;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  font-size: 13px;
+  background: linear-gradient(145deg, #77d886 0%, #34c759 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32);
+}
+
+.status.off {
+  background: linear-gradient(145deg, #a4a4aa 0%, #787880 100%);
+}
+
+.refresh {
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+#loadtime {
+  margin-left: 6px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.logout {
+  border: none;
+  background: rgba(255, 59, 48, 0.12);
+  color: #b42318;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.logout:hover {
+  background: rgba(255, 59, 48, 0.2);
+}
+.card {
+            padding: 16px;
+            min-width: 0;
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+        }
+
+        .protocol-row {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .protocol-row .label,
+        .field-row label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .radio-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-height: 42px;
+            padding: 0 10px;
+            border: 1px solid rgba(60, 60, 67, 0.2);
+            border-radius: 11px;
+            background: #ffffff;
+        }
+
+        .radio-group.single-option {
+            min-height: auto;
+            padding: 0;
+            border: none;
+            background: transparent;
+        }
+
+        .radio-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 13px;
+            color: var(--text-primary);
+            user-select: none;
+        }
+
+        .radio-item input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .radio-item.hidden-radio {
+            display: none;
+        }
+
+        .network-fields {
+            display: grid;
+            gap: 10px;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 120px minmax(260px, 520px);
+            gap: 10px;
+            align-items: center;
+        }
+
+        .field-row input {
+            width: 100%;
+            height: 42px;
+            border: 1px solid rgba(60, 60, 67, 0.2);
+            border-radius: 11px;
+            padding: 0 12px;
+            font-size: 14px;
+            color: var(--text-primary);
+            background: #ffffff;
+            outline: none;
+        }
+
+        .field-row input:focus {
+            border-color: rgba(0, 113, 227, 0.5);
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.14);
+        }
+
+        .actions {
+            margin-top: 14px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn {
+            border: none;
+            height: 42px;
+            border-radius: 11px;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0 18px;
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        .btn:hover {
+            filter: brightness(1.05);
+            transform: translateY(-1px);
+        }
+
+        .btn-save {
+            background: linear-gradient(145deg, #3194ff 0%, #0071e3 100%);
+        }
+
+        .btn-reset {
+            background: linear-gradient(145deg, #ff6f66 0%, #ff3b30 100%);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .footer-item {
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.74);
+            padding: 10px;
+            min-height: 66px;
+        }
+
+        .footer-item .label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 6px;
+        }
+
+        .footer-item .value {
+            font-size: 13px;
+            line-height: 1.35;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+        }
+
+        @media (max-width: 1024px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                min-height: auto;
+            }
+
+            .quick-links {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 760px) {
+            .layout {
+                padding: 12px;
+                gap: 12px;
+            }
+
+            .quick-links {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                padding: 14px;
+            }
+
+            .top-actions {
+                justify-content: flex-start;
+            }
+
+            .protocol-row,
+            .field-row {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                justify-content: stretch;
+            }
+
+            .actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo">N3</div>
+                <div class="meta">
+                    <div class="title">Nano3 Dashboard</div>
+                </div>
+            </div>
+
+            <form name="cgiform" id="nav" method="post" action="">
+                <ul class="menu">
+                    <li><i></i><strong pageid="dashboard" onclick="tabChange(this);">Overview</strong></li>
+                    <li><i></i><strong pageid="cglog" onclick="tabChange(this);">Miner Health</strong></li>
+                    <li><i></i><strong pageid="cgconf" onclick="tabChange(this);">Configuration</strong></li>
+                    <li><i></i><strong pageid="network" onclick="tabChange(this);">Network</strong></li>
+                </ul>
+
+                <ul class="menu" id="side_nav">
+                    <li>
+                        <i></i><strong>System</strong>
+                        <ul class="menu-ch" style="display: none;">
+                            <li><i></i><strong pageid="admin" onclick="tabChange(this);">Password</strong></li>
+                            <li><i></i><strong pageid="upgrade" onclick="tabChange(this);">Upgrade</strong></li>
+                            <li><i></i><strong pageid="reboot1" onclick="reboot(this);">Reboot</strong></li>
+                            <li><i></i><strong pageid="resetfac1" onclick="resetSet(this);">Factory Reset</strong></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <div class="quick-links">
+                    <a href="https://shop.canaan.io" target="_blank" rel="noopener noreferrer">Shop</a>
+                    <a pageid="systemlog" onclick="tabChange(this);">System log</a>
+                    <a href="https://canaan.io/support" target="_blank" rel="noopener noreferrer">Support</a>
+                    <a href="https://github.com/Canaan-Creative" target="_blank" rel="noopener noreferrer">Documents</a>
+                </div>
+            </form>
+        </aside>
+
+        <main class="content">
+            <header class="topbar">
+                <div class="device-block">
+                    <div class="device-label">Miner</div>
+                    <div class="device-title" id="hwtype">-</div>
+                </div>
+
+                <div class="top-actions">
+                    <div class="status" id="sys_status">Online</div>
+                    <div class="refresh">Latest refresh <span id="loadtime">-</span></div>
+                    <div class="logout" pageid="logout1" onclick="logout(this);">Logout</div>
+                </div>
+            </header>
+
+            <section class="main-scroll">
+                <form name="networkform" id="networkform" method="post" action="wificlear.cgi" class="card">
+                    <div class="card-title">Network Config</div>
+                    <input type="hidden" name="ssid" id="ssid" value="0">
+
+                    <div class="protocol-row">
+                        <div class="label">Protocol</div>
+                        <div class="radio-group single-option">
+                            <label class="radio-item" for="dhcp">
+                                <input type="radio" name="protocol" value="0" title="DHCP" id="dhcp" checked onclick="netinfo_block(this.value);">
+                                <span>DHCP</span>
+                            </label>
+                            <label class="radio-item hidden-radio" for="static">
+                                <input type="radio" name="protocol" value="1" title="Static" id="static" onclick="netinfo_block(this.value);">
+                                <span>Static</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="network-fields">
+                        <div class="field-row">
+                            <label for="ip">IP</label>
+                            <input type="text" name="ip" id="ip" placeholder="IP" onkeyup="confChk(this);">
+                        </div>
+                        <div class="field-row">
+                            <label for="mask">Mask</label>
+                            <input type="text" name="mask" id="mask" placeholder="Mask" onkeyup="confChk(this);">
+                        </div>
+                        <div class="field-row">
+                            <label for="gateway">Gateway</label>
+                            <input type="text" name="gateway" id="gateway" placeholder="Gateway" onkeyup="confChk(this);">
+                        </div>
+                        <div class="field-row">
+                            <label for="dns">DNS</label>
+                            <input type="text" name="dns" id="dns" placeholder="DNS" onkeyup="confChk(this);">
+                        </div>
+                        <div class="field-row">
+                            <label for="dnsbak">DNSBak</label>
+                            <input type="text" name="dnsbak" id="dnsbak" placeholder="DNSBak" onkeyup="confChk(this);">
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <input class="btn btn-reset" value="WiFi Reset" name="applybtn" type="button" onclick="submitResetNet(this)">
+                    </div>
+                </form>
+            </section>
+
+            <footer class="card">
+                <div class="card-title">Device info</div>
+                <div class="footer-grid">
+                    <div class="footer-item">
+                        <div class="label">Mac Address</div>
+                        <div class="value" id="mac"></div>
+                    </div>
+                    <div class="footer-item">
+                        <div class="label">SSID</div>
+                        <div class="value" id="bottomssid"></div>
+                    </div>
+                    <div class="footer-item">
+                        <div class="label">IP Address</div>
+                        <div class="value" id="ipv4"></div>
+                    </div>
+                    <div class="footer-item">
+                        <div class="label">Firmware Version</div>
+                        <div class="value" id="version"></div>
+                    </div>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        function $(id) {
+            return document.getElementById(id);
+        }
+
+        function $$(id) {
+            return document.getElementsByName(id);
+        }
+
+        function getForm(name) {
+            return document.forms[name] || window[name];
+        }
+
+        function definedOr(value, fallback) {
+            return value !== undefined ? value : fallback;
+        }
+
+        function AJAX(url, callback, errorCallback) {
+            var req = AJAX_init();
+            var completed = false;
+            if (req) {
+                req.onreadystatechange = AJAX_processRequest;
+                req.onerror = AJAX_processError;
+                req.ontimeout = AJAX_processTimeout;
+                try {
+                    req.timeout = 10000;
+                } catch (e) {
+                }
+            }
+
+            function AJAX_init() {
+                if (window.XMLHttpRequest) {
+                    return new XMLHttpRequest();
+                }
+                if (window.ActiveXObject) {
+                    return new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                return null;
+            }
+
+            function notifyError(type, status) {
+                if (completed) {
+                    return;
+                }
+                completed = true;
+                if (typeof errorCallback === "function") {
+                    errorCallback({ type: type, status: status || 0, url: url });
+                }
+            }
+
+            function AJAX_processRequest() {
+                if (!req || req.readyState !== 4 || completed) {
+                    return;
+                }
+                if (req.status >= 200 && req.status < 300) {
+                    completed = true;
+                    if (!callback) {
+                        return;
+                    }
+                    callback(req.responseText);
+                    return;
+                }
+                notifyError("http", req.status);
+            }
+
+            function AJAX_processError() {
+                notifyError("network", req ? req.status : 0);
+            }
+
+            function AJAX_processTimeout() {
+                notifyError("timeout", req ? req.status : 0);
+            }
+
+            this.doGet = function () {
+                if (!req) {
+                    notifyError("unsupported", 0);
+                    return;
+                }
+                req.open("GET", url, true);
+                req.send(null);
+            };
+
+            this.doPost = function (body) {
+                if (!req) {
+                    notifyError("unsupported", 0);
+                    return;
+                }
+                req.open("POST", url, true);
+                req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                req.setRequestHeader("ISAJAX", "yes");
+                req.send(body);
+            };
+        }
+
+        function ajaxDecodeEntities(text) {
+            var src = String(text || "");
+            if (src.indexOf("&") === -1) {
+                return src;
+            }
+            var el = document.createElement("textarea");
+            el.innerHTML = src;
+            return el.value;
+        }
+
+        function ajaxNormalizeScript(text, replaceBr) {
+            var src = String(text || "");
+            if (replaceBr !== false) {
+                src = src.replace(/<br\s*\/?>/gi, "\n");
+            }
+            return ajaxDecodeEntities(src);
+        }
+
+        function ajaxEscapeJsonStringValue(input) {
+            return String(input).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+        }
+
+        function ajaxNormalizeJsonLike(text) {
+            var normalized = String(text || "");
+            normalized = normalized.replace(/\r/g, "");
+
+            normalized = normalized.replace(/([{,]\s*)'([^'\\]*(?:\\.[^'\\]*)*)'\s*:/g, function (_, prefix, key) {
+                return prefix + '"' + ajaxEscapeJsonStringValue(key) + '":';
+            });
+
+            normalized = normalized.replace(/([{,]\s*)([A-Za-z_$][A-Za-z0-9_$-]*)\s*:/g, function (_, prefix, key) {
+                return prefix + '"' + key + '":';
+            });
+
+            normalized = normalized.replace(/:\s*'([^'\\]*(?:\\.[^'\\]*)*)'(\s*[,}\]])/g, function (_, value, tail) {
+                return ': "' + ajaxEscapeJsonStringValue(value) + '"' + tail;
+            });
+
+            normalized = normalized.replace(/([\[,]\s*)'([^'\\]*(?:\\.[^'\\]*)*)'(\s*[,}\]])/g, function (_, prefix, value, tail) {
+                return prefix + '"' + ajaxEscapeJsonStringValue(value) + '"' + tail;
+            });
+
+            normalized = normalized.replace(/([:\[,]\s*)(None|True|False)(\s*[,}\]])/g, function (_, prefix, literal, tail) {
+                if (literal === "None") {
+                    return prefix + "null" + tail;
+                }
+                if (literal === "True") {
+                    return prefix + "true" + tail;
+                }
+                return prefix + "false" + tail;
+            });
+
+            normalized = normalized.replace(/,\s*([}\]])/g, "$1");
+            return normalized;
+        }
+
+        function ajaxParseJsonLikeValue(text) {
+            var src = String(text || "").trim();
+            if (!src) {
+                return null;
+            }
+            try {
+                return JSON.parse(src);
+            } catch (e) {
+            }
+            try {
+                return JSON.parse(ajaxNormalizeJsonLike(src));
+            } catch (e2) {
+            }
+            return null;
+        }
+
+        function ajaxExtractCallbackArgs(script, callbackName) {
+            var src = String(script || "");
+            var token = String(callbackName || "") + "(";
+            var results = [];
+            var from = 0;
+
+            while (from < src.length) {
+                var start = src.indexOf(token, from);
+                if (start < 0) {
+                    break;
+                }
+                var prev = start > 0 ? src.charAt(start - 1) : "";
+                if (/[A-Za-z0-9_$\.]/.test(prev)) {
+                    from = start + token.length;
+                    continue;
+                }
+
+                var i = start + token.length;
+                var depth = 1;
+                var inString = false;
+                var quote = "";
+                var escaped = false;
+                for (; i < src.length; i++) {
+                    var ch = src.charAt(i);
+                    if (inString) {
+                        if (escaped) {
+                            escaped = false;
+                            continue;
+                        }
+                        if (ch === "\\") {
+                            escaped = true;
+                            continue;
+                        }
+                        if (ch === quote) {
+                            inString = false;
+                        }
+                        continue;
+                    }
+                    if (ch === '"' || ch === "'") {
+                        inString = true;
+                        quote = ch;
+                        continue;
+                    }
+                    if (ch === "(") {
+                        depth++;
+                        continue;
+                    }
+                    if (ch === ")") {
+                        depth--;
+                        if (depth === 0) {
+                            results.push(src.slice(start + token.length, i).trim());
+                            from = i + 1;
+                            break;
+                        }
+                    }
+                }
+
+                if (depth !== 0) {
+                    break;
+                }
+            }
+            return results;
+        }
+
+        function ajaxExtractFirstArg(argListText) {
+            var src = String(argListText || "").trim();
+            if (!src) {
+                return "";
+            }
+            var inString = false;
+            var quote = "";
+            var escaped = false;
+            var braceDepth = 0;
+            var bracketDepth = 0;
+            var parenDepth = 0;
+            for (var i = 0; i < src.length; i++) {
+                var ch = src.charAt(i);
+                if (inString) {
+                    if (escaped) {
+                        escaped = false;
+                        continue;
+                    }
+                    if (ch === "\\") {
+                        escaped = true;
+                        continue;
+                    }
+                    if (ch === quote) {
+                        inString = false;
+                    }
+                    continue;
+                }
+                if (ch === '"' || ch === "'") {
+                    inString = true;
+                    quote = ch;
+                    continue;
+                }
+                if (ch === "{") {
+                    braceDepth++;
+                    continue;
+                }
+                if (ch === "}") {
+                    braceDepth--;
+                    continue;
+                }
+                if (ch === "[") {
+                    bracketDepth++;
+                    continue;
+                }
+                if (ch === "]") {
+                    bracketDepth--;
+                    continue;
+                }
+                if (ch === "(") {
+                    parenDepth++;
+                    continue;
+                }
+                if (ch === ")") {
+                    parenDepth--;
+                    continue;
+                }
+                if (ch === "," && braceDepth === 0 && bracketDepth === 0 && parenDepth === 0) {
+                    return src.slice(0, i).trim();
+                }
+            }
+            return src;
+        }
+
+        function ajaxParseCallbackArg(text) {
+            var src = String(text || "").trim();
+            if (!src) {
+                return undefined;
+            }
+            var parsed = ajaxParseJsonLikeValue(src);
+            if (parsed !== null) {
+                return parsed;
+            }
+            if (/^-?[0-9]+(?:\.[0-9]+)?$/.test(src)) {
+                return Number(src);
+            }
+            if (/^(true|false)$/i.test(src)) {
+                return /^true$/i.test(src);
+            }
+            if (/^(null|none)$/i.test(src)) {
+                return null;
+            }
+            if ((src.charAt(0) === '"' && src.charAt(src.length - 1) === '"') || (src.charAt(0) === "'" && src.charAt(src.length - 1) === "'")) {
+                return src.slice(1, -1).replace(/\\'/g, "'").replace(/\\"/g, '"').replace(/\\\\/g, "\\");
+            }
+            return src;
+        }
+
+        function ajaxRunAllowedCallbacks(script, allowedCallbacks, replaceBr) {
+            var src = ajaxNormalizeScript(script, replaceBr);
+            var result = { invoked: false, errored: false, count: 0, normalized: src };
+            for (var callbackName in allowedCallbacks) {
+                if (!Object.prototype.hasOwnProperty.call(allowedCallbacks, callbackName)) {
+                    continue;
+                }
+                var cb = allowedCallbacks[callbackName];
+                if (typeof cb !== "function") {
+                    continue;
+                }
+                var matches = ajaxExtractCallbackArgs(src, callbackName);
+                for (var i = 0; i < matches.length; i++) {
+                    var firstArg = ajaxExtractFirstArg(matches[i]);
+                    var argValue = ajaxParseCallbackArg(firstArg);
+                    try {
+                        cb(argValue);
+                        result.invoked = true;
+                        result.count++;
+                    } catch (e) {
+                        result.errored = true;
+                    }
+                }
+            }
+            return result;
+        }
+
+        (function setupSystemNav() {
+            var navWrap = document.getElementById("side_nav");
+            if (!navWrap) {
+                return;
+            }
+            var topItems = navWrap.children;
+            for (var i = 0; i < topItems.length; i++) {
+                var rootStrong = topItems[i].getElementsByTagName("strong")[0];
+                if (!rootStrong) {
+                    continue;
+                }
+                rootStrong.onclick = function () {
+                    if (this.getAttribute("pageid")) {
+                        return;
+                    }
+                    var submenu = this.parentNode.querySelector(".menu-ch");
+                    if (!submenu) {
+                        return;
+                    }
+                    submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+                };
+            }
+        })();
+
+        function keepSystemMenuOpenForSystemPages() {
+            var path = (window.location.pathname || "").toLowerCase();
+            var isSystemPage = path.indexOf("admin") !== -1 || path.indexOf("upgrade") !== -1 || path.indexOf("systemlog") !== -1 || path.indexOf("system_log") !== -1;
+            if (!isSystemPage) {
+                return;
+            }
+            var submenu = document.querySelector("#side_nav .menu-ch");
+            if (submenu) {
+                submenu.style.display = "block";
+            }
+        }
+
+        function logout(o) {
+            if (confirm("Are you sure you want to logout?")) {
+                try {
+                  if (window.sessionStorage) {
+                    sessionStorage.clear();
+                  }
+                } catch (e) {}
+                var form = getForm("cgiform");
+                form.action = "logout.cgi";
+                form.submit();
+            }
+            return false;
+        }
+
+        function reboot(o) {
+            if (confirm("Are you sure you want to reboot?")) {
+                var form = getForm("cgiform");
+                form.action = "reboot_btn.cgi";
+                form.submit();
+            }
+            return false;
+        }
+
+        function resetSet(o) {
+            if (confirm("Factory resetting?")) {
+                var form = getForm("cgiform");
+                form.action = "resetfac_btn.cgi";
+                form.submit();
+            }
+            return false;
+        }
+
+        function tabChange(o) {
+            var pageId = o.getAttribute("pageid");
+            if (!pageId) {
+                return false;
+            }
+            var form = getForm("cgiform");
+            form.action = pageId + ".cgi";
+            form.submit();
+            return false;
+        }
+
+        function UpdatePageCallback(req) {
+            var pageId = req.pageId;
+            var emList = document.querySelectorAll("strong[pageid]");
+            for (var index = 0; index < emList.length; index++) {
+                var em = emList[index];
+                if (em.getAttribute("pageid") === pageId) {
+                    em.setAttribute("class", "cur");
+                    if (em.previousElementSibling) {
+                        em.previousElementSibling.setAttribute("class", "iconfont");
+                    }
+                    var submenu = em.parentNode;
+                    while (submenu && submenu !== document && (!submenu.className || submenu.className.indexOf("menu-ch") === -1)) {
+                        submenu = submenu.parentNode;
+                    }
+                    if (submenu) {
+                        submenu.style.display = "block";
+                    }
+                } else {
+                    em.setAttribute("class", "");
+                    if (em.previousElementSibling) {
+                        em.previousElementSibling.setAttribute("class", "");
+                    }
+                }
+            }
+        }
+
+        function formatDateTime(inputTime) {
+            var date = new Date(inputTime);
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            m = m < 10 ? "0" + m : m;
+            var d = date.getDate();
+            d = d < 10 ? "0" + d : d;
+            var h = date.getHours();
+            h = h < 10 ? "0" + h : h;
+            var minute = date.getMinutes();
+            var second = date.getSeconds();
+            minute = minute < 10 ? "0" + minute : minute;
+            second = second < 10 ? "0" + second : second;
+            return y + "-" + m + "-" + d + " " + h + ":" + minute + ":" + second;
+        }
+
+        function minerinfoCallback(req) {
+            req.hwtype = definedOr(req.hwtype, "");
+            req.mac = definedOr(req.mac, "");
+            req.ssid = definedOr(req.ssid, "");
+            req.ipv4 = definedOr(req.ipv4, "");
+            req.version = definedOr(req.version, "");
+            $("hwtype").textContent = req.hwtype;
+            $("loadtime").textContent = formatDateTime(new Date().getTime());
+
+            if (req.sys_status === "1") {
+                $("sys_status").textContent = "Online";
+                $("sys_status").setAttribute("class", "status on");
+            } else {
+                $("sys_status").textContent = "Idle";
+                $("sys_status").setAttribute("class", "status off");
+            }
+
+            $("mac").textContent = req.mac;
+            $("bottomssid").textContent = req.ssid;
+            $("ipv4").textContent = req.ipv4;
+            $("version").textContent = req.version;
+        }
+
+        function updateMinerInfo() {
+            var oUpdate = new AJAX("get_minerinfo.cgi?num=" + Math.random(), function (t) {
+                ajaxRunAllowedCallbacks(t, {
+                    UpdatePageCallback: UpdatePageCallback,
+                    minerinfoCallback: minerinfoCallback
+                });
+            }, function () {
+                $("sys_status").textContent = "Offline";
+                $("sys_status").setAttribute("class", "status off");
+            });
+            oUpdate.doGet();
+            setTimeout(updateMinerInfo, 15000);
+        }
+
+        function updateNetConf() {
+            var oUpdate = new AJAX("updatenetwork.cgi", function (t) {
+                ajaxRunAllowedCallbacks(t, {
+                    UpdatePageCallback: UpdatePageCallback,
+                    NetworkCallback: NetworkCallback
+                });
+            });
+            oUpdate.doGet();
+        }
+
+        function netinfo_block(req) {
+            var isDhcp = parseInt(req, 10) === 0;
+            $("ip").disabled = isDhcp;
+            $("mask").disabled = isDhcp;
+            $("gateway").disabled = isDhcp;
+            $("dns").disabled = isDhcp;
+            $("dnsbak").disabled = isDhcp;
+        }
+
+        var apssid = "";
+        function NetworkCallback(req) {
+            var obj = document.getElementsByName("protocol");
+            $("ip").value = req.ip;
+            $("mask").value = req.mask;
+            $("gateway").value = req.gateway;
+            $("dns").value = req.dns;
+            $("dnsbak").value = req.dnsbak;
+            apssid = req.apssid;
+
+            var selected = 0;
+            for (var i = 0; i < obj.length; i++) {
+                if (i == req.protocal) {
+                    obj[i].checked = true;
+                    selected = i;
+                    break;
+                }
+            }
+            netinfo_block(selected);
+        }
+
+        function confChk(o) {
+            var len = o.value.length;
+            var pattern = /(^[0-9.]+$)/;
+            if (!pattern.test(o.value)) {
+                alert("Allow only numbers and dot(.)");
+                o.value = o.value.substring(0, o.value.length - 1);
+            }
+            if (len > 15) {
+                o.value = o.value.substring(0, 15);
+            }
+        }
+
+        function submitNetWork(o) {
+            getForm("networkform").submit();
+            alert("Save successfully, Need reboot manualy");
+        }
+
+        function submitResetNet(o) {
+            var message = confirm("Are you sure you want to reconfigure WIFI?\n\nto connect " + apssid + ", IP:192.168.168.168");
+            if (message === true) {
+                getForm("networkform").submit();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+      keepSystemMenuOpenForSystemPages();
+            $("loadtime").textContent = formatDateTime(new Date().getTime());
+            updateMinerInfo();
+            updateNetConf();
+            netinfo_block(0);
+        });
+    </script>
+</body>
+
+</html>

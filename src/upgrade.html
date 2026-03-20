@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Avalon Device</title>
+    <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css" integrity="sha512-WvVX1YO12zmsvTpUQV8s7ZU98DnkaAokcciMZJfnNWyNzm7//QRV61t4aEr0WdIa4pe854QHLTV302vH92FSMw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<style>
+:root {
+  --bg-top: #f9fafc;
+  --bg-mid: #edf0f5;
+  --bg-bottom: #e9edf4;
+  --panel: rgba(255, 255, 255, 0.72);
+  --panel-strong: rgba(255, 255, 255, 0.88);
+  --border-soft: rgba(255, 255, 255, 0.62);
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --accent: #0071e3;
+  --good: #34c759;
+  --bad: #ff3b30;
+  --warn: #ff9f0a;
+  --shadow-soft: 0 18px 42px rgba(15, 23, 42, 0.12);
+  --radius-card: 22px;
+  --radius-pill: 999px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text-primary);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(0, 113, 227, 0.16), transparent 34%),
+    radial-gradient(circle at 95% 100%, rgba(52, 199, 89, 0.16), transparent 30%),
+    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 52%, var(--bg-bottom) 100%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 264px 1fr;
+  min-height: 100vh;
+  gap: 18px;
+  padding: 18px;
+}
+
+.sidebar {
+  background: var(--panel);
+  border: 1px solid var(--border-soft);
+  border-radius: 28px;
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px 10px;
+  border-bottom: 1px solid rgba(60, 60, 67, 0.16);
+}
+
+.brand .logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: linear-gradient(180deg, #111111 0%, #3d3d3f 100%);
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  letter-spacing: 0.5px;
+}
+
+.brand .meta {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.brand .meta .title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.brand .meta .subtitle {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+#nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  flex: 1;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.menu li {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-radius: 12px;
+  padding: 7px 10px;
+  color: var(--text-secondary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.menu li i {
+  display: none;
+  width: 0;
+  margin: 0;
+  font-size: 0;
+}
+
+.menu li strong {
+  display: block;
+  width: 100%;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  color: inherit;
+}
+
+.menu li strong.cur {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.menu li:hover {
+  background-color: rgba(0, 113, 227, 0.08);
+  color: var(--text-primary);
+}
+
+.menu .menu-ch {
+  margin-left: 6px;
+  margin-top: 8px;
+  width: calc(100% - 6px);
+  display: none;
+}
+
+.menu .menu-ch li {
+  margin-top: 4px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+#side_nav > li {
+  display: block;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+}
+
+#side_nav > li > i {
+  display: none;
+}
+
+#side_nav > li > strong {
+  display: block;
+  font-size: 1em;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1.2;
+  margin: 7px 10px;
+  cursor: pointer;
+}
+
+#side_nav > li > .menu-ch {
+  margin: 0 0 0 8px;
+  width: calc(100% - 8px);
+  display: none;
+}
+
+#side_nav > li > .menu-ch li {
+  display: block;
+  margin-top: 0;
+  border-radius: 10px;
+  padding: 6px 10px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+#side_nav > li > .menu-ch li + li {
+  margin-top: 2px;
+}
+
+#side_nav > li > .menu-ch li strong {
+  font-size: 0.92em;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1.25;
+}
+
+#side_nav > li > .menu-ch li:hover {
+  background: rgba(0, 113, 227, 0.08);
+}
+
+#side_nav > li > .menu-ch li strong.cur {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.quick-links {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(60, 60, 67, 0.12);
+  display: grid;
+  gap: 8px;
+}
+
+.quick-links a {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 11px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.58);
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+}
+
+.quick-links a:hover {
+  transform: translateX(2px);
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.content {
+  min-width: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 14px;
+  align-content: stretch;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.main-scroll {
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  padding-right: 2px;
+}
+
+.topbar,
+.card {
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-card);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  overflow: hidden;
+  background-clip: padding-box;
+}
+
+.topbar {
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.device-block {
+  min-width: 220px;
+}
+
+.device-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.device-title {
+  font-size: clamp(20px, 2.2vw, 30px);
+  font-weight: 680;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  word-break: break-word;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  font-size: 13px;
+  background: linear-gradient(145deg, #77d886 0%, #34c759 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32);
+}
+
+.status.off {
+  background: linear-gradient(145deg, #a4a4aa 0%, #787880 100%);
+}
+
+.refresh {
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+#loadtime {
+  margin-left: 6px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.logout {
+  border: none;
+  background: rgba(255, 59, 48, 0.12);
+  color: #b42318;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.logout:hover {
+  background: rgba(255, 59, 48, 0.2);
+}
+.card {
+      padding: 16px;
+      min-width: 0;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+    }
+
+    .card-desc {
+      margin-top: -6px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .dropzone {
+      min-height: 170px;
+      border: 2px dashed rgba(0, 113, 227, 0.35);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 16px;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .dropzone.dz-drag-hover {
+      border-color: rgba(0, 113, 227, 0.7);
+      background: rgba(0, 113, 227, 0.05);
+    }
+
+    .dropzone .dz-message {
+      margin: 1.2em 0;
+      font-size: 14px;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 1.45;
+    }
+
+    .status-stack {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .alert {
+      border-radius: 11px;
+      padding: 10px 12px;
+      font-size: 13px;
+      border: 1px solid transparent;
+    }
+
+    .alert-secondary {
+      background: rgba(120, 120, 128, 0.12);
+      border-color: rgba(120, 120, 128, 0.24);
+      color: #3a3a3c;
+    }
+
+    .alert-warning {
+      background: rgba(255, 159, 10, 0.16);
+      border-color: rgba(255, 159, 10, 0.3);
+      color: #7a4100;
+    }
+
+    .alert-success {
+      background: rgba(52, 199, 89, 0.16);
+      border-color: rgba(52, 199, 89, 0.3);
+      color: #175f2d;
+    }
+
+    .alert-danger {
+      background: rgba(255, 59, 48, 0.16);
+      border-color: rgba(255, 59, 48, 0.3);
+      color: #8f1f19;
+    }
+
+    .alert-info {
+      background: rgba(0, 113, 227, 0.14);
+      border-color: rgba(0, 113, 227, 0.3);
+      color: #004d99;
+    }
+
+    .progress-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    #swu-progress-name {
+      color: var(--text-secondary);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    #swu-progress-value {
+      color: var(--text-primary);
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .progress {
+      height: 10px;
+      background: rgba(120, 120, 128, 0.14);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(120, 120, 128, 0.16);
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(145deg, #77d886 0%, #34c759 100%);
+      transition: width 0.25s ease;
+    }
+
+    .messages {
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid rgba(60, 60, 67, 0.2);
+      border-radius: 12px;
+      padding: 10px;
+      min-height: 96px;
+      max-height: 220px;
+      overflow: auto;
+      display: grid;
+      gap: 6px;
+      align-content: start;
+    }
+
+    .messages p {
+      font-size: 12px;
+      color: var(--text-primary);
+      line-height: 1.4;
+      margin: 0;
+      word-break: break-word;
+    }
+
+    .messages p.text-danger {
+      color: #b42318;
+      font-weight: 600;
+    }
+
+    .legacy-card {
+      display: none;
+    }
+
+    .bar {
+      height: 10px;
+      width: 100%;
+      max-width: 420px;
+      background: rgba(120, 120, 128, 0.2);
+      margin-top: 10px;
+      border-radius: 999px;
+    }
+
+    .inner {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(145deg, #ffb340 0%, #ff9f0a 100%);
+      border-radius: 999px;
+      transition: width 0.2s ease;
+    }
+
+    .data {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .footer-item {
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.74);
+      padding: 10px;
+      min-height: 66px;
+    }
+
+    .footer-item .label {
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .footer-item .value {
+      font-size: 13px;
+      line-height: 1.35;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 1024px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        min-height: auto;
+      }
+
+      .quick-links {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .layout {
+        padding: 12px;
+        gap: 12px;
+      }
+
+      .quick-links {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        padding: 14px;
+      }
+
+      .top-actions {
+        justify-content: flex-start;
+      }
+
+      .progress-row {
+        grid-template-columns: 1fr;
+      }
+
+      #swu-progress-value {
+        text-align: left;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">N3</div>
+        <div class="meta">
+          <div class="title">Nano3 Dashboard</div>
+        </div>
+      </div>
+
+      <form name="cgiform" id="nav" method="post" action="">
+        <ul class="menu">
+          <li><i></i><strong pageid="dashboard" onclick="tabChange(this);">Overview</strong></li>
+          <li><i></i><strong pageid="cglog" onclick="tabChange(this);">Miner Health</strong></li>
+          <li><i></i><strong pageid="cgconf" onclick="tabChange(this);">Configuration</strong></li>
+          <li><i></i><strong pageid="network" onclick="tabChange(this);">Network</strong></li>
+        </ul>
+
+        <ul class="menu" id="side_nav">
+          <li>
+            <i></i><strong>System</strong>
+            <ul class="menu-ch" style="display: none;">
+              <li><i></i><strong pageid="admin" onclick="tabChange(this);">Password</strong></li>
+              <li><i></i><strong pageid="upgrade" onclick="tabChange(this);">Upgrade</strong></li>
+              <li><i></i><strong pageid="reboot1" onclick="reboot(this);">Reboot</strong></li>
+              <li><i></i><strong pageid="resetfac1" onclick="resetSet(this);">Factory Reset</strong></li>
+            </ul>
+          </li>
+        </ul>
+
+        <div class="quick-links">
+          <a href="https://shop.canaan.io" target="_blank" rel="noopener noreferrer">Shop</a>
+          <a pageid="systemlog" onclick="tabChange(this);">System log</a>
+          <a href="https://canaan.io/support" target="_blank" rel="noopener noreferrer">Support</a>
+          <a href="https://github.com/Canaan-Creative" target="_blank" rel="noopener noreferrer">Documents</a>
+        </div>
+      </form>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div class="device-block">
+          <div class="device-label">Miner</div>
+          <div class="device-title" id="hwtype">-</div>
+        </div>
+
+        <div class="top-actions">
+          <div class="status" id="sys_status">Online</div>
+          <div class="refresh">Latest refresh <span id="loadtime">-</span></div>
+          <div class="logout" pageid="logout1" onclick="logout(this);">Logout</div>
+        </div>
+      </header>
+
+      <section class="main-scroll">
+        <section id="div1" class="card" style="display:block;">
+          <div class="card-title">Firmware Upgrade</div>
+          <div class="card-desc">Click or drag a software update image into the area below.</div>
+
+          <form class="dropzone" method="post" enctype="multipart/form-data" id="my_dropzone">
+            <div class="dz-default dz-message">
+              <span class="dz-message">Click here, or drag and drop a software update image file to this area.</span>
+            </div>
+          </form>
+
+          <div style="display:none;">
+            <input type="file" name="firmware" id="firmware">
+            <input value="Upload" name="uploadbtn" id="uploadbtn" type="button" onclick="UploadFirmware(this)">
+          </div>
+
+          <div id="cont" style="display:none"></div>
+          <div id="result" style="display:none"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-title">Update Status</div>
+
+          <div class="status-stack">
+            <div id="swu-idle" class="alert alert-secondary">Update not started.</div>
+            <div id="swu-run" class="alert alert-warning" style="display:none;">Updating may take a few minutes, please do not power off the miner.</div>
+            <div id="swu-success" class="alert alert-success" style="display:none;">Updated successfully.</div>
+            <div id="swu-failure" class="alert alert-danger" style="display:none;">Update failed.</div>
+            <div id="swu-done" class="alert alert-info" style="display:none;">Restarting system.</div>
+          </div>
+
+          <div id="swu-progress-row" class="progress-row" style="display:none;">
+            <strong id="swu-progress-run" style="display:none;">Updating:</strong>
+            <span id="swu-progress-name"></span>
+            <span id="swu-progress-value"></span>
+          </div>
+
+          <div id="swu-progress-track" class="progress" style="display:none;">
+            <div id="swu-progress-bar" class="progress-bar" role="progressbar"></div>
+          </div>
+
+          <i id="swu-progress-spinner" style="display:none;"></i>
+        </section>
+
+        <section class="card">
+          <div class="card-title">Update Log</div>
+          <div id="messages" class="messages"></div>
+        </section>
+
+        <section id="div2" class="card legacy-card" style="display:none;">
+          <div class="card-title">Firmware Upgrade</div>
+          <div class="data">0%</div>
+          <div class="bar"><div class="inner"></div></div>
+        </section>
+
+        <section id="div3" class="card legacy-card" style="display:none;">
+          <div class="card-title">Firmware Upgrade</div>
+          <p><span id="mes"></span></p>
+        </section>
+      </section>
+
+      <footer class="card">
+        <div class="card-title">Device info</div>
+        <div class="footer-grid">
+          <div class="footer-item">
+            <div class="label">Mac Address</div>
+            <div class="value" id="mac"></div>
+          </div>
+          <div class="footer-item">
+            <div class="label">SSID</div>
+            <div class="value" id="ssid"></div>
+          </div>
+          <div class="footer-item">
+            <div class="label">IP Address</div>
+            <div class="value" id="ipv4"></div>
+          </div>
+          <div class="footer-item">
+            <div class="label">Firmware Version</div>
+            <div class="value" id="version"></div>
+          </div>
+        </div>
+        <input type="hidden" class="stm8" name="stm8" id="stm8">
+      </footer>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js" integrity="sha512-oQq8uth41D+gIH/NJvSJvVB85MFk1eWpMK6glnkg6I7EdMqC1XVkW7RxLheXwmFdG03qScCM7gKS/Cx3FYt7Tg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    if (typeof Dropzone !== "undefined") {
+      Dropzone.autoDiscover = false;
+    }
+
+    function D$(id) {
+      return document.getElementById(id);
+    }
+
+    function getForm(name) {
+      return document.forms[name] || window[name];
+    }
+
+    function definedOr(value, fallback) {
+      return value !== undefined ? value : fallback;
+    }
+
+    function AJAX(url, callback, errorCallback) {
+      var req = AJAX_init();
+      var completed = false;
+      if (req) {
+        req.onreadystatechange = AJAX_processRequest;
+        req.onerror = AJAX_processError;
+        req.ontimeout = AJAX_processTimeout;
+        try {
+          req.timeout = 10000;
+        } catch (e) {
+        }
+      }
+
+      function AJAX_init() {
+        if (window.XMLHttpRequest) {
+          return new XMLHttpRequest();
+        }
+        if (window.ActiveXObject) {
+          return new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        return null;
+      }
+
+      function notifyError(type, status) {
+        if (completed) {
+          return;
+        }
+        completed = true;
+        if (typeof errorCallback === "function") {
+          errorCallback({ type: type, status: status || 0, url: url });
+        }
+      }
+
+      function AJAX_processRequest() {
+        if (!req || req.readyState !== 4 || completed) {
+          return;
+        }
+        if (req.status >= 200 && req.status < 300) {
+          completed = true;
+          if (!callback) {
+            return;
+          }
+          callback(req.responseText);
+          return;
+        }
+        notifyError("http", req.status);
+      }
+
+      function AJAX_processError() {
+        notifyError("network", req ? req.status : 0);
+      }
+
+      function AJAX_processTimeout() {
+        notifyError("timeout", req ? req.status : 0);
+      }
+
+      this.doGet = function () {
+        if (!req) {
+          notifyError("unsupported", 0);
+          return;
+        }
+        req.open("GET", url, true);
+        req.send(null);
+      };
+
+      this.doPost = function (body) {
+        if (!req) {
+          notifyError("unsupported", 0);
+          return;
+        }
+        req.open("POST", url, true);
+        req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        req.setRequestHeader("ISAJAX", "yes");
+        req.send(body);
+      };
+    }
+
+        function ajaxDecodeEntities(text) {
+            var src = String(text || "");
+            if (src.indexOf("&") === -1) {
+                return src;
+            }
+            var el = document.createElement("textarea");
+            el.innerHTML = src;
+            return el.value;
+        }
+
+        function ajaxNormalizeScript(text, replaceBr) {
+            var src = String(text || "");
+            if (replaceBr !== false) {
+                src = src.replace(/<br\s*\/?>/gi, "\n");
+            }
+            return ajaxDecodeEntities(src);
+        }
+
+        function ajaxEscapeJsonStringValue(input) {
+            return String(input).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+        }
+
+        function ajaxNormalizeJsonLike(text) {
+            var normalized = String(text || "");
+            normalized = normalized.replace(/\r/g, "");
+
+            normalized = normalized.replace(/([{,]\s*)'([^'\\]*(?:\\.[^'\\]*)*)'\s*:/g, function (_, prefix, key) {
+                return prefix + '"' + ajaxEscapeJsonStringValue(key) + '":';
+            });
+
+            normalized = normalized.replace(/([{,]\s*)([A-Za-z_$][A-Za-z0-9_$-]*)\s*:/g, function (_, prefix, key) {
+                return prefix + '"' + key + '":';
+            });
+
+            normalized = normalized.replace(/:\s*'([^'\\]*(?:\\.[^'\\]*)*)'(\s*[,}\]])/g, function (_, value, tail) {
+                return ': "' + ajaxEscapeJsonStringValue(value) + '"' + tail;
+            });
+
+            normalized = normalized.replace(/([\[,]\s*)'([^'\\]*(?:\\.[^'\\]*)*)'(\s*[,}\]])/g, function (_, prefix, value, tail) {
+                return prefix + '"' + ajaxEscapeJsonStringValue(value) + '"' + tail;
+            });
+
+            normalized = normalized.replace(/([:\[,]\s*)(None|True|False)(\s*[,}\]])/g, function (_, prefix, literal, tail) {
+                if (literal === "None") {
+                    return prefix + "null" + tail;
+                }
+                if (literal === "True") {
+                    return prefix + "true" + tail;
+                }
+                return prefix + "false" + tail;
+            });
+
+            normalized = normalized.replace(/,\s*([}\]])/g, "$1");
+            return normalized;
+        }
+
+        function ajaxParseJsonLikeValue(text) {
+            var src = String(text || "").trim();
+            if (!src) {
+                return null;
+            }
+            try {
+                return JSON.parse(src);
+            } catch (e) {
+            }
+            try {
+                return JSON.parse(ajaxNormalizeJsonLike(src));
+            } catch (e2) {
+            }
+            return null;
+        }
+
+        function ajaxExtractCallbackArgs(script, callbackName) {
+            var src = String(script || "");
+            var token = String(callbackName || "") + "(";
+            var results = [];
+            var from = 0;
+
+            while (from < src.length) {
+                var start = src.indexOf(token, from);
+                if (start < 0) {
+                    break;
+                }
+                var prev = start > 0 ? src.charAt(start - 1) : "";
+                if (/[A-Za-z0-9_$\.]/.test(prev)) {
+                    from = start + token.length;
+                    continue;
+                }
+
+                var i = start + token.length;
+                var depth = 1;
+                var inString = false;
+                var quote = "";
+                var escaped = false;
+                for (; i < src.length; i++) {
+                    var ch = src.charAt(i);
+                    if (inString) {
+                        if (escaped) {
+                            escaped = false;
+                            continue;
+                        }
+                        if (ch === "\\") {
+                            escaped = true;
+                            continue;
+                        }
+                        if (ch === quote) {
+                            inString = false;
+                        }
+                        continue;
+                    }
+                    if (ch === '"' || ch === "'") {
+                        inString = true;
+                        quote = ch;
+                        continue;
+                    }
+                    if (ch === "(") {
+                        depth++;
+                        continue;
+                    }
+                    if (ch === ")") {
+                        depth--;
+                        if (depth === 0) {
+                            results.push(src.slice(start + token.length, i).trim());
+                            from = i + 1;
+                            break;
+                        }
+                    }
+                }
+
+                if (depth !== 0) {
+                    break;
+                }
+            }
+            return results;
+        }
+
+        function ajaxExtractFirstArg(argListText) {
+            var src = String(argListText || "").trim();
+            if (!src) {
+                return "";
+            }
+            var inString = false;
+            var quote = "";
+            var escaped = false;
+            var braceDepth = 0;
+            var bracketDepth = 0;
+            var parenDepth = 0;
+            for (var i = 0; i < src.length; i++) {
+                var ch = src.charAt(i);
+                if (inString) {
+                    if (escaped) {
+                        escaped = false;
+                        continue;
+                    }
+                    if (ch === "\\") {
+                        escaped = true;
+                        continue;
+                    }
+                    if (ch === quote) {
+                        inString = false;
+                    }
+                    continue;
+                }
+                if (ch === '"' || ch === "'") {
+                    inString = true;
+                    quote = ch;
+                    continue;
+                }
+                if (ch === "{") {
+                    braceDepth++;
+                    continue;
+                }
+                if (ch === "}") {
+                    braceDepth--;
+                    continue;
+                }
+                if (ch === "[") {
+                    bracketDepth++;
+                    continue;
+                }
+                if (ch === "]") {
+                    bracketDepth--;
+                    continue;
+                }
+                if (ch === "(") {
+                    parenDepth++;
+                    continue;
+                }
+                if (ch === ")") {
+                    parenDepth--;
+                    continue;
+                }
+                if (ch === "," && braceDepth === 0 && bracketDepth === 0 && parenDepth === 0) {
+                    return src.slice(0, i).trim();
+                }
+            }
+            return src;
+        }
+
+        function ajaxParseCallbackArg(text) {
+            var src = String(text || "").trim();
+            if (!src) {
+                return undefined;
+            }
+            var parsed = ajaxParseJsonLikeValue(src);
+            if (parsed !== null) {
+                return parsed;
+            }
+            if (/^-?[0-9]+(?:\.[0-9]+)?$/.test(src)) {
+                return Number(src);
+            }
+            if (/^(true|false)$/i.test(src)) {
+                return /^true$/i.test(src);
+            }
+            if (/^(null|none)$/i.test(src)) {
+                return null;
+            }
+            if ((src.charAt(0) === '"' && src.charAt(src.length - 1) === '"') || (src.charAt(0) === "'" && src.charAt(src.length - 1) === "'")) {
+                return src.slice(1, -1).replace(/\\'/g, "'").replace(/\\"/g, '"').replace(/\\\\/g, "\\");
+            }
+            return src;
+        }
+
+        function ajaxRunAllowedCallbacks(script, allowedCallbacks, replaceBr) {
+            var src = ajaxNormalizeScript(script, replaceBr);
+            var result = { invoked: false, errored: false, count: 0, normalized: src };
+            for (var callbackName in allowedCallbacks) {
+                if (!Object.prototype.hasOwnProperty.call(allowedCallbacks, callbackName)) {
+                    continue;
+                }
+                var cb = allowedCallbacks[callbackName];
+                if (typeof cb !== "function") {
+                    continue;
+                }
+                var matches = ajaxExtractCallbackArgs(src, callbackName);
+                for (var i = 0; i < matches.length; i++) {
+                    var firstArg = ajaxExtractFirstArg(matches[i]);
+                    var argValue = ajaxParseCallbackArg(firstArg);
+                    try {
+                        cb(argValue);
+                        result.invoked = true;
+                        result.count++;
+                    } catch (e) {
+                        result.errored = true;
+                    }
+                }
+            }
+            return result;
+        }
+
+    (function setupSystemNav() {
+      var navWrap = document.getElementById("side_nav");
+      if (!navWrap) {
+        return;
+      }
+      var topItems = navWrap.children;
+      for (var i = 0; i < topItems.length; i++) {
+        var rootStrong = topItems[i].getElementsByTagName("strong")[0];
+        if (!rootStrong) {
+          continue;
+        }
+        rootStrong.onclick = function () {
+          if (this.getAttribute("pageid")) {
+            return;
+          }
+          var submenu = this.parentNode.querySelector(".menu-ch");
+          if (!submenu) {
+            return;
+          }
+          submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+        };
+      }
+    })();
+
+    function keepSystemMenuOpenForSystemPages() {
+        var path = (window.location.pathname || "").toLowerCase();
+        var isSystemPage = path.indexOf("admin") !== -1 || path.indexOf("upgrade") !== -1 || path.indexOf("systemlog") !== -1 || path.indexOf("system_log") !== -1;
+        if (!isSystemPage) {
+            return;
+        }
+        var submenu = document.querySelector("#side_nav .menu-ch");
+        if (submenu) {
+            submenu.style.display = "block";
+        }
+    }
+
+    function logout(o) {
+      if (confirm("Are you sure you want to logout?")) {
+        try {
+          if (window.sessionStorage) {
+            sessionStorage.clear();
+          }
+        } catch (e) {}
+        var form = getForm("cgiform");
+        form.action = "logout.cgi";
+        form.submit();
+      }
+      return false;
+    }
+
+    function reboot(o) {
+      if (confirm("Are you sure you want to reboot?")) {
+        var form = getForm("cgiform");
+        form.action = "reboot_btn.cgi";
+        form.submit();
+      }
+      return false;
+    }
+
+    function resetSet(o) {
+      if (confirm("Factory resetting?")) {
+        var form = getForm("cgiform");
+        form.action = "resetfac_btn.cgi";
+        form.submit();
+      }
+      return false;
+    }
+
+    function tabChange(o) {
+      var pageId = o.getAttribute("pageid");
+      if (!pageId) {
+        return false;
+      }
+      var form = getForm("cgiform");
+      form.action = pageId + ".cgi";
+      form.submit();
+      return false;
+    }
+
+    function UpdatePageCallback(req) {
+      var pageId = req.pageId;
+      var emList = document.querySelectorAll("strong[pageid]");
+      for (var index = 0; index < emList.length; index++) {
+        var em = emList[index];
+        if (em.getAttribute("pageid") === pageId) {
+          em.setAttribute("class", "cur");
+          if (em.previousElementSibling) {
+            em.previousElementSibling.setAttribute("class", "iconfont");
+          }
+          var submenu = em.parentNode;
+          while (submenu && submenu !== document && (!submenu.className || submenu.className.indexOf("menu-ch") === -1)) {
+            submenu = submenu.parentNode;
+          }
+          if (submenu) {
+            submenu.style.display = "block";
+          }
+        } else {
+          em.setAttribute("class", "");
+          if (em.previousElementSibling) {
+            em.previousElementSibling.setAttribute("class", "");
+          }
+        }
+      }
+    }
+
+    function formatDateTime(inputTime) {
+      var date = new Date(inputTime);
+      var y = date.getFullYear();
+      var m = date.getMonth() + 1;
+      m = m < 10 ? "0" + m : m;
+      var d = date.getDate();
+      d = d < 10 ? "0" + d : d;
+      var h = date.getHours();
+      h = h < 10 ? "0" + h : h;
+      var minute = date.getMinutes();
+      var second = date.getSeconds();
+      minute = minute < 10 ? "0" + minute : minute;
+      second = second < 10 ? "0" + second : second;
+      return y + "-" + m + "-" + d + " " + h + ":" + minute + ":" + second;
+    }
+
+    var stm8;
+
+    function minerinfoCallback(req) {
+      req.hwtype = definedOr(req.hwtype, "");
+      req.mac = definedOr(req.mac, "");
+      req.ipv4 = definedOr(req.ipv4, "");
+      req.ssid = definedOr(req.ssid, "");
+      req.version = definedOr(req.version, "");
+      req.stm8 = definedOr(req.stm8, "");
+
+      D$("hwtype").textContent = req.hwtype;
+      D$("loadtime").textContent = formatDateTime(new Date().getTime());
+
+      if (req.sys_status === "1") {
+        D$("sys_status").textContent = "Online";
+        D$("sys_status").setAttribute("class", "status on");
+      } else {
+        D$("sys_status").textContent = "Idle";
+        D$("sys_status").setAttribute("class", "status off");
+      }
+
+      D$("mac").textContent = req.mac;
+      D$("ssid").textContent = req.ssid;
+      D$("ipv4").textContent = req.ipv4;
+      D$("version").textContent = req.version;
+      stm8 = req.stm8;
+      D$("stm8").value = stm8;
+    }
+
+    function updateMinerInfo() {
+      var oUpdate = new AJAX("get_minerinfo.cgi?num=" + Math.random(), function (t) {
+        ajaxRunAllowedCallbacks(t, {
+          UpdatePageCallback: UpdatePageCallback,
+          minerinfoCallback: minerinfoCallback
+        });
+      }, function () {
+        D$("sys_status").textContent = "Offline";
+        D$("sys_status").setAttribute("class", "status off");
+      });
+      oUpdate.doGet();
+      setTimeout(updateMinerInfo, 15000);
+    }
+
+    function decToHex(dec, bytes) {
+      var hex = dec.toString(16);
+      while (hex.length < bytes) {
+        hex = "0" + hex;
+      }
+      return hex;
+    }
+
+    function hex_to_ascii(str) {
+      var arr = [];
+      for (var i = 0, l = str.length; i < l; i++) {
+        var hex = Number(str.charCodeAt(i)).toString(16);
+        if (hex.length < 2) {
+          hex = "0" + hex;
+        }
+        arr.push(hex);
+      }
+      return arr.join("");
+    }
+
+    var pkg_num = 0;
+    var pkg_data_len = 420;
+    var offset = 0;
+    var reply;
+    var files;
+    var timer;
+    var begin_timer;
+    var repeat_cnt = 0;
+    var end = 0;
+    var flash_time = 120;
+    var intervalid;
+    var _width = 0;
+    var progress_timer;
+
+    FileReader.prototype.readAsBinaryString = function (fileData) {
+      var binary = "";
+      var pt = this;
+      var reader = new FileReader();
+      reader.onload = function () {
+        var bytes = new Uint8Array(reader.result);
+        var length = bytes.byteLength;
+        for (var i = 0; i < length; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        pt.content = binary;
+        pt.onload(pt);
+      };
+      reader.readAsArrayBuffer(fileData);
+    };
+
+    function load_data() {
+      var cgi_reply = D$("cont").textContent;
+      if (cgi_reply === "OK" + decToHex(offset + pkg_data_len, 8)) {
+        offset = offset + pkg_data_len;
+        repeat_cnt = 0;
+        D$("cont").textContent = "0";
+      } else if (cgi_reply.slice(0, 6) === "ERR-1-") {
+        offset = parseInt(cgi_reply.slice(6), 16);
+        D$("cont").textContent = "0";
+      }
+      pkg_num = pkg_num + 1;
+      var reader = new FileReader();
+      end = offset + pkg_data_len < files[0].size ? offset + pkg_data_len : files[0].size;
+      reader.readAsBinaryString(files[0].slice(offset, end));
+      reader.onload = function (file) {
+        var pkg_len = file.content.length;
+        var oPost = new AJAX("upload.cgi?num=" + Math.random(), function (t) {
+          reply = t;
+          D$("cont").textContent = reply;
+        });
+        oPost.doPost(
+          "uploadbtn=" +
+          decToHex(parseInt(pkg_num >> 8, 10), 2) +
+          decToHex(parseInt(pkg_num & 255, 10), 2) +
+          decToHex(parseInt(pkg_len >> 8, 10), 2) +
+          decToHex(parseInt(pkg_len & 255, 10), 2) +
+          decToHex(repeat_cnt & 255, 2) +
+          decToHex(parseInt(offset >> 24, 10) & 255, 2) +
+          decToHex(parseInt(offset >> 16, 10) & 255, 2) +
+          decToHex(parseInt(offset >> 8, 10) & 255, 2) +
+          decToHex(parseInt(offset & 255, 10), 2) +
+          hex_to_ascii(file.content)
+        );
+      };
+      timer = setTimeout(load_data, 120);
+      if (offset >= files[0].size) {
+        clearTimeout(timer);
+        end_cmd();
+      }
+      repeat_cnt = repeat_cnt + 1;
+      if (repeat_cnt > 512) {
+        repeat_cnt = 0;
+        clearTimeout(timer);
+        alert("send img packet timeout");
+      }
+    }
+
+    function begin_cmd(img_len) {
+      var oPost = new AJAX("upload.cgi?num=" + Math.random(), function (t) {
+        D$("cont").textContent = t;
+      });
+      img_len = files[0].size;
+      oPost.doPost(
+        "begin=" +
+        decToHex(parseInt(img_len >> 24, 10) & 255, 2) +
+        decToHex(parseInt(img_len >> 16, 10) & 255, 2) +
+        decToHex(parseInt(img_len >> 8, 10) & 255, 2) +
+        decToHex(parseInt(img_len & 255, 10), 2)
+      );
+      begin_timer = setTimeout(begin_cmd, 100);
+      if (D$("cont").textContent === "OK") {
+        clearTimeout(begin_timer);
+        D$("cont").textContent = "0";
+        load_data();
+      }
+      if (D$("cont").textContent === "ERR-0") {
+        D$("cont").textContent = "0";
+        clearTimeout(begin_timer);
+        alert("image file too big");
+      }
+    }
+
+    function end_cmd() {
+      var oPost = new AJAX("upload.cgi?num=" + Math.random(), function (t) {
+        D$("cont").textContent = t;
+      });
+      oPost.doPost("end=");
+    }
+
+    function upgrade_confim(rep) {
+      var win = confirm("Image File Information:\r\nname:" + rep.filename + "\r\nsize:" + rep.size);
+      if (win === true) {
+        load_progress();
+        begin_cmd(rep.size);
+        showAndHidden(0);
+      }
+      return false;
+    }
+
+    function UploadFirmware(o) {
+      var files_source = D$("firmware");
+      files = files_source.files;
+      if (!files || !files[0]) {
+        return;
+      }
+      pkg_num = 0;
+      offset = 0;
+      D$("cont").textContent = "0";
+      var img_info = { filename: files[0].name, size: files[0].size };
+      upgrade_confim(img_info);
+    }
+
+    function updateupgrade() {
+      var oUpdate = new AJAX("updateupgrade.cgi", function (t) {
+        ajaxRunAllowedCallbacks(t, {
+          UpdatePageCallback: UpdatePageCallback,
+          minerinfoCallback: minerinfoCallback
+        });
+      });
+      oUpdate.doGet();
+    }
+
+    function get_upgrade_result() {
+      var oUpdate = new AJAX("upgrade_status.cgi?num=" + Math.random(), function (t) {
+        var parsed = ajaxRunAllowedCallbacks(t, {
+          UpdatePageCallback: UpdatePageCallback
+        });
+        var token = extractUpgradeStatusToken(parsed.normalized || t);
+        D$("result").textContent = token || "";
+      });
+      oUpdate.doGet();
+    }
+
+    function extractUpgradeStatusToken(raw) {
+      var src = String(raw || "").trim();
+      if (!src) {
+        return "";
+      }
+
+      var direct = src.match(/^['"]?(OK|7|8)['"]?$/i);
+      if (direct) {
+        return direct[1].toUpperCase();
+      }
+
+      var tail = src.match(/(?:^|[;\s])['"]?(OK|7|8)['"]?\s*;?\s*$/i);
+      if (tail) {
+        return tail[1].toUpperCase();
+      }
+
+      var parsed = ajaxParseJsonLikeValue(src);
+      if (parsed && typeof parsed === "object") {
+        var keys = ["status", "result", "code", "state", "msg", "message"];
+        for (var i = 0; i < keys.length; i++) {
+          var value = parsed[keys[i]];
+          if (value === undefined || value === null) {
+            continue;
+          }
+          var token = String(value).trim().toUpperCase();
+          if (token === "OK" || token === "7" || token === "8") {
+            return token;
+          }
+        }
+      }
+
+      return "";
+    }
+
+    function load_progress() {
+      progress_timer = setTimeout(load_progress, 200);
+      _width = (offset / files[0].size) * 100;
+      if (_width >= 100) {
+        clearTimeout(progress_timer);
+        showAndHidden(1);
+      }
+      if (D$("swu-progress-bar")) {
+        D$("swu-progress-bar").style.width = _width + "%";
+      }
+      var dataNode = document.getElementsByClassName("data")[0];
+      var innerNode = document.getElementsByClassName("inner")[0];
+      if (dataNode) {
+        dataNode.innerText = Math.floor(_width) + "%";
+      }
+      if (innerNode) {
+        innerNode.style.width = _width + "%";
+      }
+    }
+
+    function burn_progress() {
+      get_upgrade_result();
+      intervalid = setTimeout(burn_progress, 1000);
+      var status = String(D$("result").textContent || "").trim().toUpperCase();
+      if (status === "7" || status === "8" || status === "OK") {
+        clearTimeout(intervalid);
+        if (status === "OK") {
+          D$("mes").textContent = "Upgrade successfully, please reboot device manually";
+        } else {
+          alert("Upgrade failed");
+          D$("mes").textContent = "Upgrade failed";
+        }
+      } else {
+        if (flash_time === 0) {
+          clearTimeout(intervalid);
+          D$("mes").textContent = "Program flash timeout";
+        } else {
+          D$("mes").textContent = "Program flash..., will be finished after (" + flash_time + ") second";
+          flash_time--;
+        }
+      }
+    }
+
+    function showAndHidden(divflag) {
+      var div1 = D$("div1");
+      var div2 = D$("div2");
+      var div3 = D$("div3");
+      if (!div1 || !div2 || !div3) {
+        return;
+      }
+      if (divflag === 1) {
+        div1.style.display = "none";
+        div2.style.display = "none";
+        div3.style.display = "block";
+        flash_time = 120;
+        burn_progress();
+      } else {
+        div1.style.display = div1.style.display === "block" ? "none" : "block";
+        div2.style.display = div2.style.display === "block" ? "none" : "block";
+        div3.style.display = "none";
+      }
+    }
+
+    function showNode(id, visible) {
+      var node = D$(id);
+      if (!node) {
+        return;
+      }
+      node.style.display = visible ? "block" : "none";
+    }
+
+    function appendMessage(text, level) {
+      var box = D$("messages");
+      if (!box) {
+        return;
+      }
+      var p = document.createElement("p");
+      p.textContent = text;
+      if (level <= 3) {
+        p.className = "text-danger";
+      }
+      box.appendChild(p);
+      while (box.childNodes.length > 200) {
+        box.removeChild(box.firstChild);
+      }
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function restart() {
+      fetch("restart", { method: "POST" }).then(function () {
+        showRestart();
+      }).catch(function () {
+      });
+    }
+
+    function showRestart() {
+      // Reserved for restart modal on future firmware builds.
+    }
+
+    function tryReload() {
+      var controller = new AbortController();
+      var timeout = setTimeout(function () {
+        controller.abort();
+      }, 1000);
+      fetch(window.location.href, { cache: "no-store", signal: controller.signal }).then(function () {
+        clearTimeout(timeout);
+        window.location.reload(true);
+      }).catch(function () {
+        clearTimeout(timeout);
+        window.setTimeout(tryReload, 1000);
+      });
+    }
+
+    function updateStatus(status) {
+      showNode("swu-idle", false);
+      showNode("swu-success", false);
+      showNode("swu-failure", false);
+      showNode("swu-done", false);
+      showNode("swu-run", false);
+
+      switch (status) {
+        case "IDLE":
+          showNode("swu-idle", true);
+          D$("swu-progress-name").textContent = "";
+          D$("swu-progress-value").textContent = "";
+          D$("swu-progress-row").style.display = "none";
+          D$("swu-progress-track").style.display = "none";
+          break;
+        case "START":
+        case "RUN":
+          showNode("swu-run", true);
+          break;
+        case "SUCCESS":
+          showNode("swu-success", true);
+          break;
+        case "FAILURE":
+          showNode("swu-failure", true);
+          break;
+        case "DONE":
+          showNode("swu-success", true);
+          break;
+        default:
+          break;
+      }
+    }
+
+    function updateProgressBar(percent, name, value) {
+      D$("swu-progress-value").textContent = value;
+      D$("swu-progress-name").textContent = name;
+      D$("swu-progress-bar").style.width = percent + "%";
+      D$("swu-progress-bar").setAttribute("aria-valuenow", String(percent));
+    }
+
+    function initDropzone() {
+      var hostname = window.location.hostname;
+      var dropzoneForm = D$("my_dropzone");
+      if (!dropzoneForm || typeof Dropzone === "undefined") {
+        return;
+      }
+
+      var action = "http://" + hostname + ":9090/upload";
+      dropzoneForm.setAttribute("action", action);
+
+      var dz = new Dropzone(dropzoneForm, {
+        url: action,
+        method: "post",
+        createImageThumbnails: false,
+        timeout: 0,
+        parallelUploads: 1,
+        uploadMultiple: false
+      });
+
+      dz.on("addedfile", function () {
+        D$("swu-progress-run").style.display = "inline";
+      });
+
+      dz.on("error", function (file, message) {
+        updateStatus("FAILURE");
+        appendMessage(String(message), 2);
+      });
+    }
+
+    function initWebSocket() {
+      var protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+      var host = window.location.hostname;
+      var ws;
+
+      updateStatus("IDLE");
+
+      try {
+        ws = new WebSocket(protocol + "//" + host + ":9090/ws");
+      } catch (e) {
+        appendMessage("WebSocket unavailable.", 2);
+        return;
+      }
+
+      ws.onopen = function () {
+        updateStatus("IDLE");
+      };
+
+      ws.onclose = function () {
+        showRestart();
+      };
+
+      ws.onmessage = function (event) {
+        var msg;
+        try {
+          msg = JSON.parse(event.data);
+        } catch (e) {
+          return;
+        }
+
+        switch (msg.type) {
+          case "message":
+            appendMessage(msg.text, msg.level);
+            break;
+          case "status":
+            updateStatus(msg.status);
+            break;
+          case "source":
+            break;
+          case "step":
+            D$("swu-progress-row").style.display = "grid";
+            D$("swu-progress-track").style.display = "block";
+            D$("swu-progress-run").style.display = "inline";
+            var percent = Math.round((100 * (Number(msg.step) - 1) + Number(msg.percent)) / Number(msg.number));
+            var value = percent + "% (" + msg.step + " of " + msg.number + ")";
+            updateProgressBar(percent, msg.name, value);
+            break;
+          default:
+            break;
+        }
+      };
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      keepSystemMenuOpenForSystemPages();
+      D$("loadtime").textContent = formatDateTime(new Date().getTime());
+      updateMinerInfo();
+      initDropzone();
+      initWebSocket();
+    });
+  </script>
+</body>
+
+</html>

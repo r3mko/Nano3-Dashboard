@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Factory Reset</title>
+  <style>
+    :root {
+      --bg: linear-gradient(135deg, #eef2f8 0%, #e6f2ed 100%);
+      --card: rgba(255, 255, 255, 0.86);
+      --border: rgba(60, 60, 67, 0.16);
+      --text: #1d1d1f;
+      --text-secondary: #6b6b70;
+      --accent: #0a84ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .card {
+      width: 100%;
+      max-width: 460px;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      padding: 26px 24px 22px;
+      box-shadow: 0 16px 38px rgba(15, 23, 42, 0.08);
+    }
+
+    .title {
+      font-size: 26px;
+      line-height: 1.15;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .desc {
+      font-size: 14px;
+      line-height: 1.45;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: #fff;
+      border: 1px solid var(--border);
+      margin-bottom: 14px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 1.1s ease-in-out infinite;
+    }
+
+    .bar {
+      height: 8px;
+      border-radius: 999px;
+      background: #d9d9de;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .bar > div {
+      width: 34%;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), #3fa2ff);
+      animation: slide 1.2s ease-in-out infinite;
+      transform-origin: left center;
+    }
+
+    .note {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.45; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes slide {
+      0% { transform: translateX(-110%); }
+      100% { transform: translateX(320%); }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card">
+    <h1 class="title">Factory Reset in Progress</h1>
+    <p class="desc">The device is restoring default settings and rebooting now.</p>
+    <div class="status"><span class="dot"></span>Reset command sent</div>
+    <div class="bar"><div></div></div>
+    <p class="note">Please reconnect and reconfigure the miner after it comes back online.</p>
+  </main>
+
+  <script>
+    (function () {
+      try {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "resetfac.cgi");
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.send("resetfac=1");
+      } catch (e) {}
+    })();
+  </script>
+</body>
+
+</html>
