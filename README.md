@@ -1,4 +1,4 @@
-# nano3_web
+# Nano3 Dashboard
 
 Web UI refresh for the Canaan Avalon Nano 3, plus a lightweight cgminer API proxy for safe fan control from the browser.
 
